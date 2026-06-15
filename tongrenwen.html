@@ -1,0 +1,1524 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ANALOG_DREAMS // 中长篇同人文</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ===== GLOBAL VARIABLES ===== */
+    :root {
+      --theme-chassis: #e8e4dc;
+      --theme-chassis-dark: #dcd6cb;
+      --theme-border: #b8b2a7;
+      --theme-accent: #e05600;
+      --theme-accent-glow: rgba(224, 86, 0, 0.45);
+      --theme-screen: #f5f2ec;
+      --theme-screen-glow: #d8d3c9;
+      --theme-text: #2a2723;
+      --theme-text-dim: #6b655b;
+      --theme-light: #f5f2ec;
+
+      --shadow-plastic:
+        inset 1px 1px 0px rgba(255,255,255,0.8),
+        inset -1px -1px 0px rgba(0,0,0,0.06),
+        2px 2px 5px rgba(0,0,0,0.1),
+        6px 6px 18px rgba(0,0,0,0.08);
+
+      --shadow-inset:
+        inset 0 2px 4px 0 rgba(0, 0, 0, 0.12),
+        inset 0 1px 2px 0 rgba(0, 0, 0, 0.08);
+
+      --shadow-button:
+        0 4px 0 #9e9488,
+        0 6px 8px rgba(0,0,0,0.15),
+        inset 0 1px 0 rgba(255,255,255,0.6);
+
+      --shadow-button-active:
+        0 1px 0 #9e9488,
+        0 2px 3px rgba(0,0,0,0.15),
+        inset 0 2px 4px rgba(0,0,0,0.1);
+
+      --font-label: 'Space Grotesk', sans-serif;
+      --font-screen: 'Share Tech Mono', monospace;
+    }
+
+    /* ===== RESET ===== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 15px;
+    }
+
+    body {
+      font-family: var(--font-label);
+      background: #FAFAFA;
+      color: var(--theme-text);
+      line-height: 1.65;
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      background-image:
+        radial-gradient(circle at 12% 18%, rgba(0,0,0,0.018) 0%, transparent 45%),
+        radial-gradient(circle at 88% 82%, rgba(0,0,0,0.015) 0%, transparent 40%),
+        linear-gradient(rgba(0,0,0,0.012) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.012) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+    }
+
+    /* ===== CHASSIS FRAME ===== */
+    .chassis {
+      position: relative;
+      width: 100%;
+      margin: 0;
+      min-height: calc(100vh - 72px);
+      background: transparent;
+    }
+
+    /* ===== APP LAYOUT ===== */
+    .app {
+      display: block;
+      position: relative;
+      z-index: 1;
+      min-height: calc(100vh - 72px);
+    }
+
+    /* ===== SIDEBAR / CONTROL MODULE ===== */
+    .sidebar {
+      position: fixed;
+      top: 72px;
+      left: 0;
+      width: 260px;
+      height: calc(100vh - 72px);
+      background: #faf8f5;
+      border-right: 1px solid rgba(0, 0, 0, 0.08);
+      display: flex;
+      flex-direction: column;
+      z-index: 100;
+      padding: 24px 28px 32px;
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: 26px;
+      letter-spacing: 0.12em;
+      color: var(--theme-text);
+      text-align: left;
+      margin-bottom: 6px;
+    }
+
+    .brand-sub {
+      font-size: 12px;
+      color: var(--theme-text-dim);
+      margin-bottom: 26px;
+      letter-spacing: 0.06em;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--theme-text);
+      text-decoration: none;
+      padding: 10px 0;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 999px;
+      margin-bottom: 28px;
+      background: #fff;
+      transition: all 0.2s ease;
+    }
+
+    .back-link:hover {
+      background: var(--theme-accent);
+      color: #fff;
+      border-color: var(--theme-accent);
+    }
+
+    .toc {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-right: 4px;
+    }
+
+    .toc::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .toc::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.12);
+      border-radius: 2px;
+    }
+
+    .toc-item {
+      position: relative;
+      display: block;
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 1.45;
+      color: var(--theme-text-dim);
+      text-decoration: none;
+      background: transparent;
+      border: 1px solid transparent;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+
+    .toc-item:hover {
+      background: rgba(0, 0, 0, 0.04);
+      color: var(--theme-text);
+    }
+
+    .toc-item.active {
+      background: rgba(184, 74, 57, 0.08);
+      color: var(--theme-accent);
+      font-weight: 600;
+    }
+
+    .toc-item.level-2 {
+      padding-left: 28px;
+      font-size: 13px;
+      color: var(--theme-text-dim);
+    }
+
+    .toc-item.level-2:hover {
+      color: var(--theme-text);
+    }
+
+    /* ===== MAIN SCREEN AREA ===== */
+    .main {
+      margin-left: 260px;
+      width: calc(100% - 260px);
+      min-width: 0;
+      padding: 40px 32px;
+    }
+
+    .screen-frame {
+      position: relative;
+      background: linear-gradient(145deg, #faf8f4, #f0ece4);
+      border: 8px solid #dcd6cb;
+      border-radius: 16px;
+      box-shadow:
+        0 0 0 2px #d8d3c9,
+        inset 0 0 40px rgba(255,255,255,0.35),
+        0 12px 30px rgba(0,0,0,0.08);
+      padding: 20px;
+      overflow: hidden;
+    }
+
+    .screen-frame::before {
+      content: "CRT DISPLAY // ANALOG_DREAMS";
+      position: absolute;
+      top: -11px;
+      left: 16px;
+      padding: 2px 8px;
+      background: #dcd6cb;
+      font-family: var(--font-label);
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      color: #6b655b;
+      border-radius: 4px;
+    }
+
+    /* Subtle paper grain overlay */
+    .screen-frame::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 10;
+      background-image:
+        radial-gradient(circle at 30% 30%, rgba(0,0,0,0.03) 0, transparent 2px),
+        radial-gradient(circle at 70% 60%, rgba(0,0,0,0.02) 0, transparent 1.5px);
+      background-size: 120px 120px, 80px 80px;
+      opacity: 0.4;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      padding: 80px 60px 70px;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      position: relative;
+    }
+
+    .hero-label {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 4px;
+      background: rgba(224, 86, 0, 0.12);
+      border: 1px solid rgba(224, 86, 0, 0.25);
+      color: var(--theme-accent);
+      font-family: var(--font-screen);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-family: var(--font-screen);
+      font-size: 48px;
+      line-height: 1.15;
+      margin-bottom: 24px;
+      letter-spacing: 0.08em;
+      color: var(--theme-text);
+      text-shadow: 0 0 20px rgba(224, 86, 0, 0.12);
+    }
+
+    .hero p {
+      font-family: var(--font-label);
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--theme-text-dim);
+      max-width: 600px;
+      text-indent: 0;
+    }
+
+    /* ===== SECTIONS ===== */
+    .section {
+      padding: 64px 60px;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      position: relative;
+    }
+
+    .section:last-of-type {
+      border-bottom: none;
+    }
+
+    .section-header {
+      margin-bottom: 40px;
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+    }
+
+    .section-number {
+      font-family: var(--font-screen);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--theme-accent);
+      padding: 2px 8px;
+      border: 1px solid rgba(224, 86, 0, 0.3);
+      border-radius: 4px;
+    }
+
+    .section-title {
+      font-family: var(--font-label);
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.3;
+      letter-spacing: 0.03em;
+      color: var(--theme-text);
+    }
+
+    .section-body {
+      font-family: var(--font-label);
+      font-size: 14px;
+      line-height: 1.85;
+      color: var(--theme-text-dim);
+    }
+
+    .section-body p {
+      text-indent: 2em;
+      margin-bottom: 1em;
+    }
+
+    h3.section-title {
+      font-size: 20px;
+      color: var(--theme-text);
+      margin: 48px 0 28px;
+    }
+
+    /* ===== CASSETTE CARDS ===== */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .card {
+      position: relative;
+      background: linear-gradient(145deg, #d8d3c9, #c9c3b8);
+      border: 2px solid #b8b2a7;
+      border-radius: 8px;
+      padding: 28px;
+      box-shadow: var(--shadow-plastic);
+      transition: transform 0.2s ease;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      right: 12px;
+      height: 8px;
+      background: repeating-linear-gradient(
+        90deg,
+        rgba(0,0,0,0.08) 0px,
+        rgba(0,0,0,0.08) 3px,
+        transparent 3px,
+        transparent 8px
+      );
+      border-radius: 2px;
+      opacity: 0.6;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+    }
+
+    .card-title {
+      font-family: var(--font-label);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--theme-text);
+      margin-bottom: 12px;
+      margin-top: 12px;
+      letter-spacing: 0.04em;
+    }
+
+    .card-body {
+      font-family: var(--font-label);
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--theme-text-dim);
+    }
+
+    .card-body p {
+      text-indent: 2em;
+      margin-bottom: 0.6em;
+    }
+
+    /* ===== CHARACTER CARDS ===== */
+    .char-card {
+      position: relative;
+      background: linear-gradient(145deg, #e2ded5, #d4cfc6);
+      border: 2px solid #b8b2a7;
+      border-radius: 8px;
+      padding: 28px;
+      box-shadow: var(--shadow-plastic);
+      transition: transform 0.2s ease;
+    }
+
+    .char-card::before {
+      content: "";
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #c9c3b8, #f0ece4);
+      box-shadow: inset 1px 1px 2px rgba(255,255,255,0.8), 1px 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .char-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .char-name {
+      font-family: var(--font-label);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--theme-text);
+      margin-bottom: 4px;
+    }
+
+    .char-role {
+      font-family: var(--font-screen);
+      font-size: 10px;
+      color: var(--theme-accent);
+      letter-spacing: 0.06em;
+      margin-bottom: 14px;
+    }
+
+    .char-desc {
+      font-family: var(--font-label);
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--theme-text-dim);
+      text-indent: 2em;
+    }
+
+    /* ===== TIMELINE ===== */
+    .timeline {
+      position: relative;
+      padding-left: 28px;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 5px;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: linear-gradient(180deg, var(--theme-accent), rgba(224,86,0,0.15));
+      box-shadow: 0 0 8px rgba(224,86,0,0.2);
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-bottom: 40px;
+    }
+
+    .timeline-item:last-child {
+      padding-bottom: 0;
+    }
+
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: -28px;
+      top: 6px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid var(--theme-accent);
+      box-shadow: 0 0 8px rgba(224,86,0,0.35);
+    }
+
+    .timeline-title {
+      font-family: var(--font-label);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--theme-text);
+      margin-bottom: 8px;
+    }
+
+    .timeline-body {
+      font-family: var(--font-label);
+      font-size: 13px;
+      line-height: 1.75;
+      color: var(--theme-text-dim);
+      text-indent: 2em;
+    }
+
+    /* ===== MINDMAP ===== */
+    .mindmap {
+      margin: 40px 0;
+      padding: 28px;
+      background: rgba(0,0,0,0.04);
+      border-radius: 12px;
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .mindmap-root {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+
+    .mindmap-node {
+      display: inline-block;
+      padding: 12px 24px;
+      background: linear-gradient(145deg, #e8e4dc, #dcd6cb);
+      border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 8px;
+      font-family: var(--font-label);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--theme-text);
+      letter-spacing: 0.04em;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      position: relative;
+    }
+
+    .mindmap-node.small {
+      font-size: 12px;
+      padding: 10px 18px;
+    }
+
+    .mindmap-node.accent {
+      background: linear-gradient(145deg, rgba(224,86,0,0.1), rgba(224,86,0,0.04));
+      border-color: rgba(224,86,0,0.25);
+      color: var(--theme-accent);
+    }
+
+    .mindmap-branches {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      position: relative;
+    }
+
+    .mindmap-branches::before {
+      content: "";
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      height: 20px;
+      background: rgba(224,86,0,0.4);
+    }
+
+    .mindmap-branch {
+      flex: 1;
+      max-width: 280px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      position: relative;
+    }
+
+    .mindmap-branch::before {
+      content: "";
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      height: 20px;
+      background: rgba(224,86,0,0.4);
+    }
+
+    .mindmap-children {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .mindmap-child {
+      width: 100%;
+      padding: 14px 16px;
+      background: rgba(255,255,255,0.45);
+      border: 1px solid rgba(0,0,0,0.06);
+      border-radius: 6px;
+      font-family: var(--font-label);
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--theme-text-dim);
+      text-align: center;
+    }
+
+    .mindmap-merge {
+      display: flex;
+      justify-content: center;
+      margin-top: 40px;
+      position: relative;
+    }
+
+    .mindmap-merge::before {
+      content: "";
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      height: 20px;
+      background: rgba(224,86,0,0.4);
+    }
+
+    .mindmap-end {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 32px;
+    }
+
+    /* ===== EVIDENCE / LETTERS ===== */
+    .evidence-item {
+      margin-bottom: 40px;
+      position: relative;
+    }
+
+    .evidence-title {
+      font-family: var(--font-label);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--theme-text);
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .evidence-quote {
+      font-family: var(--font-label);
+      font-size: 13px;
+      line-height: 2;
+      color: var(--theme-text);
+      padding: 24px 28px;
+      background: rgba(255,255,255,0.55);
+      border-radius: 8px;
+      border-left: 3px solid var(--theme-accent);
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.04);
+    }
+
+    .evidence-quote p {
+      text-indent: 2em;
+      margin-bottom: 0.5em;
+    }
+
+    .evidence-quote p:last-child {
+      margin-bottom: 0;
+    }
+
+    .letter-placeholder {
+      padding: 36px;
+      background: rgba(0,0,0,0.04);
+      border: 1px dashed rgba(224,86,0,0.25);
+      border-radius: 8px;
+      text-align: center;
+      color: var(--theme-text-dim);
+      font-family: var(--font-screen);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+    }
+
+    .letter-content {
+      padding: 36px;
+      background: #fffef9;
+      border: 1px solid #d8d3c9;
+      border-radius: 8px;
+      color: var(--theme-text);
+      font-family: var(--font-body);
+      font-size: 13px;
+      line-height: 1.9;
+      letter-spacing: 0.04em;
+      text-align: left;
+      box-shadow: inset 0 0 24px rgba(0,0,0,0.03);
+    }
+
+    .letter-content p {
+      margin-bottom: 14px;
+      text-indent: 2em;
+    }
+
+    .letter-content p:last-child {
+      margin-bottom: 0;
+    }
+
+    .letter-part-title {
+      font-family: var(--font-label);
+      font-size: 15px;
+      color: rgba(224,86,0,0.95);
+      margin: 28px 0 16px;
+      letter-spacing: 0.12em;
+      text-indent: 0;
+    }
+
+    .letter-part-title:first-child {
+      margin-top: 0;
+    }
+
+    .letter-signoff,
+    .letter-date {
+      text-align: right;
+      text-indent: 0;
+      color: var(--theme-text-dim);
+      margin-top: 8px;
+    }
+
+    .letter-date {
+      margin-bottom: 0;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      padding: 48px 60px;
+      text-align: center;
+      font-family: var(--font-screen);
+      font-size: 11px;
+      color: var(--theme-text-dim);
+      letter-spacing: 0.06em;
+      border-top: 1px solid rgba(0,0,0,0.08);
+    }
+
+    /* ===== EDIT MODE ===== */
+    body.dev-mode .editable {
+      outline: 1px dashed rgba(224,86,0,0.5);
+      border-radius: 4px;
+      cursor: text;
+    }
+
+    body.dev-mode .editable:hover {
+      outline: 1px dashed var(--theme-accent);
+      background: rgba(224,86,0,0.08);
+    }
+
+    body.dev-mode .toc-item,
+    body.dev-mode .brand-title {
+      outline: 1px dashed rgba(224,86,0,0.5);
+      border-radius: 4px;
+      cursor: text;
+    }
+
+    body.dev-mode .toc-item:hover,
+    body.dev-mode .brand-title:hover {
+      outline: 1px dashed var(--theme-accent);
+      background: rgba(224,86,0,0.08);
+    }
+
+    /* ===== DEV TOOLS ===== */
+    .dev-tools {
+      margin-top: 16px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .dev-btn {
+      flex: 1;
+      padding: 8px 0;
+      border-radius: 6px;
+      border: none;
+      background: linear-gradient(180deg, #f0ece4, #d8d3c9);
+      color: var(--theme-text);
+      font-family: var(--font-label);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      box-shadow:
+        0 4px 0 #9e9488,
+        0 6px 8px rgba(0,0,0,0.15),
+        inset 0 1px 0 rgba(255,255,255,0.6);
+      transition: all 0.1s ease;
+    }
+
+    .dev-btn:hover {
+      filter: brightness(1.02);
+    }
+
+    .dev-btn:active {
+      transform: translateY(3px);
+      box-shadow:
+        0 1px 0 #9e9488,
+        0 2px 3px rgba(0,0,0,0.15),
+        inset 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .edit-hint {
+      display: none;
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      padding: 10px 16px;
+      border-radius: 6px;
+      background: rgba(224,86,0,0.12);
+      border: 1px solid rgba(224,86,0,0.3);
+      color: var(--theme-accent);
+      font-family: var(--font-screen);
+      font-size: 11px;
+      z-index: 200;
+    }
+
+    body.dev-mode .edit-hint {
+      display: block;
+    }
+
+    /* ===== LINK PLACEHOLDERS ===== */
+    .link-placeholder {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(224, 86, 0, 0.35);
+      cursor: pointer;
+      transition: border-color 0.15s ease, color 0.15s ease;
+    }
+
+    .link-placeholder:hover {
+      color: var(--theme-accent);
+      border-bottom-color: var(--theme-accent);
+    }
+
+    h2 .link-placeholder,
+    h3 .link-placeholder {
+      border-bottom-style: dashed;
+      border-bottom-width: 1px;
+    }
+
+    /* ===== PASSWORD OVERLAY ===== */
+    .password-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+      background: rgba(26, 24, 21, 0.75);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      align-items: center;
+      justify-content: center;
+    }
+
+    .password-overlay.show {
+      display: flex;
+    }
+
+    .password-box {
+      width: 340px;
+      padding: 32px;
+      background: linear-gradient(145deg, #e2ded5, #f0ece4);
+      border: 2px solid var(--theme-border);
+      border-radius: 12px;
+      box-shadow: var(--shadow-plastic), 0 24px 60px rgba(0,0,0,0.35);
+      text-align: center;
+    }
+
+    .password-box h3 {
+      font-family: var(--font-label);
+      font-size: 16px;
+      color: var(--theme-text);
+      margin-bottom: 6px;
+      letter-spacing: 0.04em;
+    }
+
+    .password-box p {
+      font-family: var(--font-screen);
+      font-size: 10px;
+      color: var(--theme-text-dim);
+      margin-bottom: 20px;
+      letter-spacing: 0.06em;
+    }
+
+    .password-box input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--theme-border);
+      border-radius: 6px;
+      background: #fffef9;
+      color: var(--theme-text);
+      font-family: var(--font-screen);
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+      outline: none;
+      box-shadow: var(--shadow-inset);
+    }
+
+    .password-box input:focus {
+      border-color: var(--theme-accent);
+      box-shadow: 0 0 0 3px rgba(224, 86, 0, 0.12), var(--shadow-inset);
+    }
+
+    .password-box .pw-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .password-box button {
+      flex: 1;
+      padding: 8px 0;
+      border: none;
+      border-radius: 6px;
+      font-family: var(--font-label);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      transition: all 0.1s ease;
+    }
+
+    .password-box .pw-confirm {
+      background: var(--theme-accent);
+      color: #fff;
+      box-shadow: 0 3px 0 #b54300, 0 4px 6px rgba(0,0,0,0.15);
+    }
+
+    .password-box .pw-confirm:active {
+      transform: translateY(3px);
+      box-shadow: 0 0 0 #b54300, 0 1px 3px rgba(0,0,0,0.15);
+    }
+
+    .password-box .pw-cancel {
+      background: linear-gradient(180deg, #f0ece4, #d8d3c9);
+      color: var(--theme-text);
+      box-shadow: var(--shadow-button);
+    }
+
+    .password-box .pw-cancel:active {
+      transform: translateY(3px);
+      box-shadow: var(--shadow-button-active);
+    }
+
+    /* ===== GALLERY CARDS ===== */
+    .gallery-card {
+      position: relative;
+      background: linear-gradient(145deg, #e2ded5, #d4cfc6);
+      border: 2px solid #b8b2a7;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: var(--shadow-plastic);
+      transition: transform 0.2s ease;
+    }
+
+    .gallery-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .gallery-img {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      display: block;
+      background: linear-gradient(145deg, #e8e4dc, #d4cfc6);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .gallery-caption {
+      padding: 18px;
+    }
+
+    .gallery-caption .card-title {
+      margin-top: 0;
+      margin-bottom: 6px;
+    }
+
+    .gallery-caption .card-body {
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1200px) {
+      .sidebar {
+        position: relative;
+        top: auto;
+        left: auto;
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        padding: 20px 24px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px;
+      }
+      .brand-title {
+        margin-bottom: 0;
+        font-size: 20px;
+      }
+      .brand-sub {
+        display: none;
+      }
+      .back-link {
+        margin-bottom: 0;
+        padding: 8px 16px;
+        order: 3;
+      }
+      .toc {
+        flex: 1 1 auto;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 6px;
+        overflow-x: visible;
+        overflow-y: visible;
+        order: 4;
+      }
+      .toc-item {
+        white-space: nowrap;
+        flex-shrink: 0;
+        padding: 8px 12px;
+        font-size: 13px;
+      }
+      .toc-item.level-2 {
+        padding-left: 12px;
+        font-size: 12px;
+      }
+      .main {
+        margin: 0 auto;
+        max-width: 1100px;
+        width: 100%;
+        padding: 32px 24px;
+      }
+      .hero, .section, footer {
+        padding-left: 32px;
+        padding-right: 32px;
+      }
+      .grid-3, .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .chassis {
+        margin: 16px;
+        min-height: calc(100vh - 32px);
+      }
+      .sidebar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .back-link {
+        order: 0;
+      }
+      .toc {
+        flex-direction: column;
+        overflow-y: auto;
+        max-height: 220px;
+      }
+      .toc-item {
+        white-space: normal;
+      }
+      .main {
+        margin: 0 auto;
+        max-width: 1100px;
+        width: 100%;
+        padding: 24px 16px;
+      }
+      .hero h1 {
+        font-size: 32px;
+      }
+      .mindmap-branches {
+        flex-direction: column;
+        align-items: center;
+      }
+      .mindmap-branch {
+        max-width: 100%;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .hero h1 {
+        font-size: 26px;
+      }
+      .section-title {
+        font-size: 22px;
+      }
+    }
+
+    /* ===== 简约顶部导航（与首页一致） ===== */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(250, 250, 250, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 32px;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-brand {
+      font-family: 'Yuangu', var(--font-label);
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: #333;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-brand i {
+      font-size: 16px;
+      color: #888;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 8px;
+    }
+
+    .nav-links a {
+      display: block;
+      padding: 10px 18px;
+      font-size: 14px;
+      color: #888;
+      border-radius: 20px;
+      transition: color 0.2s ease, background 0.2s ease;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: #333;
+      background: #E0F7FA;
+    }
+
+    .nav-toggle {
+      display: none;
+      width: 44px;
+      height: 44px;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #333;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .nav-container {
+        height: 64px;
+        padding: 0 20px;
+      }
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        background: rgba(250, 250, 250, 0.98);
+        padding: 16px 20px;
+        gap: 4px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      }
+      .nav-links.open {
+        display: flex;
+      }
+      .nav-links a {
+        padding: 14px 16px;
+        border-radius: 8px;
+      }
+      .nav-toggle {
+        display: flex;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="edit-hint">DEV MODE ACTIVE // CLICK TEXT TO EDIT</div>
+
+  <div class="password-overlay" id="passwordOverlay">
+    <div class="password-box">
+      <h3>开发者模式</h3>
+      <p>DEV MODE ACCESS // PRESS M TO TOGGLE</p>
+      <input type="password" id="passwordInput" placeholder="请输入密码" autocomplete="off" />
+      <div class="pw-actions">
+        <button class="pw-confirm" id="passwordConfirm">确认</button>
+        <button class="pw-cancel" id="passwordCancel">取消</button>
+      </div>
+    </div>
+  </div>
+
+  <nav class="top-nav">
+    <div class="nav-container">
+      <a class="nav-brand" href="zuopin.html">
+        <i class="fa-solid fa-feather-pointed"></i>
+        <span>创作集</span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="打开菜单">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="lichun.html">游戏剧本</a></li>
+        <li><a href="tongrenwen.html" class="active">中长篇同人文</a></li>
+        <li><a href="ciqu.html">歌曲作词</a></li>
+        <li><a href="guangbo.html">广播剧剧本</a></li>
+        <li><a href="qita.html">其他</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="chassis">
+    <div class="app">
+      <!-- 左侧目录导航 -->
+      <aside class="sidebar">
+        <div class="brand-title">中长篇同人文</div>
+        <a class="back-link" href="zuopin.html"><i class="fa-solid fa-arrow-left"></i> 返回创作集</a>
+
+        <nav class="toc" id="toc">
+          <button class="toc-item active" data-target="hero">序</button>
+          <button class="toc-item" data-target="fanfic-yiwo">都市玄幻：《以我之名》</button>
+          <button class="toc-item" data-target="fanfic-silent">民俗无限流：《沉默的羔羊》</button>
+        </nav>
+
+        <div class="dev-tools">
+          <button class="dev-btn" id="exportBtn">EXP</button>
+          <button class="dev-btn" id="importBtn">IMP</button>
+        </div>
+      </aside>
+
+      <!-- Main CRT Screen -->
+      <main class="main">
+        <div class="screen-frame">
+
+          <!-- Hero -->
+          <section class="hero" id="hero">
+            <div class="hero-label">FANFICTION</div>
+            <h1 class="editable">中长篇同人文</h1>
+            <p class="editable">
+              收录原创中长篇同人小说。
+            </p>
+          </section>
+
+                    <!-- Fanfiction -->
+          <section class="section" id="fanfic-yiwo">
+            <div class="section-header">
+              <div class="section-number">01</div>
+              <h2 class="section-title editable"><a href="#" class="link-placeholder">《以我之名》</a></h2>
+            </div>
+            <div class="section-body editable">
+              <p>《步天纲》唐净明弦 cp 同人。</p>
+            </div>
+
+            <div class="evidence-item">
+              <div class="evidence-title">正文</div>
+              <div class="letter-content editable">【一】<div><br></div><div>西南蜀地，乾元山脚。</div><div>清风半夜鸣蝉。</div><div>仲夏的明月朗照大地，就连这山脚的民宿一隅也光华流转。晚风卷过无际的山林，无意为房间里安眠的人停留，只能匆匆留下草木的芬芳。</div><div>房间中盘腿而坐的唐净双眸紧闭，似乎完全进入了与外界隔绝的境界。</div><div>唐净虽生得十分漂亮精致，长眉入鬓，鼻梁高挺，但他此时眉头紧蹙，嘴角下压，这般愁苦面容实在不能与良夜相配。</div><div>他身侧躺着一把古琴，成色古朴，纹饰漫灭难辨。唯琴身圆角处微微折射出月华，恰如那人含笑而立时，唇边一抹难以觉察的温柔。</div><div>“嗡”的一声铮鸣，唐净大汗淋漓地睁开眼。</div><div>他低头查看那把古琴，手指抚摸上第三根断弦，眼神中悲色蔓延。</div><div>自己给了他一魄，还想再给他一魂。可终究还是不得法。</div><div><br></div><div>第二日早上。</div><div>火辣辣的骄阳烤着新修的铺装山路，路面围栏外就是滔滔盘江。偶有几点水星溅到路上来，宛如往烧热的干锅里撒水，几乎能滋滋冒热气。</div><div>唐净开着SUV风风火火地驶过，连拐弯也不带减速，甚至卷起滚滚沙尘，把几块无辜的石头一屁股挤进江水里。</div><div>行过哪吒大桥，又开了五十多分钟，唐净把车停在一个平整宽阔的平台，背起琴盒下了车。</div><div>回身眺望乾元山，满眼青山绵延，百木苍翠。碧空之下清气浩荡，白云聚拢，漫山遍野如同被泉水涤荡过，吐纳之间让人耳目清明。</div><div>唐净还不知道山上有没有门派设置结界，若有，那结界之后的世界想必更加妙绝。</div><div>末法时代，世间灵气日渐微弱，器灵若再想修炼成人，需要更漫长的岁月和更纯净的修行之地。唐净把自己的一魄注入金银平文琴之中，与琴中残魂相融合，方令其修为与当年灵性初开之时接近。金银平文琴如今有灵无识，虽是宝器一件，但若要恢复人身，怕是还有两百年光阴。</div><div>城市化越高的东部地区定然不是最佳选择。唐净一路西行，先后寻访终南、太华、崆峒，但由于旅游开发和当地修行者的结界保护，始终寻不到灵气充沛的居处。这一次他带着金银平文琴来到乾元山，如果此行仍不能如意，他也做好了远走西伯利亚的打算。</div><div>几百年上千年他无畏去等，天涯海角世界尽头他说走就走。器灵无惧时间和空间无限延长的撕扯，他只需要倾其所有，等那个人回来。</div><div><br></div><div>【二】</div><div><br></div><div>唐净没有按照当地热门路线走，不然他将会和工作日出游的夕阳红旅行团一起，收获一次难忘的乾元山之旅，而非适合明弦的修炼地点。</div><div>他闭目凝神，选定好一个方位。</div><div>今天不是乾元山的旅游旺季，一路上，唐净并没有遇到什么人。走了一段路，耐不住酷暑，他就近找个凉亭歇脚。</div><div>这凉亭刚好建在峭壁之上。亭体有半截凌空伸出，下方毫无托举、遮挡之物，站在亭边就可将鬼斧劈开的深谷尽收眼底。</div><div>此等惊险的景观自然会吸引一些勇者，比如说这位身怀绝技的大叔。但是眼前这名男子的勇敢程度，让唐净一时不确定他是来寻求刺激还是寻死。</div><div>唐净只能看到他勾着凉亭护栏的一双脚，脚上穿着人字拖，余下的身子倒吊在万丈悬崖之上——竟是一招朴实无华的倒挂金钩，果然是高手在民间！</div><div>唐净惊叹不已，卸下琴盒，朝那男子走去。</div><div>男子正兀自凝神冥想，感到身侧微风轻扫，缓缓睁开双眼。扭过头，只见一张浅浅微笑的帅脸，还没等对方客客气气地问号，他便吓得“哇”地一声，整个人往向下摔去！</div><div>唐净一把薅住他背心后领，将这位圆滚滚的爷甩进亭子里去。</div><div>男子在地上流畅地滚三滚，露出雪白滚圆的肚皮。唐净此时刚好潇洒落地。</div><div>“我嗦你这娃儿要咋子嘛！”男子一骨碌爬起来，拉下白色老头背心挡住肚子，唇边两条胡子一横，手指就要怼到唐净鼻尖上来，“你要弄死我嘛！屁儿心心都是黑的！”</div><div>“前辈息怒，”唐净顿时一副诚惶诚恐的模样，“晚辈是修行之人，听闻这乾元山乃是阐教十二仙之一——太乙真人的道场，便慕名前来寻找修行圣地。前辈仙风道骨，气度非凡，本领更是了得，不知能不能为晚辈指点前路？”</div><div>男子长长地“嚯”了一声：“个破镜子修到这副人模鬼样修个球！要是你那把琴还差不多。”</div><div>此人竟能看出他原型？唐净一惊，不敢怠慢，态度恭敬起来：“金银平文琴也曾修炼成人，只是被奸邪利用，惨遭大难，沦落成这般模样。前辈若能指点明路……”</div><div>“哦豁……呀，你把我鞋鞋儿整不见咯！”男子不等唐净说“我赔前辈几双好的”，一溜烟跑出亭子，“你找你的圣地，我找我的鞋鞋儿，就此别过啦小友！”</div><div>速度之快，连唐净都拦他不住，眼看见他消失在山崖的转角处。</div><div>唐净到那转角处时，四周空旷无人，无从找那胖子。他不甘心地大喊：“前辈！此琴乃是晚辈挚友，晚辈此生唯一所求，就是能再见他一面！但求前辈成全！”</div><div>他的声音回荡在连绵群山间，声声不息地绵延到无尽的远方，如同石头投入池塘中，在激起层层涟漪后，便只能黯然沉入水底，仿佛什么也没有发生过。</div><div>眼前只见山长水阔，天穹辽远，奇峰耸翠，佳木交阴。多是一幅欢畅淋漓的图景，唯独山不动、水不移、天不倾、草不红，这世间万事万物，皆自觉循着天道流转。谁能跳出来放言，说自己要逆天而行，改死转生？</div><div>炙热的山风迎面烧来，唐净红着眼孑立崖边，衣襟鼓荡，渺小如沧海一粟。有那么一瞬间，他觉得生就是生，死就是死，道行有常，纵然是神仙，也半点违背不得这金规铁律。</div><div><br></div><div>【三】</div><div><br></div><div>那个行为乖张的胖子的确有点东西，可恨他一听自己有事相求，就脚底抹油溜之大吉，而在茫茫山区之中，要找到他绝非易事。</div><div>但那胖子身上什么气息也没有，非妖非怪，非仙非灵，就是普通凡人一个。唐净闷闷地“哼”了一声，他听冬至提起过那个能一眼看出看潮生原型的常青，想必此人也和常青差不多，身上又无妖气，父母定然也不是妖，也许还比常青逊一筹呢。</div><div>吃不到葡萄就说葡萄酸，在唐净心目中，那胖子顶多是个撞鬼开了天眼的退休大爷，碰巧今天公园的健身器材被占满，跑这晨练来了。</div><div>唐净回到亭子坐着，清凉的山风迅速干了一身的汗。他拿起手机，指纹解锁，打开前置摄像头，抓头发的手突然僵住了。</div><div>得亏是唐净，如果有谁在自拍的时候看见自己身后除了美丽的风景以外，还有一双直勾勾的眼睛，怕是手机都要献祭给身后的妩媚青山。</div><div>唐净回过头，满眼惊讶加疑惑地说：“您也一起来一张？”</div><div>“呸呸呸，糟老头头儿拍个铲铲！”对方一跃而起，从凉亭外翻进来，精准地坐到唐净旁边，鬼鬼祟祟地凑过来，“你手机锁屏是哪个娃嘛，一身打扮好巴适。”</div><div>几分钟前还气急败坏的男子一下变得如此殷勤，这给唐净整不会了。</div><div>“他叫明弦，那把琴。”唐净指了指身边静静躺着的金银平文琴。他本不是啰嗦的人，在华东分局当惯了领导，回答问题总是点到为止，多说怕办事效率慢。男子问起的人换作是龙深他们，唐净给个前半句就完事了，但偏偏话题的主角是明弦。</div><div>千百年碰上这千金不换、掏心掏肺的人，和别人提起时，让他有种真切地活着的踏实感。</div><div>“这是我们刚认识那会，他来漫展找我，我们摊位刚好有个角色的coser缺席了。他生的好看……”</div><div>“哎哎哎，那这个角色是不是叫太乙真人噻？”</div><div>唐净刚陷入回忆就被人一拉回现实。他没劲地应了一声：“是。”</div><div>“帅，真帅，就该这么帅，颇有我当年的风采。”男子啧啧赞叹，亮晶晶的单眼皮小眼睛里都是满足。</div><div>“嗯嗯……嗯？谁的风采？”</div><div>唐净怀疑自己耳朵出了毛病。</div><div>“我我我！乾元山金光洞太乙真人是也！是不是和你朋友有几分相似，见我如见故人？”</div><div>这位自称“太乙真人”的男子边说，边一只脚踩在石凳上，一手拨弄自己前额不存在的刘海。</div><div><br></div><div><br></div><div>【四】</div><div><br></div><div>真是离谱他妈给离谱开门，离谱到家了。</div><div>唐净一介平平无奇的器灵，见过最牛的就是宗玲车白他们。钟余一请来的神仙里也不乏正神，但要说一个完完整整、活蹦乱跳的神仙，他是没见识过的。</div><div>他看看手机里明弦扮演的太乙真人，又看看眼前这位八字胡都要飞到眉毛上去的遛弯大爷，挑了挑眉毛，脸上挂满“真的吗？我不信”。</div><div>太乙暗叫糟糕糟糕，自己头脑一热亮明了身份，待会这小子就得缠着他救他朋友。但是话都放出来了，不证明证明自己是神仙，不给这小小唐镜露一手，怕是今晚牛蛙火锅也吃不香。</div><div>他一挥手，手中就出现一把拂尘。拂尘月白色的残影一扫而过，周遭景象顿时如春水被惊动般，层层波纹刹那将现实虚化，令人恍惚不知身在何处。太乙双指并拢，指尖金光闪烁，向虚空中一点！</div><div>百川归海，灵光合聚。这世间的五彩纷呈皆聚拢成一个漩涡，正释放着强劲的罡风，卷起漫天的飞花碎叶。</div><div>“来！”太乙拽起唐净，灵活地跃进那漩涡之中。</div><div>唐净吃了满嘴叶子还没仇报，是半分也反抗不得。幸好他反应够快，在太乙拉他前便把琴抱起来，用身体紧紧地护着。</div><div>两人撞进清微上境之中，像两颗导弹一样从天而降。这种势头栽下去必然不雅观，唐净正想挣开太乙自己决定下落的姿势，一道银光袭来，将两人裹挟其中。</div><div>竟是上境中的河水腾空而起，化作一条水龙，稳稳将二人接在脊背上。</div><div>唐净浮在它背上，小心地抱着琴盒。这下他相信面前这位爷就是大名鼎鼎的太乙真人，清微教教主，昆仑玉虚十二仙之一，元始天尊真传弟子。唐净一开始有点本能的惶恐，当他看向太乙真人时，心念一动。</div><div>“前辈，这是什么地方？”</div><div>“哈哈哈哈，这是我的清微上境，从前我徒儿就是在此处修炼！芜湖！”</div><div>太乙也稳稳当当地仰躺在水面上，玩得不亦说乎。他就像坐过山车似的，随着水龙上下腾跃，接连不断地呜哇鬼叫。</div><div>最后太乙玩过瘾了，水龙发出响亮的长鸣，落回河床中。太乙抽出一只拖鞋，拖鞋落到水中变成小船。紧接着，根据两个铁球同时着地的原理，两人一同被小船精准地接住。</div><div>唐净爬起来理了理衣服，却发现身上衣服都是干燥的，只有琴盒上有几滴水珠。</div><div>“真人开此幻境，灵气充沛，真是神通广大！”唐净赞不绝口。</div><div>“那是，想当初哪吒肉身重塑之时，我常带他来此处，安逸的很。我千年前在乾元山开的小天地，至今仍不惹尘埃。在这修炼，嘿嘿，不是我瞎冲壳子，石头都能快速成精。”太乙逮到个能交底的，开始话痨起来。此时他恨不得把自己辛苦撰写的《太乙牛逼实录》做成专业课，让唐净上满一个学期，再给他勾画勾画多达整本书的重点。</div><div>这位不碰烟只碰酒，还能倒拔垂杨柳的太乙真人，自打徒弟回天上任职以后，就彻彻底底成为空巢老人一名。而唐净表现得十分配合，和他只会“啊对对对”的徒子徒孙简直天差地别，一路捧哏，一路明着暗着夸。两人有说有笑，着实是十分投缘。</div><div>太乙侃侃而谈，那是小母牛踩电线，一路牛逼带闪电。封神演义不够他讲，巴不得再写个封神演义第二季。</div><div>这你一言我一语之间，小船顺着水流漂行，不多时，眼前豁然开朗。</div><div>湖面平静无澜，光滑如镜，碧空白云的倒影清晰可见，行船其上，如同凭虚御空遨游，一下叫人天地难分。而湖周山陵隽秀，状若低伏饮水之姿，一派和谐。</div><div>“哈哈哈哈，好啊你小子！”太乙一见此景，福至心灵地大笑起来，“这艘船向何处，全凭坐船人的心意。我本想回去吃莽莽，没想到你意志强过我，把我们引到五莲池来了。”</div><div>五莲池是何地？方才太乙吹了十遍，哪吒重塑肉身，用的就是他这五莲池里的莲花莲藕。</div><div>唐净心思被撞破，略微低头以示羞愧：“还是被前辈看穿了。前辈，既然我们如此有缘，能否请前辈帮帮晚辈？前辈若答应，晚辈愿为前辈做任何事。”</div><div>“有缘？我有什么缘喃？”太乙把眉一挑，冷哼一声别过头去。</div><div>唐净心道这老顽童怎么这么难入套，前一秒亲的跟父子似的，后一秒就翻脸。</div><div>“前辈，我……”</div><div>“我跟他有缘。”太乙白了他一眼，指向金银平文琴。</div><div>纵是唐净机灵了一世，此时大脑却没有身体反应得快。他“扑通”一声跪下，脑中空白，张了张嘴说不出话来。</div><div>太乙嘿嘿了两声，手挥拂尘，湖面波澜顿起。风平浪静的湖面之下，竟沉藏着盛放的莲花。朵朵清莲“唰啦”一声，同时破水而出，刹那点亮了山光水色。</div><div>五莲池中果然有五朵莲花。这五莲秀容新出，花瓣绽放得恰到好处，其色泽饱满鲜亮，色浅处如神女出浴，冰肤雪肌，娟然如拭；而花尖深色之处，莫过于粉唇一点，娇俏明艳。</div><div>五莲花开花败不能以春秋为计，花开一瞬，千年已过。因此能碰上花开时节，唐净何其幸运。</div><div>唐净双眼睁大，抚摸着琴盒的手微微颤抖。他感到一阵晕眩，几乎不能分辨自己是否身在梦中。</div><div>那个说要与他来时干干净净相见的人，真的能重新在他面前绽放笑颜吗？</div><div><br></div><div><br></div><div>【五】</div><div><br></div><div>唐净现在已经有点看不懂太乙了。</div><div>他轻易应下来帮自己，是因为自己舌灿莲花把他哄舒服了？还仅仅只是因为明弦的cos图让他很是满意？</div><div>人有人法，天有天规。百余年前，神州大地乃至全球变局迭起，下界灵气骤然衰减，众神皆从人间隐去，以不涉人间之事为自保之法，从此不染尘埃，长享天地同寿。是以当年魔气祸乱人间，竟无一个神仙知晓。或许哪个知晓了，也只是作壁上观罢了。</div><div>唐净这类的器灵虽说有超于凡人的力量，但终归出于人类工匠之手，也属于下界。那些神仙连魔气这么大的事都不理睬，太乙怎就愿意帮他了呢？</div><div>但一想到太乙大恩大德，他几乎难以报偿，权且压下满腹疑虑。</div><div>如今最重要的是，便还是等明弦复活。他只想全身心地等着，唯恐中间出什么差错。就好像一个从漫长噩梦中惊醒的人，要时时刻刻看着眼前平静的长夜，生怕再次睡过去。</div><div>唐净依太乙之言，在乾元山东南方的山脚处采苜蓿三株，挖黄土一抔。</div><div>待他回到清微上境中，太乙吩咐药童将这几件东西和一堆叫不出名字的名贵药材一同投入炼丹炉中。</div><div>药材先下，其次苜蓿，最后黄土。黄土撒下时，炼丹炉火焰刹那拔高，几乎要将药庐的房顶烧出一个窟窿。</div><div>太乙轻拈胡须，神情肃穆，仿佛一瞬间，他变回清高傲岸，不食烟火的神仙模样。</div><div>唐净侧目看他，只见他垂眸而立，眼中却不是冷漠冰冷。</div><div>出了药庐，两人在楼阁里散步。</div><div>“真人，明……金银平文琴之事，还有什么需要晚辈做的？”</div><div>“没事，我能弄巴实，你莫碍手碍脚就好。”太乙拍了拍他的肩膀，“冒昧地问一哈，你朋友啷个死的？”</div><div>唐净不敢隐瞒，当下把过去的事简洁、一五一十地讲给太乙听。</div><div>他讲完，太乙四十五度仰望天空，眼含热泪，嘴角颤抖。</div><div>“好一出荡气回肠的爱情故事！”</div><div>唐净表情一僵，好家伙，给他懂完了。</div><div>太乙浮夸地拭了拭眼泪：“小唐啊，我方才在炼丹庐中加了黄土，你可还记得？”</div><div>“记得。”</div><div>“哪吒那时候没这一样，如今他是托塔天王三太子，天庭任命的中坛元帅。”太乙笑眯眯地看着他，语气竟带着几分严肃，“我帮你复生明弦，用五莲作五脏，五藕为躯干、四肢，藕中六孔生为七窍。这身躯纯净无暇，稍修炼些时日便可三花聚顶，一朝飞升。可叫天庭知道，怕是要说我坏了规矩。明弦本没有成仙的机缘，我索性让他身接大地之气，做人间万灵之一便罢。”</div><div>唐净哪有心思去求什么飞升，忙鞠躬拱手：“前辈为我二人破先例，晚辈已三生难报，不敢多求。”</div><div>太乙一把将他拽起来：“嗨，你是天地精华，你的三生我可消受不起。不过，有两件事我须得和你讲。”</div><div>“第一，那位明小友恐是不会再记得前尘往事，你二人若要重修正果，怕是要花些心思啦。”</div><div>“这第二嘛……”太乙摇摇头，欲言又止。</div><div>唐净忙追问是什么。</div><div>“他还是躲不过雷劫噻。”</div><div>人在宇宙中的地位何其之高，想要彻彻底底化身成人怎么可能轻而易举？</div><div>太乙见他愣在原地，长叹一声便走开了去。</div><div>但他一句话，犹如尘封记忆里的那道天威。雷声震悚，紫电飞笞，裹挟着诸神的震怒，撕碎他的一切骄傲与荣耀，怒斥他为何忤逆自然之道，妄想获得本该不属于自己的力量。</div><div>唐净深吸一口气，试图逃离开回忆的魔爪，心痛得几乎要呕出血来。</div><div><br></div><div><br></div><div>【六】</div><div><br></div><div>从绵阳飞往珠湾的晚班机上，空姐微笑着拦住一上机就往驾驶舱走的少年。</div><div>“先生这边走，需要毛毯报纸吗？”</div><div>少年摇摇头，似乎是有些尴尬，低下头看看手中的机票。</div><div>空姐对第一次乘坐飞机的旅客司空见惯，只是这少年俊朗的外貌让她多看了一眼。，毛茸茸的短发泛着微微的深棕色，皮肤光洁白皙，下颌线清晰流畅，嘴唇红润精致，唯独嘴角紧抿，略微向下，让他整个人缺少了点人情味。</div><div>和大包小包的乘客比起来，少年只背了个背包，价格不菲，只是里面瘪瘪的没什么东西。</div><div>少年再次认真阅读了登机牌上的文字。幸好中文、数字和26个字母他都能看懂，只是要他去比对行李架上的座位号，就显得有些生涩。</div><div>他紧闭着嘴唇，唯恐出了一点差错。原本是有一个人与他同行的，可当特管局的人将他送到约定好的地点时，那人又说没法准时到，要他先过到航站楼某某入口等。</div><div>特管局的同志有事走得急，留他一个人在那里等。入口的工作人员一下就注意到他。见他像是涉世未深的高中生，工作人员很热情，带着他打登机牌、去到安检口。</div><div>尽管面对完全陌生的世界，他还是磕磕绊绊地过了安检、登了机。旁人也只当他是第一次坐飞机的孩子，无人在意。</div><div>41J……</div><div>他眯着眼确认了一下，侧着身子坐进了里面最靠窗的位置。</div><div>坐下来以后他突然有种不知道要干什么的感觉，只能看看过道里的人，又望望停机坪上起起落落的飞机。</div><div>这些东西他都没有见过，但他一点也不好奇，来回几眼，便有些困倦。</div><div>“你只是琴中之灵，得遇机缘化点化人。莫问前生如何死，莫问今世何以活，但凭你一片冰心胜雪，清白自在地过活罢了。”</div><div>他眼神一空，又想起初醒来时，站在床边的那白袍道人。那道人的话听得他云里雾里，不论是因为道人讲话有股很重的口音，还是因为这番话的内容本身就不知所云。</div><div>他神使鬼差地拿起登机牌，将上面的文字无声地念一遍。</div><div>“川都航空公司……”</div><div>“登机口于起飞前10分钟关闭……”</div><div>“航班……”</div><div>“座位……”</div><div>“目的地珠湾……”</div><div>“姓名——”</div><div>他突然感到一阵头痛，整个虚浮的世界光影模糊。</div><div>原来他还有个死去的前世吗？</div><div>“明，弦。”</div><div>这两个字吐出口仿佛用尽了他所有的力气。这个名字生来重如千钧，他几乎要呼吸不过来，脑中一片混沌，渐渐失去知觉。</div><div>少年双目紧闭，嘴角依旧保持冷漠的弧度。若不是纤长的羽睫不安地微颤，眉心一团浓阴总是化散不开，与熟睡并无两样。</div><div>空姐好心想上前提醒他睡前先系好安全带。</div><div>“嘘——”</div><div>旁边冒出来一个男的，修长食指轻轻点在嘴唇上，漆黑明亮的眼睛里略带笑意。</div><div>空姐不自觉放低了声音：“你朋友？叫他系安全带。”</div><div>那男的——好看的男的，点点头，将自己沉甸甸的大背包放在货架上，然后坐到少年旁边的位置上。</div><div>后面的乘客继续往前走，各就各位。一切进行得如此平常，如此按部就班，没有一丝波澜从人们的内心满溢出来。</div><div><br></div><div>【七】</div><div><br></div><div>明弦稍微恢复一点朦胧的意识时还闭着眼睛。</div><div>他知道自己方才是睡着了，但是没有做梦——一个没有记忆的人是不会做梦的。无尽的黑暗里，他悄悄喘息片刻，才让外界的光一点点从睫毛缝隙里透进来。</div><div>他慢慢坐直，这才发现自己靠在旁边人的肩膀上睡着了。</div><div>“你醒了？”</div><div>这声音温暖如春风明媚，直直飘入耳中，让明弦一阵眩晕。他将脸转向声音的主人，眼神清澈而空洞，倒影出对方好看的模样。</div><div>明弦因对方的容颜有片刻的痴愣，不知该作何反应。感受到自己的无措，他双眼一眯，本能地警惕这个人来。</div><div>不知是不是自己的防卫之心表露得太明显，对方流露出错愕的神情，但转瞬即逝。他从面前的小桌板上拿起一杯果汁：“先喝点东西，你嘴唇很干。”</div><div>果汁递到明弦面前，明弦移开目光，不接。</div><div>不要轻易吃陌生人给的食物。明弦记得这是《幼儿安全教育手册》第48页第三行第一句。</div><div>他在乾元山醒来之后就被送到了一个叫“特管局”的地方——一个开在市中心的火锅连锁店。一连两个星期，在火锅熏天的香气里，看门老头为他倾情赞助了他家孙女没扔的幼教书籍和光碟、九年义务教育的教材以及西南分局加购的各种生活常识类书刊，寸步不移地监督他看完，负责任地按时听写、测验。结果自然是明弦以成年人的智商完美地从老头这里毕业。</div><div>明弦是条九漏鱼没错，但生理上头脑发育齐全，心智成熟，自然不会叫警察叔叔来抓坏人。他遥遥看见那头空姐推着餐车过来，不咸不淡地说道：“不了，我想喝点别的。”</div><div>“也好。”那人放下手中的纸杯。</div><div>他怎么还有点失落呢。明弦的目光不由自主又落回他的脸上，道了声谢。</div><div>“我叫唐净，你呢？”这是典型的尬聊开场白。</div><div>“我……”明弦干裂的嘴唇翕动，那两个字卡在喉咙里出不来。他不知道为什么会这样，下意识想看看登机牌上的那两个字。</div><div>登机牌却已不在他手上。</div><div>“在你包里。”唐净说。</div><div>明弦去翻自己的背包，刚拉开拉链，他就反应了过来。</div><div>“你既然知道，何必问我。”他又把拉链拉上，眼中闪过一丝不快。</div><div>唐净饮了一口果汁，语气中带着些许犹豫：“他们说你好像不喜欢这个名字，每次叫你明弦，你看起来脸色不太好，叫你喂反而没这么僵。”</div><div>“叫这个名字的人死了，我觉得晦气。”明弦觉得有些心烦，不敢看唐净一张富有蛊惑力的人皮，“你就是那个要和我一起走的人？”</div><div>“是，”唐净目若灿星，水瞳一望无尽，“我们以后会一起生活。你不需要有任何负担，我会照顾好你的。”</div><div>明弦斜睨唐净一眼，对唐净的真诚持保留意见。</div><div>临走前，西南分局局局长找到他说“那个人”会和他一块走，可至于那人是谁，将来如何安排他，局长也不清楚。一个不知道打哪冒出来的人，要带他走又什么都不说，就像在干什么见不得人的勾当。再加上他屡次爽约，明弦对他疑心更甚。</div><div>唐净还不知道，明弦心里已经默默灭灯了。</div><div>“那我给你换个名字？”唐净很耐心地问。</div><div>“名字罢了，叫什么都一样。”明弦不想和他在这个问题上掰扯不清。从前的明弦究竟捅了什么篓子，在他完全搞清楚自己的处境之前，他暂时没有能力去追究。人有趋利避害而求生的本能，他也不会例外，哪怕他来到这个世界没有谁征求他的同意。</div><div>他相信谁、提防谁，都是现在的明弦说了算。旁人旧情未了，那是旁人的事。</div><div>“对，名字而已。”唐净一笑，放松地靠回椅背上，“诸此小事怎么能烦得了你。”</div><div>你就很烦。明弦心里暗道。</div><div>他不想看见唐净一副什么都依自己的模样，把目光移向舷窗之外。</div><div>此时恰逢日落时分，飞机穿梭于云霞之中，金光万道吐，红霓千丈铺。本是残阳落辉，金乌余烬，但却在着落于他掌心的刹那，神圣如九天阊阖宫门洞开。</div><div>明弦呼吸一滞，怔怔地看着黄昏图景尽展于他眼前。</div><div>于此同时，他感到一股目光也是一滞。可他觉得那道目光是在看自己，而不是看美景。目光焦灼，就如同窗外漫天火焰，几乎要将人烧出热泪来。</div><div>“她问你喝点什么？”唐净摇了摇他的手臂。</div><div>“果汁。”明弦下意识道。</div><div>“苹果汁还是橙汁？”空姐问。</div><div>明弦瞥了一眼唐净面前被自己婉拒掉的橙汁，只好勉为其难违背自己心意。</div><div>“苹果汁。”</div><div><br></div><div><br></div><div>【八】</div><div><br></div><div>两人经过大半天的长途跋涉，从西南山地到东南沿海。</div><div>最后落脚的地方是一个远离城市的小渔村，名叫梅坪古村。虽说地处偏僻，但在多年来乡村振兴战略的号召下，渔业日渐兴盛，大伙儿的日子也越发富足。原先的房子低矮潮湿，常年受海风和雨水侵袭，如今家家户户盖头换面，都盖上了三四层的沿海美墅。</div><div>夜幕降临时，海岸边灯火辉煌，灿若银河。唐净和明弦就这样走入梅坪古村的良夜，在这里定居下来。</div><div>他们所住的房子在海边，三层楼高，大理石外立面，进门还有一个光秃秃的小花园。刚到梅坪的这个晚上，房子里已经家具齐全，通水通电，就是缺些小电器和日用品。</div><div>趁唐净出去买暖壶和洗漱用品时，明弦里里外外把房子看了一遍。他倒不是怕唐净要害他，只是不想让唐净看到自己一脸好奇，一副没见过世面的样子。</div><div>唐净一看就是个体面讲究的人，有钱，还讲格调。明弦在他短短两个多星期的寿命里从未见过这样有魅力的人，特别是那一双眼睛每每看向他，他都像要被搅进去了一般。</div><div>明弦看着客厅奢华傲慢的吊灯想，自己究竟能给他什么好处？</div><div>他对过去和未来一无所知，对唐净也一无所知。这让他感到自己像木偶一样被他人玩弄于鼓掌间。而他打从灵魂深处就极度厌恶这种感觉。</div><div>明弦握紧拳头，他倒要看看唐净要玩什么花样。</div><div><br></div><div>【九】</div><div><br></div><div>明弦身体依旧很虚弱，在梅坪住下后的第二天早上就开始发烧，一直持续了三天两夜。第三天午饭后唐净往他嘴里塞了体温计，发现烧终于退了。</div><div>这三天里唐净又是端药又是喂饭，无微不至，王牌月嫂在他面前都神气不起来。</div><div>明弦虽时而清醒，时而迷糊，但只要有点意识，都在不动声色地观察着唐净。可这样的观察也带来一些烦恼。不知道是不是唐净这张脸真能摄人心魄，明弦常在梦寐中看到唐净。</div><div>天地杀伐，血雨漫天，他总是站在自己梦境的尽头。他浑身浴血，手执冰寒的银光向他劈来。</div><div>起初明弦并不能意识到这种梦，可它屡屡上演，重复多次之下，明弦自然也就能察觉到了。他得出的结论是，唐弦和自己上一世的死有关，甚至自己就是死于他之手。</div><div>他脑子里没有太多回肠百转的故事，对于他来说，唐净就是危险的。</div><div>第三天的晚饭，明弦终于能下楼到饭厅吃了。</div><div>饭厅明显添置了很多物品，玻璃橱柜里堆满刚拆出来的包装盒，餐桌上的郁金香还托着几滴水珠。这里也是中药味最呛人的地方——唐净把药煲放在饭厅里煎药，自己在厨房里把门关得死死的。</div><div>唐净一双堪比闺阁大小姐的手绝无可能做出什么佳肴。好在明弦舌头给药熏麻了，给他白开水都能喝出甜味来，唐小姐的手艺他仍能下咽。</div><div>俩人三天没正经说过话，气氛仿佛还是刚见面那会儿那样诡异。说话有时就像拆炸弹似的，一个字没留神，就把谁点着了。。</div><div>唐净咳了一声，问明弦想怎么安排空的房间。</div><div>两间卧室都在二楼，三楼的两个房间都是空的。</div><div>明弦想也不想：“书房，画室之类的吧。”</div><div>他没有读书作画的意向，单纯认为书房画室是正确答案。</div><div>“我们接下来日子很长，”唐净坐直身把手放在桌子上，“你就没有什么想做的？虽然这里地段寒碜了点，不过有钱就什么都好办。我虽然是下岗公务员，但也略有些存款，不用担心花钱的问题。”</div><div>“我想你把我塞回那老头的炉子里。”明弦咬了一口面包，跟在撕咬唐弦的肉似的，“我要是有，死后也该化为厉鬼，找害我的人索命。”</div><div>唐净手一抖，胡萝卜掉在桌子上。</div><div>明弦瞥了一眼。他只道唐净是心里有鬼。</div><div>“明弦，那些都过去了，你无需受其扰。”唐净叹气。</div><div>“你还叫我明弦，你不也过不去吗？”</div><div>唐净放下筷子，想要来拉明弦的手。明弦触电般闪开，从凳子上坐起来，身子晃了晃才站稳。</div><div>“害我之人，是不是有你一份？”明弦眼中寒光闪动，心口却隐隐发闷，“杀我一次还不够，这次你还要换什么法子来折磨我？”</div><div>“明弦！”</div><div>唐净没有否定，这更加坚定明弦的猜测。</div><div>“别叫我！”</div><div>明弦看着唐净一副受委屈的模样，心中更是躁郁，踹了下椅子，逃也似的离开。</div><div>可他的身体还不是很听使唤，脚像踩在棉花上一样。</div><div>他猝不及防被人从背后抱住，吓得扶了下旁边的花架，却将花瓶摇碎在地上。</div><div>碎片洒落一地。</div><div>“明弦……”</div><div>唐净抱他抱得很紧，呼吸也很乱。他闭着眼，悲戚地把头埋在明弦肩窝处，好像在竭力压制什么情感。</div><div>明弦双手被唐净的手臂压在腰上。颈侧似乎有什么柔软的东西蜻蜓点水般掠过，带着热气在他肩窝处辗转流连。他扭动身子反抗，却是无用的挣扎，甚至腿脚发软，重心直往前倒。</div><div>眼看两人就要一同摔在地上，唐净一手揽住明弦，一手撑地，俩人堪堪跪倒在地上。</div><div>明弦从唐弦手里挣出来，低头时看见一股暗红色的血流自唐净撑地的手掌下扩散。那血色扎进他的眼睛，又直捣心脏，叫他那一刻如坠冰窟。</div><div>他移开目光不想去看，又正对上唐净抬头看自己时那双明亮的眸子，那其间涌动的情绪堪比地上玻璃渣子。他唯恐再被划拉得血肉模糊，跑上楼将房门关上。</div><div>“砰”的一声后，房子陷入一片寂静。</div><div>唐净把手抬起来，将扎在肉里的玻璃片拔出。他疼得泪水都要流出来，却不喊一句痛，像一个做错事的孩子。</div><div><br></div><div><br></div><div>【十】</div><div><br></div><div>唐净包扎着伤口时，想到了这么一番对话。</div><div>“前辈，明弦死前曾受魔气操控。虽说音羽鸠彦早已魂飞魄散，可此番复活，会依然受其影响吗？”</div><div>“嘿嘿唐小友，你不知我这炼丹炉牛批嘞，就是把人魔丢进去，魔气都留不过一炷香。你大可放心嘛。”</div><div>“哎哎哎不过我要提醒一哈啊，这小朋友从前遭过的罪可能会让他变个人，这叫撒……ptsd！对，ptsd！”</div><div>……</div><div>五莲可起死回生，圣水可濯洗前尘往事，清微上境可令修炼者功德圆满，太乙千年来无数身家，没有一样能彻底根除潜藏在灵魂深处，超越于记忆之外的伤痛烙印。</div><div>金银平文琴曾落于音羽鸠彦之手，往后余生受其摆布，命不由己。唐净不好说明弦本性是善是恶，但他天生就不甘心做个木偶傀儡，不高兴看到音羽鸠彦得偿所愿，以至于最后倒戈特管局，宁愿让唐净亲手杀了魔气入体的自己。</div><div>音羽鸠彦一度想把他调教成手中一把刀，因此他一生都在与魔为伍，身边总是群魔环伺。他习惯了警惕、多疑，学会了在嗜血的王国里以自我为中心。他绝望地求生，试图把命运掌控在自己手上。</div><div>命运掌控在自己手上……</div><div>这就是他对自己如此提防疏远的原因吗？</div><div>唐净站在明弦紧闭的房门前，想敲门，手却迟迟没有落下。他突然不知道把门敲开后说什么。他恨不得冲进去把过去的事都讲给明弦听，洗刷自己的嫌疑。可那些恰恰是明弦最想摆脱的东西，他不想唤起明弦内心的痛苦。</div><div>明弦死前的画面占据了他的脑海，明弦死前的话回响不绝。</div><div>可是……什么叫清清白白地和他相遇？是像现在这样吗？明弦把他当做仇人，对他一万个不信任？唐净万万没有想到会出现这样的局面。他想知道为什么音羽鸠彦死得不能再死，还能破坏他们本该崭新的生活。</div><div>他曾设想过的美好蓝图，如今不过是满地的玻璃渣罢了。原来这世上本就没有大圆满的事情。或许上一世的明弦为他动过心，但这一世的明弦没有非爱他不可的义务。</div><div>唐净把敲门的手收回，黯然地走下楼。</div><div><br></div><div><br></div><div><br></div><div>【十一】</div><div><br></div><div>明弦本来是在房间里想脱身的办法，奈何身体实在是虚，他不知不觉就睡着了。这一觉就睡到了第二天中午。</div><div>他从床上爬起来，发现身上的被子盖得好好的，衣服被换了，床头柜上放着牛奶和面包。</div><div>自己明明反锁了门，那家伙怎么进来的？</div><div>明弦瞥见关得严严实实的窗户，心中明了。窗子昨天被他打开了，还有谁有本事能飞上二楼帮他关上？</div><div>明弦口干舌燥，尽管知道牛奶里可能会放了些什么他想象不出的料，但短期内唐净肯定还不想毒死他，便不客气地将牛奶一口闷。</div><div>昨天他想到了从窗子爬出去，离开这个地方，便将窗户打开。但他看着外头黑黢黢的海岸，身体正被海风猖狂地侵蚀，他顿时明白就算自己跑了，也不能支撑多久。</div><div>不如先在这里安身，打听打听附近的环境，再逃离唐净的的控制。他不敢自诩什么大丈夫，不过能屈能伸这点他深以为然。当然了，如果自己身体仍不见好，那多半是那姓唐的从中搞鬼，到了那不得不破釜沉舟的时候，他豁出了性命，也不当他人的笼中雀。</div><div>明弦下楼，发现房子里空荡荡的。他没兴趣去寻找唐净的身影，只是走进卫生间洗漱。</div><div>镜中人面色苍白，在灯光下几乎透明。若由旁人来看，无不对这憔悴少年心生怜惜。而在明弦看来，自己就像是从雪山里挖出来的冻尸。</div><div>他冷笑一声。经过昨日那一出，他已经多多少少猜出唐净图什么了。想起唐净那张祸水般的脸皮，明弦自嘲自己初见他时还曾心动失神。</div><div>如此想着，明弦缓缓拿起剃须刀刀片，饶有趣味地看着刀刃反射出刺眼的光。</div><div>正当他想把刀片往自己脸上比划时，一只骨节分明的手握住他的手腕。</div><div>“你这是做什么？”</div><div>明弦明知挣不开他铁钳一般的手，还是挑衅地捏着刀片挥向唐净。</div><div>谁料唐净并没有禁锢住他的手，眼看刀刃就要划破唐净的皮肤！</div><div>明弦手腕一收，把刀片握在掌心里，手背挨上唐净的脸颊。</div><div>“没事吧？”唐净掰开他的掌心，将占满鲜血的刀片扔在地上，“你何苦弄成这样！”</div><div>说罢他不等明弦反应，将他拉到客厅，拿消毒水和纱布帮他处理伤口。</div><div>明弦看见唐净受伤那只手上的纱布沾满了自己的血，他的脸颊上也有几点血迹。</div><div>“还你的。”他淡淡地开口道。</div><div>唐净沉默片刻，倏地抬起头，一个字一个字地说：“我们之间从来就不亏欠什么。”</div><div>“那你对我这么好干什么？”明弦眯起眼问。</div><div>“你也知道我对你这些叫做好吗？”唐净几乎想掀开他的头盖骨，对着那空荡荡的脑子大喊“我不是坏人啊”。</div><div>明弦突然间噎住。</div><div>“如今你所在的地方，是你的姘头家里，你很安全，没有人要对你图谋不轨，也没有人要控制你，你想去哪里去哪里。如果你还没想好这辈子做点什么，我们可以先凑合着过。”唐净将纱布缠好，深吸一口气，“我知道天降一个完美情人对你而言冲击力太大了，没关系，过段时间就习惯了。”</div><div>明弦眼睛眨也不眨地盯着他，像是要从他身上找到什么漏洞。</div><div>就如同一只常年流浪，饱受驱逐的小狗在面对陌生人善意投食一样。</div><div>唐净第一时间反思自己不能随随便便把人比作狗。可他又确实不能从那双警惕而单纯的眼神中抽离。</div><div>他和明弦第一次相遇时，两人各怀鬼胎，同类之间的吸引与共鸣足以融化两人内心角落里千年不化的坚冰。而如今，一方面他触碰到了明弦灵魂深处真正敏感的伤疤，叫他好生心疼。</div><div>另一方面，他又暗自欣喜，他们之间无须再虚与委蛇，不再站在对立面上身不由己。明弦不会知道唐净有多想把这份欣喜传达给他，让他抚平伤痛逍遥度日，他只是一次次地不买账。</div><div>而唐净不想传达给明弦的是，他不确定这一生的平静能维持多久。</div><div>唐净心中百感交集，他有很多话想说，却只能把明弦受伤的手托起来吻了吻。</div><div>“你愿意施舍我一点信任吗？”</div><div>明弦恍惚了一下，耳朵开始发烫。他连忙抽出手，伤口拉扯的疼痛没能让他的语气有一丝动摇：“离我远点。”</div><div>他很清晰地看到，唐净眼里的光暗下来，如同一面明镜蒙尘，黯然销魂。</div><div>如非唐净是个觉悟极高、修养极好的公务员，他气得几乎就想把明弦压在沙发上酱酱酿酿。</div><div><br></div><div><br></div><div>【十二】</div><div><br></div><div>吃晚饭的时候，明弦仍是拒绝和谈的态度。</div><div>唐净见他还不肯从房间出来，故技重施，使出一招梯云纵，轻松扒上空调外机，然后试图拉开窗户。</div><div>明弦从里面卡上了？不要紧。</div><div>不就是双层钢化夹胶玻璃吗？唐净咬咬牙，半个身子探出，挥拳击向玻璃窗。</div><div>就在这时，明弦突然出现在窗前。唐净连忙一个大刹车收回力道，几乎憋出内伤。</div><div>而明弦显然不会领情，抵触地看着他，没有一点来开窗的意思。</div><div>双方僵持片刻，唐净最先挂不住——他是真的挂不住，只听得一声穿透双层钢化夹胶玻璃的惨叫，他掉下去了。</div><div>明弦吓了一跳，倔强的神情有所松动。不知出于什么心理，他快步走到窗边推开窗。</div><div>他不清楚唐净的功力底线，更没见过他倒挂危崖，把太乙真人吓个半死。他甚至没想好看到唐净摔断腿后该不该打120。</div><div>一只修长的手从窗台下颤抖着抬起。</div><div>看来是不用了。</div><div>明弦垂眼双手吊在窗边的唐净，情绪隐藏在睫毛的阴影之下。</div><div>“喂，”讨人厌的声音响起，满是示弱的语气，“你能拉我一把吗？我快撑不住了。”</div><div>明弦站在窗边一动不动，大有任其自生自灭的架势。</div><div>他感觉自己现在应该继续防着唐净的，让他摔成残废，等于对自己构成更小的威胁，这未必就不是一件好事。可那是“应该”，实际上他还没抓住唐净什么确切的把柄，有什么理由屡次据此人于千里之外？</div><div>玫瑰色的晚霞连着海浪，从海洋尽头吹向平静的海岸。所见之物都染上暮色，唐净的头发、脸颊、眼睛亦然，瑰丽的光芒流转，美不胜收。</div><div>明弦突然觉得，万物之中，无一件能比他眼中的色彩浓烈。</div><div>唐净让他恍惚失神，叫他心舂如捣。他早该意识到的，可内心深藏的恐惧总是提醒他要内闭心房，外设城防，将自己守得油盐不入，固若金汤。</div><div>这种恐惧由何而来？明弦终于开始思考这个问题。</div><div>可此时在唐净眼里，他就是一副愣傻傻的模样。唐净连叫几声——换着花样叫，哀嚎、试探、大吼，最后还是一声哀嚎把明弦的魂拉回来。</div><div>明弦下意识抓住唐净的手，阻止他下落的趋势。</div><div>可明弦如今病秧子一个，压根拉不住人，唐净的体重更是令他雪上加霜。明弦万万也没想到他竟然被唐净一起拉下楼。</div><div>唐净手掌贴上大理石外墙，这样产生的摩擦力理论上不足以阻止两个成年人的下落，但唐净却能借力跃起，把明弦拉进自己怀里，从窗子滚进屋内。</div><div>房间里弥漫着一股诡异的安静，明明有千万种方式可以打破，但偏偏谁也没有先开口。</div><div>明弦感觉胸口隐隐作痛，他方才撞上唐净胸膛，虽然那只是血肉之躯，但硬邦邦的像块石头。</div><div>此刻他正和这块石头隔着衣服紧紧贴着。他能感到不属于自己的体温渗过来，陌生的心跳频率干扰着他。那一颗心脏如此鲜活，如此温暖，好像长着眼睛鼻子能说会道一样，打破一切隔阂向他张开怀抱。</div><div>生命的体验，真的太奇怪了。</div><div>明弦撑起身体要起来，后脑勺却被一只手按上。</div><div>他没看清唐净的表情，他的下巴搁在唐净的肩头上，只能感受到耳后的深吻。</div><div>残阳末照之时，月亮在海上升起。在日落的尽头，有人怀揣着前世的泪水亲吻今生的月光。只是这一缕月光被潮汐洗刷过，像泪水一样咸涩，真是个两世的冤家。</div><div>唐净很专心之时，明弦推他的肩膀。唐净本来打算当做是对方在欲拒还迎，可另一只撑在地上的手被重重压了一下，他反射性地缩了下手。</div><div>那只手被玻璃扎过，唐净还没工夫拆纱布。不过现下也不用了，粗糙的大理石风化外立面早已代劳，帮他把纱布磨开，顺便也照顾了一下里面的伤口。</div><div>“你的手不想要的话，可以继续。”明弦也收回自己肇事的膝盖。</div><div>他声音平稳，目光看向别处。</div><div>“不要了，”唐净贴着他耳边吹气，“我们继续。”</div><div>明弦咬牙：“姓唐的，你想死吗？”</div><div>唐净把另一只手也环上他的腰：“你不喜欢叫明弦没问题，不要给自己起‘死吗’这种奇怪的名字。”</div><div>“啪”地一声，明弦捉住他的手腕，一把拉到这登徒子面前。</div><div>“包扎。”</div><div>“我不。”</div><div>明弦站起身来，居高临下地，恶狠狠地瞪了一眼他，粗暴地打开房门离开。</div><div>不一会儿，那个早上刚出现过的箱子被丢在唐净面前。</div><div>唐净慢吞吞地给自己包扎。现在他看见那扇被打开的窗就忍不住要笑，仿佛信徒见到上帝向他奔来一样。</div><div><br></div><div>【十三】</div><div><br></div><div>那天以后，明弦对唐净的敌意明显降低了不少。</div><div>但，不代表没有。</div><div>比如说他必须和唐净保持120厘米的社交距离，洗澡上厕所都得关好门窗。</div><div>虽然唐净多次突破了15厘米的亲密距离，但偷窥这种事他绝对干不出来。他屡次向明弦表明他作为合法公民的尊严，他真的没有猥琐到这个地步。</div><div>除此之外，两人相处得总体还算融洽。唐净看明弦身体一天天好起来，甚至提议搞条船出海打鱼。</div><div>出海有他们两个，打鱼的却不是他们，是唐净花钱雇的渔民。唐老板花大手笔包下船，报酬丰厚事儿还少，渔民也乐得其成。</div><div>明弦起初在船上颠得嘴唇发白，一副风中摇烛的模样。可他不是娇气之人，几次坚持下来终于习惯了。唐净也知道他喜欢大海，只能心惊胆战地观察他的反应，表面上装作云淡风轻的模样。</div><div>他们捕鱼本意是想找点乐子，谁知某某水产厂闻到钱味火速上门，请唐老板入上一股。</div><div>唐净发动他的人际关系，对这家水产厂进行彻底的评估。就这样，唐老板成了名副其实的老板，明弦成了秘书。</div><div>就明弦这个学历肯定是当不了秘书的，唐净就让他去监督装卸货，偶尔跑跑县城的业务。以明弦多疑而精明的性格，那些想钻空子的一个也跑不了。水产厂老板一开始没对他报多大希望，他几乎能猜出来这小子是唐净什么人，也做好了供大佛的打算。谁知明弦能力确实不错，越干越上道，水产厂老板考虑着今年年终给明弦颁个奖，把唐净哄高兴了，那投资还不爽快？</div><div>明弦肯定不知道这些。他像一个普通人那样活着，不算太努力，也不算太热情，却总能有一份专注和认真。虽然和唐净之间的羁绊已经太深，他无法完全拒绝唐净给他的东西，但他从来不屑于攀附他人而活。他暗地里学会了很多技能和知识，赚不了大钱，却是能让他养活自己的。</div><div>唐净似乎也知道他的想法，因此总是让他接触外面的世界，和更多人交流，形成自己的人际关系。他给明弦存款，别人家孩子有的，明弦也要有，哪怕这孩子早就老的没边了。唐净想让明弦知道自己不是在圈养他，有钱只是一个巧合，他的唯一目的只是带明弦回到清清白白的人世间。</div><div>这其中唯一的私心，就是希望他的人世间里也包含自己。</div><div>两人搭伙过日子，两人各怀私心，尽管这样，每一天都是还能过很久的模样。</div><div>没有谁首先打破这种平衡，他们连这方面也如此默契和洽。</div><div><br></div><div><br></div><div>今晚是跨年夜，村子里也赶潮流，只是学不来商场那种人挤人的倒数，干脆让想跨年的居民出来海滩聊聊天，到点就放烟花。唐净他们和邻里关系不错，也在告知之列。不过两人在此地定居不久，和大家也没太多共同话题，处久了可能不自在，因此只答应了零点出来和大家一起放烟花。</div><div>晚上，唐净把桌子搬到了天台上，点了几分外卖摆上，又从冰箱里拿出早上在超市买的果酒。</div><div>面朝大海，美酒佳肴，静候新年到来，唐净总是那么有情调，会享受。</div><div>明弦跟在后面一把接住冰箱门不让它关上，探着头在饮料区看。</div><div>“椰奶我拿上了，”唐净不回头都知道他在找什么，“拿出来一起解解凉。”</div><div>为掩饰被一语道破的尴尬，明弦撇撇嘴道：“我又不是非喝这个不可。”</div><div>“你能喝酒吗？”唐净笑着拿着饮料上楼。</div><div>明弦瞪着他的背影。</div><div>他还真喝过。某次和厂里的人出去聚餐，刚好唐净不在，他在同事的怂恿下呷了一口。他这一口入喉，直烧得脸红比关公，饭吃到半路就头疼得趴下了。唐净和冬至他们一顿饭没吃完，就不得不赶来接他。好在明弦酒品不错，回到家之后只是躺在床上发呆，没过一会儿就睡着了。</div><div>有了丢人的过往，明弦感觉自己在喝酒这件事上有些抬不起头来。因此唐净那话听在明弦耳中，与“小孩子别学大人喝酒”无异，叫他有些不服气。</div><div>明弦翻了个白眼，跟上楼梯试图辩解：“上次喝的是白的，度数那么高，我又没沾过，第一次受不了很正常吧，不再试试怎么知道。”</div><div>唐净回头看了他一眼，脸色有些怪：“你要喝就喝，别过量，这东西真的伤身。”</div><div>“我有分寸。”明弦拿过他怀里的椰奶，心情颇佳地打开。</div><div>他刚要往嘴里倒，就看到唐净脸上写满警告。</div><div>明明他可以轻蔑地无视唐净婆婆妈妈的关心，但不知道为什么，他还是把冷饮放下了。</div><div>“暂时不口渴。”明弦表现得十分坦荡。</div><div>珠湾位于南部沿海，即使是十二月份，气温依旧高居二十摄氏度上下。空气中弥漫着遮蔽天空的潮汽，还混着海风咸腥的味道，恍然如春天提前到来。</div><div>夜幕之中，明月高悬，渔民饭后来到海滩上相聚。被侵蚀得破落不堪的旧石墙上放着待燃放的烟花，小孩子玩沙子、玩遥控玩具、玩过家家的什么都有，玩着玩着还要不时看一下放烟花了没有。</div><div>明弦的眼神又一次和小孩神同步，在那堆烟花上辗转停留，对唐净反而只是匆匆一瞥，这令唐净大为光火。</div><div>“早着，没到放的时候呢。”唐净瓮声瓮气地提醒。</div><div>明弦拿起手机看了一眼，又无趣地将其搁在桌子上。</div><div>“我不想玩飞行棋。”他抗议，“总是赢很没意思。”</div><div>“那让你输一局？”</div><div>明弦一拍桌子，语气不善：“果然是你故意的！”</div><div>“我没想到你这么菜嘛。”唐净耸耸肩，“我不放水，你怎么玩？”</div><div>“你有种咱们实打实来一盘！”明弦在桌子底下狠狠踹了他一脚。</div><div>“来来来。”唐净低头就要打散棋盘，手腕却被一下握住了。</div><div>那手修长纤弱，唐净一挣都能让它骨折。可他不敢移动分毫，就怕一分一毫的错位，就把那人吓得放了手。</div><div>“我不要蓝色的，我要和你换。”明弦瞪着眼看他，表情凶狠，说出的话却像孩子一般。</div><div>唐净点点头，声音放得极其温柔：“好。”</div><div>他觉得一个“好”字还不到喉，又补上一句：“你要什么我都给你。”</div><div>明弦精神恍惚了一下。唐净平时花言巧语不少，也不是句句撩得动他，他自以为已经习惯了，免疫了。</div><div>他触电一般放开手，心里突然冒出一个想法。</div><div>若他不是对唐净免疫，而是上瘾呢？</div><div>唐净咳了两声，把棋盘倒转，“哎哎哎，开始了。”</div><div>两人同时伸手去拿蓝色棋子，手接触的刹那，好像有什么火花在黑夜爆开。</div><div>如此情形，还下什么棋。唐净自嘲地想，未落子，他就满盘皆输了。</div><div>昏暗的灯光下，小酌了两口的明弦双颊酡红，下眼睑处泛着微微的水光，眼神也不似平日那样坚定。唐净也曾见过他这副模样，只是那次顾着和明弦建立信任，心中纵使难耐也不敢越矩。</div><div>而这次，他又开始产生一些别的想法了。</div><div>这几个月的相处，两人的关系渐渐不那么剑拔弩张，明弦甚至偶尔能说上两句好话叫他心花怒放。可他心底里并不满足于这样的平静，他对明弦是爱，情人之间那种爱，无论灵魂上还是肉体上那种难以割舍的爱。</div><div>明弦对上唐净深邃的眼神，突然一阵悸动。他隐约知道唐净在想什么，这点“什么”让他的呼吸几乎乱了节奏。</div><div>“明弦，”唐净打破沉默，他的声音很低，低到只想把所有的话只说给明弦一个人听，“我也不想玩飞行棋了。”</div><div>“那你……”</div><div>“海浪很吵，我只想听听你内心的声音，”唐净平静地看着明弦，嘴唇轻启，“我爱你，你有没有一点点要和我更进一步？”</div><div>他游戏人间，古今多少年，没有一场生死一线的抉择像此刻那么重要。</div><div>明弦不说话，他不知道在这种时候该怎么办。或许他上一世是个应变不错的人，他可以在和唐净的那段露水情缘里扮演猎人的角色，但今生走至今日，拜唐净所赐，他早就把他对内对外的余刺拔光。</div><div>他该如何做，才是最听从内心的选择？</div><div>“我……不知道。”明弦闭上眼，海浪的声音充斥他整个脑海，连他自己也听不见自己内心的声音。</div><div>“你……”明弦咬了咬牙，在头脑一热的情况下，做出一个大胆的决定，“你过来亲我一下，如果我反抗，证明我其实并不……唔！”</div><div>唐净起身朝他的下唇啄了下。</div><div>明弦睁着眼发愣。空气开始变得稠密起来，而他一动不动，好像在等待着暴风雨的降临。</div><div>一股无名风惊起滔天的浪，狂澜咆哮，从远方向他们奔涌而来！</div><div>不知道是谁先打破无形的隔阂，两人之间的距离无限收缩，直到唇舌相抵，气息交混。</div><div>明弦闭上眼。他听到比海浪更喧哗的，是自己的心跳声。他闻见晚风不断送来大海的呼吸，还有唐净身上沐浴露的芬芳。</div><div>他抚上唐净的脸，却摸到他眼下一片湿润。</div><div>明弦突然明白过来，从前多少个他看不见的日子，那个人的世界就犹如夜晚的尽头，情海汹涌，天地倒悬，屡屡将他淹没，却等不到黎明降临。唐净的内心，或许没有表面上看起来那么从容豁然。</div><div>两人吻了不知多久才狼狈地分开，互相看着对方眼底的情绪。</div><div>“你也对我有感觉对不对？”唐净紧紧搂住他，生怕他反悔，“明弦，我们就一起走下去好不好？这一生没有任何人任何事可以夺走我们的生活，我们还有好长时间……”</div><div>明弦喘了口气，潋滟的眼静静注视着面前的人。这个人很多次走进他梦中，他看见他杀了自己，他看见他哭泣，看见他背着琴踏遍山川，看见他不顾一切拿出一魄助自己修炼。</div><div>他们早就生死纠缠，早就魂魄相通，他怎会不爱唐净？</div><div>一切的想法悉数烟散，明弦在眼泪垂落的前一刻抱住唐净。</div><div>花火爆裂，烈焰刹那间照亮无边的夜空，海上开出朵朵金花。</div><div>“对不起，让你久等了，”明弦在唐净耳边道，他生怕烟花的巨响盖住了自己的声音，于是又贴近了一些，“对你不是只有感觉……我爱你。”</div><div>又是一簇烟花炸上天空，唐净感觉世界一瞬间被点亮。</div><div>前生不忍看的残缺与斑驳，终究会付诸烟尘。千般离恨，万般无奈，将由今生来补偿。</div><div><br></div><div><br></div><div><br></div><div><br></div><div>【十四】</div><div><br></div><div>两人互表心意后，原来那种相安无事的平淡日子一去不复返。虽说房子还是那间房子，村子还是那片村子，可是表过白，亲过嘴，上过床，那习以为常的一切仿佛都变得不一样。</div><div>明弦拿起杯子喝水，会想到帮唐净的杯子也倒满；明弦在路上碰到被公鸡追着啄屁股的狗，会想拍下来让唐净也看看；明弦和别人聊天，别人说到买古玩被人骗，他会说唐净就不会被骗——其实他和唐净都可以靠直觉分辨文物年份，可他就是懒得再吹嘘自己。</div><div>唐净把从前的事都告诉了明弦。自明弦被他亲手杀死至今已有十年，那段过往于他而言仍旧痛心，因此有些细节他几乎选择性地遗忘，偶尔记起才说给明弦听。</div><div>他们的故事不长，可每当说起的时候，唐净脸上总有淡淡的哀色。这时反而是明弦安慰他。</div><div>明弦抱着唐净，告诉他，自己死前的愿望已经实现，他做得很好了。</div><div>他们都被过去的痛苦捆绑过，但是不要紧，他们还有机会清清白白地从头开始。</div><div>“你还记得那天我第一次见你的时候，我说不想叫明弦。”</div><div>唐净靠在明弦肩膀上，那日的情形浮现眼前。</div><div>“记得，你还想换名？要不你就跟我姓吧？”唐净一骨碌爬起来，明弦叫什么名字他倒不是很在乎，他甚至在无聊的时候帮明弦想了一大串名字。</div><div>“姓唐？出去跟别人说我是你儿子吗？”明弦本来想说点掏心的话，唐净把气氛一搅和，他又觉得肉麻不想说了。</div><div>唐净磨着他问了好久，也问不出明弦提起这件事是为什么。</div><div>最后他压着明弦在沙发上亲，亲到衣衫不整，头发凌乱。</div><div>俩人互看着对方喘息。</div><div>“我那时候，觉得这个名字带着上辈子的不幸，我不想被那些东西纠缠，”明弦在唐净温情的目光中败下阵来，他抱着唐净，将额头靠在他肩膀上，“我拼命去摆脱一切于我不利的过去。唐净，是你帮我把那些都扫除干净，是你超度了我，在这个世界上，你是我最信任的人。”</div><div>“我没必要改名字，明弦的罪恶和污秽被洗干净了。我还是叫明弦，因为你爱明弦，我也爱你。”</div><div>听着明弦说这段话的时候，唐净双臂越收越紧，像他不断收缩绞痛的心。</div><div>“一切都会好的，”唐净吻着他的发鬓，恨不得把他脑海中一切烦扰都吻走，“我们会一直好下去的……”</div><div>他反复地说着“我们会好下去的”，似乎这样，他们的好日子就真的没有尽头。</div><div>……</div><div>一晃若干年过去，梅坪古村的山还是山，海还是海。</div><div>只是红颜青丝生白发，沧海浪岩褪成墙。凡人能在智能世界中挥手定乾坤，也能在虚拟世界里一掷决生死。</div><div>正值八月，酷暑时节，这几天珠湾天气的异常闷热，是要打台风的前兆。</div><div>这天傍晚，明弦和唐净在海滩边散步，出海的渔船正陆陆续续回港。渔民们在船上忙活，运走不抗风的物件，以免到时台风登录时卷成一片残局。</div><div>后天原本是村里的七夕男女交谊晚会，早上刚布置好场地，下午村委会接到气象警报，一声令下，又得尽数撤走，好生可惜。</div><div>两人在海滩边打打闹闹，不知道沿着海岸走了多久。有点累，就干脆坐在沙滩上，看日落，看海水，看彼此，什么都可以看，也什么都可以不看。</div><div>唐净看着潮水渐退，想起了看潮生，便给明弦讲了很多他的事，引得明弦哈哈大笑。</div><div>明弦也认识唐净在特管局的朋友，但并不深交。他前世为音羽鸠彦做过事，多少有特管局的同志因他而牺牲，这其中无形的缝隙——他心知肚明——多少客套也补不回来的。</div><div>海平面的尽头霞光万丈，红蓝交映而成的光芒刺入层云之中，也染红了拍岸不绝的波涛。天际间无边绚烂的光景，犹如华丽的舞台布景，一切准备就绪，就等着一场风暴席卷人间。</div><div>明弦在人间过了那么多场黄昏，场场精彩，唯有今天让他感到一丝古怪。那光色就像是淬了毒的花刺一样，妖艳地等着来收割谁的性命。</div><div>但唐净正讲到看潮生扬言三顿饭让全阳澄湖大闸蟹就此灭绝的糗事，他笑着摇摇头，把那些没头没脑的想法压下去，和唐净继续聊起他那些共患难的同事。</div><div><br></div><div>“今年第9号台风‘麻雀’于8月16日凌晨2时43分左右登陆珠湾市梅坪县沿海……”</div><div>“登陆时强度为台风级，成为今年以来影响华南的最强台风，也是近五年以来登陆珠湾的最强台风。今天白天粤中、粤西沿海等地已遭遇强风雨，台风登陆后风雨仍将持续，局地有大暴雨。”</div><div>“本次台风来势汹汹，在这里提醒市民朋友注意避险……”</div><div>明弦向来不爱看新闻，可是今天早上打开电视，他就一直停在“新闻早班车”没有停下来。</div><div>唐净含着牙刷出来，坐在他旁边一起看电视。</div><div>住在海边，遭台风好比家常便饭，幸好人居住的地方与海岸保持着安全距离，一般情况下不会被巨浪影响，就是狂风吹得十分骇人而已。不过要说台风恰好就在家门口登录，这还是头一回。</div><div>主持人讲了一会儿台风避险事项，开始连线前线记者。</div><div>“唐净，”明弦转头看了一眼落地窗外发了疯的风潮，声音平静得像是在掩盖什么，“打台风，一般不会打雷的吧？”</div><div>唐净心里“咯噔”一声，起身去漱口，让慌乱不至于显于脸上。</div><div>“就说你是九漏鱼吧，打雷那是强对流天气，台风是低压气旋，他俩不搭边。”唐净从浴室里探出头道。</div><div>嘴上这么说，但唐净知道他根本说不准。五雷符在秋高气爽的时节都能引雷，遑论这苍天之怒。上古洪荒开辟至今，青天白日被轰顶的不计其数，谁敢说活到现在不是走运。</div><div>雷劫的事唐净没有向明弦隐瞒，他把这把悬在他们头顶的刀亮出来给明弦看，也督促明弦提高修为以应对那一天。</div><div>时间总会走到那一天，因此他们珍惜着眼下的每一天，每一天都幸福地活着，不至于在渡劫的那一天，才发现往日不可追。</div><div>他们朝暮相对，寻常度日，都知道彼此在想什么，下了什么样难以更改的决定。更不怕一道天雷，将他们双双劈死。</div><div>客厅里明弦没有说话，电视里新闻播报的声音很微弱，几乎被吞没在在风暴的咆哮里。电视屏幕的光也很微弱，是这个阴沉的早上唯一的光源，彩色的光线在明弦脸上变幻，却没能让他的脸出现一丝松动。</div><div>雨天让他很不舒服，狂风暴雨更让他焦虑。</div><div>沉默，沉默，好像全世界只有电视机活着。</div><div>“家住绿湖区的梁女士家的花园里竟发现……滋啦……处蜂巢，把……士一家吓了一……滋啦……”</div><div>屏幕上的图像变得扭曲，明弦的表情也呈现出古怪。</div><div>厨房里的抽油烟机也不转了，房子里又少了一种声音，使得室外的轰动声更加清晰。</div><div>明弦希望自己能混淆雷声和风浪撞击海岸的声音，但是他不能。</div><div>是确定在今天了吗？怎么会是今天？</div><div>他深深吸了一口气，心肺都在颤抖。</div><div>他用颤抖的手指在手机上打字。</div><div>雷劫和打劫不一样。被打劫，下场无非是劫匪得手或者逃过一劫，一般一次性完事，劫匪也不会再次光临。而雷劫是命定的，无法化解，你逃，它追，也插翅难飞。换句话说，这次没劈中，下次继续，除非待在地下室一辈子。</div><div>明弦把手机丢在沙发上，没叫唐净，起身打开了阳台的落地窗。</div><div>他们住的这间房子正上方正酝酿着一场大戏。雷霆低吼，层层黑云在低空盘旋，相互摩擦出刺眼的电光，虎视眈眈地打量明弦。</div><div>周遭的大风大雨和这比起来，才像个人间。</div><div>明弦踏出第一步，没有犹豫。</div><div>狂风几乎要将他整个人吹倒，雨水像冰刀一样拍打在他脸上。</div><div>与此同时，天雷定位好了猎物，天地间紫电一闪，吞没住明弦整个身体。</div><div>霎时间雷声轰顶，天地就像爆炸了一般！</div><div>雷霆加身，这般疼苦不是凡人能受。明弦只觉全身被烈火焚烧，他跪趴在地上，忍不住叫喊出声以纾解痛苦。</div><div>他听见唐净在身后叫他，可他突然不确定唐净能不能帮到他。</div><div>天雷震怒，只有不到一秒就收回，可这一秒足以使人皮开肉绽。雨水冷冽疯狂，像刀片一样钻进他烧伤的皮肤里。</div><div>“明弦！”唐净飞扑过来将他扶起，将外套撑在他头顶上为他挡雨。</div><div>明弦推了他一把，咬着牙关问道：“还有几道？”</div><div>劈几道天雷，全凭机缘，有的三五道了事，有的非得连魂魄都要劈到大西洋才止。根据特管局的调查数据，平均是8.69道左右。</div><div>密集的雨点将两人笼罩着，如同一张坚固的网，不留一丝喘息的缝隙。他们被困其中，无言的绝望蔓延，是半分也反抗不得。</div><div>唐净钻进外套里。明弦脸上的雨水才被他吻去，又沾上了不知谁的泪水。</div><div>“我不知道……”唐弦喃喃如梦呓，“多少道我都和你一起扛。”</div><div>“你其实也没办法吧……曾经，你不过是运气好罢了……”明弦抚摸着他的脸，猛地又是一推。这一推用尽他所有力气，唐净没有设防，被推得向后仰倒下去。</div><div>“好不容易修炼到现在……好好珍惜吧……”</div><div>“你！”</div><div>明弦挣扎着爬起身。唐净一把没抓住他，让他跑远了好几步。</div><div>又是一道天雷劈下，他嘶吼出明弦的名字，看着他被强光湮没，刹那间他的世界瓦解崩塌，十年里煎熬的等待、平静的确幸，都在这一刻被强行摁下了暂停键。</div><div>他不顾一切地冲进雷电之中。</div><div>唐净还记得他渡劫的那天，也是这般愤怒，不甘和反叛远远超过那份面对天命的恐惧。</div><div>天道是天道，人道是人道，天道容不得他们改变死物的命运，人道能容，容他们安居一隅，容他们游戏人间，容他们追求幸福。从他们拥有智慧的那一刻起，就不再完全受自然法则的束缚，他们获得理性，他们拥抱人间。</div><div>他们融入了人类社会，也组成着万家灯火，明明一切和谐美好，究竟那人人不可说的老天爷为什么要横插一脚？</div><div>什么冥冥中自有安排，谁要它来安排！</div><div>这一击比上次更猛烈，持续时间更长。雷惊电散，沙土纷扬，明弦死死咬住嘴边的惨叫，然而这一次他没有彻底地疼趴下。</div><div>他半跪在地上，脊梁苦苦支撑着。</div><div>这场劫，他不躲不逃，却也不是来领受的，而是来扛的。</div><div>两秒过去，天雷收回。</div><div>明弦缓了几秒，发现唐净从身后抱着他。</div><div>“几乎无人能独自面对雷劫，千百年来，我们都是互相帮助才能存活。”唐净扳过明弦的身体，使他面对自己，“我和你一起面对。”</div><div>“明弦，是我把你重新带回来的，我的快乐属于你，你的痛苦也留给我。”</div><div>他一字字一句句说得十分坚定，如墨般的眼睛看进了明弦心底。头顶风雷搅作一团，肆虐野蛮恍若蛮荒之境，明弦生出一股坦然，两辈子，破琴裂镜还是乱七八糟地搅和到了一起，就算双双毙于天雷之下，也勉强是一段佳话。</div><div>没有人能比明弦清楚，唐净不想背着一把破琴远走西伯利亚，更不想再被命运生生夺走所爱。</div><div>“你……别后悔……”</div><div>云间电光一闪，紧接着雷声大震，唐净蓦然睁大了眼。</div><div>如果老天爷也长眼，想必它睁得比唐净更大。</div><div>明弦吻上了他的嘴唇，就在这毁天灭地的漩涡中心。</div><div>唐净掌间翻出亮光，在两人头顶撑开，形成一层保护罩，似蛋壳一般，顽强也不堪一击。</div><div>凭明弦的修为，他用不了唐净的抵御方法，只能将全身真气渡给唐净。</div><div>风雨之中，他们紧紧相拥，飘摇如芥舟一片。如果下一秒还没覆灭，如果上天仍然没彻底地杀死他们，他们就要狂妄地挣扎，恣意地亲吻，不死不休，直到宿命的尽头。</div><div>天长地久有时尽，此恨绵绵无绝期。</div><div>唐净的镜光开始出现裂缝时，这一道天雷恰好收势。</div><div>两人分开，看着对方的眼睛，相对无言，却有着无与伦比的默契。正是这种默契，让他们反复被彼此吸引。</div><div>明弦抹去唐净睫毛上挂着的水珠，勾起嘴角笑了。</div><div>艳丽的血从他嘴角留下，这一幕狠狠刺痛了唐净。十年不足以治愈明弦死在他面前的痛苦，他到底要怎么做才能不让那些画面和眼前的明弦重合？</div><div>不知道。他无助地抱住明弦，另一个念头迅速占据他的脑海。</div><div>别让他再离开了。</div><div>别让他……</div><div>电闪雷鸣，明弦抑制不住惨痛的叫声，俊朗的五官刹那在强光中扭曲。</div><div>唐净再次祭出镜光护在他头顶，却没有护自己。</div><div>明弦似乎知道到唐净会这么做，他抓住唐净的手：“你要是……没了……我也不活……叫太乙那老小子……白费一番苦心……”</div><div>他挂在唐净身上，使唐净护着他的同时不得不也护着自己。</div><div>“那怎么办？”唐净感觉自己能哭出来，被了雷劈几下，就退化成小孩似的，“怎么办，怎么办啊！”</div><div>“你不死……我也不会……”</div><div>这道雷消停了下来。</div><div>“那要怎么办啊！我……”</div><div>“如果……那小屁孩还靠谱……现在看来他并不是那么……”</div><div>唐净瞪大双眼：“你说看潮生？你给他发信息了？”</div><div>明弦奄奄一息地点点头。</div><div>唐净眼里刚燃起一点光，刹那又暗下去。</div><div>“他熬夜打游戏，本人也挺懒的，估计这个点……”</div><div>“这个点我不是在睡觉而是来了这鬼地方！”</div><div>一团小山一般的阴影倾轧而来，唐净突然感到打在身上的雨停了。</div><div>身后，真龙的披毛凛凛招摇似火焰，它在奔涌的海浪中直起身子，姿态威风且从容，仿佛天地倾覆，它也不会畏惧分毫。</div><div>多么完美的亮相，可惜真龙的公鸭嗓叫人不敢恭维。</div><div>“你是……看潮生？”唐净亮了又暗的眼睛又亮了，“你化龙之事我听说了，如今一见，果然不同于往日！”</div><div>“唰啦”一声，一只圆头圆脑的章鱼从海里冒出来：“师兄是变声期，肯定没有以前可爱，过段时间说话就不难听啦！”</div><div>不知道为什么，明弦从看潮生一张狰狞的龙脸上看出了气急败坏的表情。</div><div>“好过某人现在一开麦就被人叫小学鸡！”看潮生回头瞪着梅卡，龙须差点甩在明弦二人身上。</div><div>“师兄！雷来啦！”</div><div>梅卡一下钻进海里，一眨眼就移动到了二人身边。</div><div>看潮生鼻子冒气，扑向海岸。</div><div>真龙刹那不见踪影，只有一个白衣少年奔来，两颊有些婴儿肥，幼态未脱。</div><div>奇兽与真龙在旁护法，这在历史上也算是高级配置了。</div><div>唐净此时托着明弦无法起身，就着跪下的姿势一拱手：“两位大恩，我二人磨齿难忘，此生定当……”</div><div>“别废话。听着，我们仨的真气渡着点给他，让他本人抵抗才不会进一步激怒天雷。放心，他早不是肉体凡胎，扛劈。”看潮生在两人不远处盘腿坐下，表情破天荒地凝重。</div><div>“可……”</div><div>“我能忍受住，”明弦咳了两声，撑着唐净坐起身，“只要我们都能活下来，什么我都忍得住。”</div><div>他将唐净推开，站起来走出几步。瞳孔中，末日般的景象翻涌，冲破了天，撞破了海，唯独动摇不了眼底化不开的鲜红。</div><div>他嗤笑一声，轻声道：“来吧。”</div><div>言出法随，第四道天雷携风而至！</div><div>明弦听不到外部的任何声音，疼痛已经占据了他所有的感官，他被迫拿出所有的注意力与其对抗。</div><div>第四道天雷很长，第五道天雷更长，而且几乎没有给他喘息的机会。</div><div>他没有精力去想像唐净如何在外面喊着他的名字，因为每想一下，他就想到他们这些平静的岁月能否延续还悬而不决，还会想到自己没办法活着出去见他怎么办，分心之时，意志力尤为薄弱，很容易觉得自己撑不下去。</div><div>第六道天雷时，明弦意识已经很模糊了。他感知不到自己维持着什么姿势，但他不断地提醒自己，不能躺下。</div><div>不能躺下，不能让它劈个痛快。</div><div>人们总是以为十恶不赦之人才会遭天谴、被雷劈，殊不知，这没有意识的天道为了绝对的平衡，掐灭了多少无辜生灵。没错，天行有常，但那力量强大又不可知，谁能说清它是对是错？</div><div>明弦从不觉得自己好好活着有何不妥，和天地自然也毫无怨怼。可他知道雷劫一旦刻入命数之中，便是宿命对他的警告——殊途就是殊途，你们再如何折腾，生来便没有做人的资格。</div><div>是吗？</div><div>第七道天雷震耳欲聋，明弦似乎听见一些声音。他分不清是幻觉，还是确有人在说话。</div><div>心肺好像被人踩在脚下碾压，他喘不上气。</div><div>“何必如此倔强呢？”</div><div>“蚍蜉撼大树，没有意义的。”</div><div>“你只是一粒尘埃罢了……”</div><div>那些声音将他推到和天命对抗的位置，企图让他惶恐不安，让他知难而退。</div><div>“是，没有意义。”明弦听见自己说话了，声音平静无澜，“没有意义的是你，不是我。”</div><div>不能让那些声音断断续续地侵占他的脑海，明弦又道：“我苦苦挣扎，生能和所爱之人长相守，死可留一身焦骨殉清白，我做什么都有意义。你们呢，你们会得到什么？诸神执掌苍生，端起了满身至善无极、大爱无疆，便理所当然靠剥夺我来确证自己吗？”</div><div>“天有天道，道循有常，可是逼着我小小蜉蝣服从你的道，你也没有看起来那般悲悯。”</div><div>明弦感觉不到身上的疼痛，他紧闭双眼说着那些话。他最近想了很多这些事，此时叛逆之心高涨，情绪崩如溃坝，更是字字诛心。</div><div>一声振聋发聩的雷鸣，比前几次都要轰烈。</div><div>唐净他们在雷外皆黑了脸色——一雷褪去，一雷接上，竟是这样连续劈了三道。</div><div>可是明弦全然感受不到这样的变化。</div><div>色香味如潮水般褪尽，世界只剩下一个低沉古老的声音。它一声长叹——</div><div>“这些，都是太乙教你的吗？”</div><div>明弦内心一凛——太乙跟曾跟他说，不问为何死，不求何以生，但凭冰心雪，清白自在活。</div><div>那早已封神登榜的神仙说这话时，为何暗藏落魄？</div><div>神仙也会感到不自在吗？</div><div>“神，也会感到不自在吗？”</div><div>“神不会，神仙会。要给你降下劫数的是神，要执行雷劫的，是神仙。”那声音似是苦笑了一声。</div><div>明弦道：“果然是六道皆苦。”</div><div>“所以你不是唯一……”</div><div>“所以，我偏不认苦。”</div><div>又是一声叹息。</div><div>叹息过后，明弦全身痛苦尽数涌入识海，他忍着痛抬起头，只见那重重黑云缓缓移散，紫电收回云层阴影之间。</div><div>他……活下来了吗？</div><div>“明弦！”</div><div>他听见很多人喊他的名字，可他只能分辨出唐净的声音。</div><div>他调动全身的力气回头想看看那个人。</div><div>一点，又一点，明弦还是没能看见唐净的身影。他倒在地上，血液从全身无数个伤口渗出。</div><div>他想再看一眼唐净朝他奔来的傻样儿，可惜不能如愿。</div><div><br></div><div><br></div><div>【十五】</div><div><br></div><div>风暴过后，特管局华南分局的同志迅速赶来，协助看潮生清除了附近百姓的记忆。虽然当时并没有人跑出来围观，但台风天打雷这种异象只适合待在特管局的档案里，而不是哪天流传在热搜榜上。</div><div>看潮生师兄弟二人趁机在唐净家住下来，美名其曰在明弦疗伤期间为他护法，实则暗暗规划好了海边度假——免费入住豪华民宿，享受五星级白嫖服务。</div><div>明弦此次重伤濒危，好在特管局出于对前华东分局局长家属的关怀，派人来送药。唐净到开门的那刻才知道，送药的竟然是龙深和冬至。</div><div>这么多年来，这些曾并肩作战的同事并没有断过联系，时月迁流，情谊却愈发醇厚。</div><div>龙冬二人有留下来帮忙之意，但他们原本打算的是去住酒店，不给唐净添麻烦。可是唐净却唯恐他们不肯住下来。</div><div>“你们住我这，不要逼我跪下来求你们。”</div><div>是的，唐净不想看孩子。在他心目中，只有冬至才能搞定客厅里开着虚拟屏幕玩游戏的俩小孩。</div><div>就这样，三人一章鱼各自入住了三楼的两间客房。</div><div>看潮生和梅卡时不时会互殴，房子里被这俩搅得鸡飞狗跳。龙深和冬至那俩人瞅着空子和唐净开玩笑，让他不必太过担忧。</div><div>有他们在，唐净的心真的安定了几分。</div><div>约莫过了三四天，明弦终于醒了过来。</div><div>龙深给明弦看了脉象，确信明弦大难不死，恢复得也很乐观。</div><div>冬至抬头看着天花板，惊天骇地地咳了几声，</div><div>“嗯，明天我们庆祝一下吧。”</div><div>明弦偷偷地抽回自己的手，狐疑地和唐净对视一眼，有点被龙局的热情惊悚到了。龙深在他面前这么主动，恐怕还是多年前提着剑来杀他的时候。</div><div>这多半是冬至的意思，想让龙深在明弦面前降低几分杀气。</div><div>唐净握着被子下明弦的手，笑道：“那今天下午我去买……”</div><div>“我去我去我去！”看潮生抢先举手。</div><div>“我也我也我也！”梅卡不甘落后。</div><div><br></div><div>层层白浪徐徐在海滩上铺开，宛若婚纱浮动的裙摆。</div><div>沙滩上都是来消暑的游客，扛着冲浪板，举着手枪，抑或挥舞着儿童玩具铲，似乎是要将台风摧毁的乐趣一并补偿了。</div><div>“爸爸，那边有烧烤摊。”小女孩肩上扛着一个大号游泳圈，艰难地抬起手臂指给她爸爸看。</div><div>“洋洋想吃？”父亲想着趁妻子不在，自己不妨和女儿偷吃点“垃圾食品”，“想吃要学会自己买。”</div><div>洋洋拿着父亲给自己的钞票，小跑着来到遮阳伞下。</div><div>有两个男人在烤东西，洋洋选择把钱给那个矮一点、看起来更年轻，像她表哥的。</div><div>“哥哥，买……买……”</div><div>明弦看着纸币愣了愣，这东西在这个时代可稀奇了。</div><div>“不要钱，”明弦笑着把烤好的香肠和鸡翅夹进一次性碗里，满满一碗，递给洋洋，“拿好，趁热吃吧。”</div><div>洋洋接过吃的，手里的钱却无处放。她伸着手，还是想把钱给出去。</div><div>看着她一脸不知所措的模样，唐净接过纸币放进兜里，掏出一张面值更小的出来。</div><div>“找你的。”</div><div>洋洋欣喜地离开了。</div><div>“看不出来，你还会哄小孩啊？”明弦看出了唐净的障眼法，忍不住揶揄道，“怎么就哄不住后头那个。”</div><div>唐净拨了拨头发：“那个长大了，我搞不定。”</div><div>“小的就能了？”</div><div>“你想养孩子？”</div><div>明弦挑眉，埋头刷酱：“接下来的岁月很漫长，你就不想找点事情做做？”</div><div>“好啊，你喜欢男孩女孩？我们找个时间去福利院看看，或者买个福利院，叫那些让人受饿挨打的院长扫厕所去？”</div><div>“男孩女孩无所谓，能养得起就行。”</div><div>“养得起，肯定养得起！”唐净把胸膛拍的邦邦响，“将来他们一个个肯定都是铁饭碗，都是出色的国家公务员，哈哈！”</div><div>明弦多想告诉他，世界的尽头，不是考公。</div></div>
+            </div>
+          </section>
+
+          <section class="section" id="fanfic-silent">
+            <div class="section-header">
+              <div class="section-number">02</div>
+              <h2 class="section-title editable"><a href="#" class="link-placeholder">《沉默的羔羊》</a></h2>
+            </div>
+            <div class="section-body editable">
+              <p>《死亡万花筒》白铭张弋卿 cp 同人。</p>
+            </div>
+
+            <div class="evidence-item">
+              <div class="evidence-title">正文</div>
+              <div class="letter-content editable">
+                <p>这场雨从昨晚下到今天早晨。</p><p>乌云笼罩着整座山城，毫无清晨的生机。</p><p>酒店客房里，有两个人依偎在床上，准确来说，是一个人依偎在另一个人身上。白铭讨好地靠在张弋卿的肩膀上，神色谄媚，但另一个人的人丝毫不见动容。</p><p>张弋卿呼吸沉重，手里捏着一张写着“海棠无香”的小纸条，当然，这张纸条也捏着他的命。</p><p>窗外是被雨浸湿的人间，虽然晦暗，但还有那么多人幸运地活在其中。</p><p>第六扇门即将为他打开，一旦踏进去，就可能再也等不到雨停。张弋卿暗暗攥紧拳头，他做不到在死亡面前面不改色。他太想活着了。</p><p>“张哥，你看看我嘛。”白铭又凑得近了些，看清了对方来回蠕动的喉结。</p><p>张弋卿还是没有说话。白铭抓住他的手，抠开他死抓着的拳头，虽然沾上了一手的汗，白铭仍是与他十指相扣。任那张字条似一条小蛇般缠绕在他们指间。白铭又把屁股往后挪了挪，让张弋卿靠在自己肩膀上，另一只手揽住他另一侧的肩膀，企图用这样的姿势安抚他。</p><p>“弋卿，只要我们在一起就不会有事的。”白铭在他耳边轻轻叫他的名字。</p><p>下一秒，两人都消失在了除了雨声外，无边的寂静里。</p><p><br></p><p>（一） 开胃菜</p><p><br></p><p>张弋卿试着慢慢地睁眼观察身处的环境。</p><p>多进门刷经验是有好处的，起码能让一个人快速地适应门里的环境和气氛。就跟考试一样，考前担心这担心那，拿到试卷的那一刻总能冷静下来。</p><p>身上的服装在进门后发生了变化，不是他刚才穿的，而是变成了一套像古代农民穿的那种麻衣，头上还包裹着一条蓝色的头巾；让他不可置信的是，他脚上居然拴着锈迹斑斑的镣铐。</p><p>考试第一道题就碰到了难啃的骨头。</p><p>这是一个临水而居的小镇。一条清澈而宽敞的小河如绿绸般将这个古镇一分为二，两岸是吊脚楼像被推到的积木一样东倒西歪，不堪重负。显然是荒废已久。</p><p>张弋卿心想这第九扇门还挺有民族特色，烂是烂了点，好在没有拥挤的游客，更没有鱼龙混杂的商业街，来过个门就当去凤凰古城玩一趟也不亏。</p><p>他走到一家客栈门前，这是唯一一处有人声的地方。</p><p>集广客栈？张弋卿抬头看见那腐朽的木牌匾，不知为何心中生出一点寒意。</p><p>客栈内装潢朴素典雅，有些像古代的酒馆饭店之类的场所。蓝底彩纹的刺绣挂在头顶，还有一些包在柱子上。果然是很明显的少数民族风格。</p><p>不过，这间客栈似乎很有钱，墙壁、柜台、酒驾、楼梯、房梁都挂满传统山水画，有一些画轴已经受潮发霉。</p><p>张弋卿和里面其中的几个人赞叹了几句，装作不经意地走到白铭身边坐下搭讪。</p><p>“我叫叶俊，当老师的，你呢？”</p><p>白铭跟他握了握手：“刘文皓，医生。”</p><p>进了门的白铭装的跟个人似的，不见往日跪舔的模样，反而彬彬有礼起来。</p><p>“你有没有发现，这一次我们的服装都被换了？这里有16个人，一半的人穿着军装，一半的人像我这样穿得破烂。”张弋卿和他说自己的发现。</p><p>“看到了，叶老师的观察力很不错。”白铭微微一笑，大方地赞叹道。</p><p>“过奖了。”张弋卿也学他精英十足地微微一笑，低下头研究着他的脚镣。</p><p>那些和张弋卿一样打扮的人也在讨论如何解开脚镣。那上面的环比手指头粗，还是实心的，万一到了要逃命的时候还被这玩意儿拴着可不是闹着玩的。</p><p>“喂，你们就这么开了，会不会触发死亡条件啊？”有个穿军装的人问道。</p><p>“你们没被铐着不也没事吗？”</p><p>“这一扇门，也许有专一的死亡条件吧，可能有些事我们做了没事，但是你们做就会中彩。”一个叫施嗣时的年轻男人说道。</p><p>他这样一说，众人想想觉得有道理，便不再折磨那东西。</p><p><br></p><p>这扇门里的人看起来都比较镇定，但也仅仅只是看起来。张弋卿听隔壁桌那几个人的对话就听出，他们都只过了几扇低中级的门，就被一个叫吴武的中年人带进来。</p><p>“叶俊，你的长头发真好看。”旁边桌名叫梁玉琼的短发萌妹祭出无比甜美的笑容和张弋卿搭讪，“旁边这是你朋友吗，也很帅啊，你们是一对吗。”</p><p>张弋卿听见“你们是一对”后咳了一声，严肃地答道：“你别乱腐，我们才刚认识。”</p><p>白铭对梁玉琼微笑着点点头，温声道：“我和叶老师一见如故。”</p><p>这小子真就人模狗样起来了。在门里故意掩饰自己真实的性格特点是他们这行的传统艺能，但是你要张导真的面对一个这样婶的白铭，还真一下子适应不过来。</p><p>“我们已经组队了，你找别人吧。”张弋卿没有感情地补充。</p><p>“三人行也不行？”梁玉琼可怜巴巴地看着他两。</p><p>“梁小姐，其实……”</p><p>“那个姓施的长得比我俩好看多了，你看看他乐不乐意。”张弋卿两眼望天花板，俨然不把人放在眼里。</p><p>梁玉琼呸了两声，骂骂咧咧地走开。这时门外走进来一个蓬头垢面，满面肉瘤，瘦骨嶙峋的老人，他奇丑的相貌霎时间吸引所有注意力。这老人一进来就扫了众人一眼。冷笑道：“齐了？”</p><p>垂眼，接着又说：“欢迎几位军爷入住集广客栈。房间都准备好了，三人一间，各位可以自由选择。选完房间以后，请各位回到这里我带各位去用餐。”</p><p>“晚饭要出去吃？晚上出去不会出事？”有人问到。</p><p>“如果你不只是去吃饭的话，绝对会死。”老人冷漠地直视前方，“另外，身在苗寨，就要注意当地风俗礼仪，不要随便触碰他人的头，不要随意动土，不要长时间盯着一样东西。”</p><p>“大爷，那手铐能开吗？”</p><p>“有钥匙就能开。”老人说完转身走出门。</p><p>“可是……要去哪里找钥匙啊？”</p><p>老人没有回答。他没走几步又停下来，“对了，几位长官，你们的上级让我转告各位，请在五日内完成任务回京，事情要是拖久了，那些畜生可不好惹。”</p><p><br></p><p><br></p><p>张弋卿和白铭自然选的同一间客房。客房里除了三张床没别的家具，疲惫的日光从两个开在墙上的大圆洞里透进来。四堵墙上挂着大概十几幅画，皆在阳光不能及之处。</p><p>张弋卿坐在床上摸着冰冷的脚镣：“刚才那老人说的话，你怎么看。”</p><p>白铭在他身边坐下，轻声说：“他只称呼了‘军官’，后面又提到了‘任务’和‘畜生’，可见你这种打扮的人，和‘任务’一定有关。门里的这两种角色，可能是对立的。”</p><p>“手里有线索的那个人，也许知道‘任务’是什么，并且很快就会行动，”张弋卿表情凝重，“难道是要杀掉我们这些穿着很穷的人？”</p><p>“所以你很危险。”白铭把手伸进军装的上衣口袋摸了摸，手掌在张弋卿手里摊开，“他们也很危险。”</p><p>掌心里是一把生锈的钥匙。</p><p>这把钥匙当然不是门的钥匙，把它插进脚镣的锁孔里，刚刚好。</p><p>“你怎么会有钥匙？难道，他们都有？”张弋卿问道。</p><p>白铭蹲在张弋卿脚边，一手扶着他的脚踝，一手捏着钥匙，却没有转动。</p><p>“喂，开不了吗？”张弋卿担忧地问道。</p><p>白铭把钥匙轻轻一转，“咔”地一声闷响，一只脚上的环被打开。</p><p>“叶老师，我们回去以后，要不要试试这个？”</p><p>“试个屁。”张弋卿脸色刷地一下变了，一把从白铭手里抢过钥匙，利索地把另一只脚上的环也解开，打算把钥匙揣进自己的衣兜里，奈何摸了半天，也没有衣兜。</p><p>白铭把钥匙夺过来，放进上衣口袋，“当然不试，我怎么舍得，你看你那里磨得皮都破了。”边说边把那颓散在地的脚镣踢到床底下。</p><p>被一脚扫进去的脚镣仿佛撞到了什么大物件，声音又沉又响。</p><p>正当两人准备把床底下的大物件弄出来时，梁玉琼在外头敲门。</p><p>“别的房间都住满人了，我只好住你们这里了，不要介意哦。”她眨眨眼，“放心，晚上我要是听到任何奇怪的声音，都不会打扰你们的。”</p><p>张弋卿板着脸回应道：“还是打扰的好，我不想莫名其妙地死掉。”</p><p>梁玉琼尴尬地哈哈两声，迅速闪进房间里。生怕他张弋卿翻脸真干出不仁不义的事情来。</p><p>这姑娘既然死皮赖脸进来了，那么见者有份，三人合力把床底下的一口箱子拉出来。说是箱子，但是看着像棺材，比棺材还矮了那么一些。</p><p>摇一摇，“咕咚咕咚”地，看来还装了东西。不过这时，若是打开它，可能还要再花点功夫。可那客栈的老板已在楼下叫唤了一遍又一遍了。</p><p>“傍晚一直是阳衰阴盛之界，如果开到什么东西确实不妥，还是先下去吧。”张弋卿道。</p><p>于是这口“类棺材”又被藏匿回床下。</p><p><br></p><p><br></p><p>老人举着火把领着二十个人穿行在暮色里。苗寨的夜晚灯火通明，青石板路上人来人往，两边的商铺、小贩都在歌舞声里吆喝、交易，正是好一番热闹的夜市。</p><p>众人一路走到了山上，借着微弱的火光和月光在影影绰绰，在暗雾弥漫的树林里撞了一轮，终于来到一处较为平坦的空地。空地上燃着几堆有人那么高的篝火，一下将四周照的明晃晃的。</p><p>平地中央有一张长长的桌子，桌子上摆着酒菜，看起来十分丰富。桌子没多远是两座几乎挨在一起的岩石。两座岩石之间最窄的缝隙处，卡着一块石头，看着就像快要掉下来。</p><p>而这块石头下，有一把巨大的长刀架在黑暗中，被火红的光焰勾勒出诡异阴森的轮廓。</p><p>缝隙的深处，一团漆黑，照不进一点光亮，似乎有什么东西将这里彻底封死。</p><p>不知从哪里响起的鼓点下，火光照不到的地方涌出许多身着苗服的少女，迈着轻盈的步伐晃着一身银器，唱着歌招呼他们入座。</p><p>“温顺的羊儿刀来宰，翠绿的苗儿火来涮，阿妹的头上纸花戴，赛神仙的好酒等哥哥开……”少女们眯着眼睛保持着甜美的笑，却一直是这样的笑，嘴巴咧着未曾收拢过，没有瞳孔全是眼白的眼睛一下也不曾眨过。</p><p>众人还是故作镇定地落了座。这顿饭吃得瘆人，可是又不能不吃。</p><p>张弋卿入座后扒了一点东西吃，又打开一个酒罐子闻了闻。酒罐子上贴了一个酒字，可装的哪里是酒，分明是水，半点酒味都没有。</p><p>正好一个少女经过他身边，他恰好瞧见她身上的首饰全变成了黑色。苗人多居住在瘴气频发的山里，银配饰可以起到验毒的作用。张弋卿看那些少女的眼神不再是看人的眼神。他又看看自己手上的银筷子，幸好光泽还算透亮。</p><p>“吃饱了吗，吃饱了就请阿哥阿姐一起来玩个游戏咯。”忽然有个男声幽幽响起。</p><p>只见那两座巨石卡着的石头正下方站着一个苗族少年，他指了指头顶那块石头：“四位，四位幸运的阿哥阿姐，来试心石上检验你们的真心吧。”</p><p>少女们又唱着歌下来，拉住了张弋卿在内的不同位置的四个人，看不出按什么规律。</p><p>“不对劲赶紧跑，他们不是人。”白铭小心提醒道。</p><p>四个被少女选中的人被带到了巨石脚下。一条长长的类似于触手一样的怪物突然从黑暗里“哗啦哗啦”地抽出来，一下将四人中的一个中年人卷走，放在那块缝隙间的石头上。——刚好就在大刀的正上方。</p><p>他双脚一踏上去，石头就摇了摇。接着一声惨叫，他站着的那一截岩石脆生生断开，张弋卿闭上眼倒吸口凉气，睁开眼时，只看到地上有两截从头到裆齐齐劈开的人体在血泊里抽搐。</p><p>“啊啊啊！这……这随机杀的吗？他触发过什么死亡条件啊！”</p><p>“那四个人不就死定了吗！也太不讲道理了！”</p><p>在场的人哪怕知道被选中不会有好事，却也没办法接受这说死就死的玩法。</p><p>“叶老师！快！回来!”白铭站起来想要离席，几个少女无声无息地飘过来将他团团围住。谁能想到几个少女的身板比他硬朗不知好几倍，光凭白铭怎么推搡也岿然不动。</p><p>张弋卿拔腿就跑，但有人跑得比他更快。</p><p>他第二步还没迈开，眼见前面的姑娘忽然一捂肚子整个人倒了下来，腹前的衣服的血无限放大，接着一团黑压压的东西带着肠子哗啦啦涌了出来。</p><p>“是蛊虫哦，加在饭菜里美味极了。”少年话音响起，触手便探向张弋卿，“谁也别想打断这神圣的时刻。”</p><p>张弋卿咽了口唾沫，看向白铭。四目在幽森的夜色相对，恐惧和焦虑在死神的面前打着滚。</p><p>怎么会这样？刚刚开始，就要结束了。原来从前因幸运得以生存，也终会因不幸殒命。</p><p>但一段时间的寂静以后，少女们忽然唱起了那首“温顺的羊儿刀来宰”的歌，手拉手跳起舞来——第三个人站上去没死。这无疑给了张弋卿一丝希望。</p><p>张弋卿心念忽动，那个人难道是这些苗人欢迎的人，所以才让他活下来？苗人不欢迎的，都麻溜的送给阎王爷招待了？</p><p>绳子还是伸到了张弋卿面前。白铭桌底下握成拳头的手不住地颤抖。</p><p>张弋卿向他摇摇头，做口型：“没事。”</p><p>走过少年身边时，张弋卿不敢和少年对视，只轻轻吐出几个字：“弄死你，阑尾。”</p><p>这句话在苗语里是“吃饱谢谢”的意思。张弋卿自认不是什么一路开挂一路歌的主角，碰到这种生死就在一瞬间的关头，他要用他知道的所有东西来保命，这句话可能不会起作用，但它是向少年示好的，获得一线生机也不一定。</p><p>接着就是无尽的死寂。</p><p>张弋卿一步一步走向那节已经掉落了一块的石头。站到石头上时，石头摇了摇，然后用十秒长的沉默默许他的存活。</p><p>篝火旁的少女再次雀跃，艳丽的裙摆在火焰间绽放，污涩发黑的首饰相互碰撞，在歌声里诡异地、沙哑地欢呼。好像这只是一场再普通不过的宴会的尾声。</p><p>张弋卿被放下来，老人不知从哪里飘过来，领众人离开这场恐怖的晚餐。</p><p>只是白铭看起来脸色不太好，张弋卿难得地主动拉起他的手，和他说一些自己刚才的所见所想。白铭听了一会，注意力还是被转移。聊着聊着，两人终于有一丝发现。</p><p>银器变黑，瞳孔发白，这些都可以断定少女们们已经死了，至于那个少年，他的五官看不清，但张弋卿可以肯定也是白的，并且多了几道流出来的血。那个少年应该就是这些东西里面的关键，两人都认为，他一定会再次出现。</p><p><br></p><p>众人回到自己的房间，都关上门睡觉。一来就死了两个人，还是公开处刑，有点向他们示威挑衅的意思了。</p><p>“我从来没见过这么嚣张的门。”梁玉琼似乎是惊魂未定，“随便就挑两个人当众杀了，这根本不需要鬼怪了呀。”</p><p>“不，那些都是鬼怪，没影子。特别是那个男的。”张弋卿接口道。</p><p>“那死亡条件又是什么？”</p><p>白铭道：“第二个人很明显是违抗了指令，第一个人和后面两个，我猜是和这些少数民族村名对这个人的态度有关，就是说他们欢不欢迎这个人，欢迎就留，不欢迎就杀。但是他们的标准是什么，不清楚。”</p><p>“哦，是这样，”梁玉琼一脸恍然大悟，“你们还有什么发现吗？”</p><p>“我发现你好像对我们两很感兴趣，”张弋卿挑了挑眉，表情有些不善，“你该不会是喜欢刘文皓吧？”</p><p>“你……”梁玉琼气得小脸涨红，十分惹人喜爱。她转过身，爬到自己的床上，被子蒙头不再说话。</p><p>“这小姑娘还挺有趣。”白铭嗤笑，“睡觉吧，叶老师。”</p><p>“为什么叫我叶老师？”</p><p>“你没照镜子啊？有空去欣赏欣赏，您在门里这副斯斯文文的书生模样，衣冠楚楚斯文败类什么的，真是勾得人去糟蹋。”白铭的腔调听起来也很叫人心痒痒。</p><p>梁玉琼支棱起耳朵：看我搞到什么好东西了！我好棒棒。</p><p><br></p><p>寂静的夜里，张弋卿死死闭着双眼，不断劝自己入睡。总觉得有什么东西在看着自己。不是那种置身于黑暗时的幻觉，而是一种真真切切的感受，他甚至能够感觉到，那双眼睛就在他眼前。</p><p>他看到那双眼睛了。他睁开眼，两道月光分别从两个圆洞一样的窗户射进来，两个光斑就投在房间另一面墙壁上。</p><p>张弋卿回头想要看看窗外的月光压一压心中的恐惧。却见两个圆洞之下，还有幅黑漆漆的框，他们组合在一起镶嵌在灰色的墙上，就像惨白的脸上的两个眼睛一个嘴巴——双眼睁圆，嘴巴微张，是欲言又止的模样吗？</p><p>张弋卿的恐惧渐渐消散，却不是被月光安抚的，而是被一种好奇心所替代。他总觉得它有什么话要说，他盯着它的嘴巴，想听它倾诉。它迟迟不开口，他也觉得自己可以耐心地等待它的故事。</p><p>一阵巨大的力量突然向他压来，接着耳朵一刺痛，接着脖子也不断传来刺痛，张弋卿头脑恍惚，一个念头终于蹦出来：我刚刚是在做什么？</p><p>“弋卿！”耳边传来白铭细碎的呼唤。</p><p>张弋卿清醒过来，一清醒过来，就看到白铭压在他身上，耳尖、耳垂以及脖子都有极其清晰的火辣辣的感觉。</p><p>隔壁床的梁玉琼背对他们，睡相安详。</p><p>“你先起来。”张弋卿的脸上也开始有点火辣辣了。</p><p>“那幅画的蛊惑力就这么强，你第一时间不是关心你刚刚为什么中邪，反而嫌弃我压你？”白铭眼神有些凶恶，贴着张弋卿耳朵说话喷出的热气都要直冲出张弋卿鼻子。</p><p>“那老头说不能长时间盯着什么东西看，没想到是这个，我疏忽了。”</p><p>“真是白叫你去刷那么多门。”加上晚饭时候的事，白铭已经火大了。他不是没保护过比张弋卿更弱的人过门，不是没有遇过更荒唐的险境，但当客户变成了自己的爱人，即便是有惊无险，也让他像一个该死的新人一样胆战心惊。</p><p>生死无常的门，对不自私的人向来有着最不人道的不公。</p><p>“白铭……”张弋卿想要抬手摸摸白铭的狗头，想起老人的话，还是没有行动。在自己日常拿他没办法之前快速地在白铭脸上亲了一口。</p><p>“你刚才没摸到我头吧？”张弋卿低声问呆若木鸡的白铭。</p><p>“没……没有。”白铭愣愣地摇摇头，躺下来麻溜的钻进张弋卿的被子里，从背后抱紧对方的同时一只手捂住对方的眼睛，“睡……睡觉吧。”</p><p>妈的，有什么好东西明天再看。老子要回味回味先。</p><p><br></p><p>（二）海棠</p><p><br></p><p>早上吃早餐的时间，一个房间却挤满了人。昨晚又有人死了，但是跟他同房的两个同伴却表示，昨天晚上一点动静都没有，直到刚才他们才知道这个人已经翘辫子了。</p><p>尸体以侧卧的姿势躺在床上，没看到有血迹。头部以一个常人不可能做到的幅度仰起，双眼瞪直，望着窗子。他的嘴角咧到了颧骨，好像看到了什么开心的事情。</p><p>两个窗洞偏下的位置，挂着一幅画。每个房间的观赏画是不一样的，这个房间的画上画着一颗高高的花树，树上花团锦簇，树下围着一群扎着羊角辫的小孩子。</p><p>在花树正对着一户人家，这户人家后头就是岩壁——岩壁上有一块突出的平台。</p><p>“画上是海棠。”张弋卿小声对白铭说。</p><p>“啊怎么了……天哪！”人群里忽然挤进来一个人，一见尸体就吓得捂着嘴巴瑟瑟发抖。</p><p>昨天晚餐的时候怎么没见你那么大反应。张弋卿想到白铭说这女孩子有趣，不禁腹诽。</p><p>“怕什么，你第一次进门吗，真是。”名叫施嗣时的白了梁玉琼一眼，挡在她身前，“不想看就别看。”</p><p>梁玉琼畏畏缩缩地躲在施嗣时的身后，想看又不敢看地露出脑袋。</p><p>“别盯着那副画看！”白铭想起npc的话，好心地提醒众人，“也别盯着死人眼睛看。”</p><p>“曼姐，曼姐！”有人这才发现吴曼不对劲——她正眼神恍惚地盯着那副画看。</p><p>新人堆里有个高大的男人冲出来，摇了摇吴曼，没反应，当下毫不犹豫，一拳呼到她脸上。吴曼身形晃了晃，一把捂住脸，恶狠狠冲男人吼：“你他妈敢！”</p><p>“叶老师，你看，相比之下，我是不是温柔多了？”白铭回头。他正要拉张弋卿的手出去，却见他也盯着画那边看。</p><p>“我不是在看画，是那双‘眼睛’。”张弋卿反应得很快，的确没有被画所蛊惑，“走吧。”</p><p>“按以往的设定，只要尸体放在没人的地方就会自己消失，都散了散了。”有人高声喊道。</p><p><br></p><p>画中海棠的出现呼应着白铭他们得到的线索，他们无论如何都要回到昨天吃饭的地方看看。只是昨天在山上他们并没有留意到这棵海棠。</p><p>他们走进苗寨的市镇，却发现这里竟然阗寂无人，一眼望去，只有排排枯瘦腐朽的吊脚楼临江相互依偎，街上的货架、拉车混着砂石东倒西歪，一副被遗弃许久的模样，就算是今早小日本进城洗劫过，也不可能一下子就这么破败。</p><p>有几个人刚好也组团到这里来，和张弋卿他们碰上。看见此情此情，大家都一直认为昨晚全体见鬼了。不过在门里，这已经是常态，重点应该放在如何保命上。</p><p>张弋卿和白铭继续向着山里走，那几个人只在城里转转，虽然他们也认为出门的钥匙和山上那个地方脱不开关系。</p><p>然而到了山脚下，山上忽然生起一阵雾，浓雾越扩越大，直逼山脚。两人明白今天这山是上不了了，西南之地，遇上瘴气发作，人虫鸟兽没有不退避三分。</p><p>两人只好回到城里。</p><p>“叶老师，你有没有发现这里挺多卖酒的？”空城里静的可以拧出鬼来，白铭四处望望，打破僵局，“看来这扇门还带点土特产，可是我昨天喝过，好像白开水一样，你说谁家的酒会酿成这样，连酒精的味道都没有。”</p><p>张弋卿点点头，觉得白铭说得十分有道理，于是随便走进一家破酒馆里，在灰尘与蛛网中找出一坛酒，封口完整，还是未开的新酒。他拍开泥封，把鼻子凑过去嗅嗅，眉头逐渐皱起，又向白铭一挥手，要他也过来闻闻。</p><p>白铭刚一走上前，还没看清坛子里的酒水，一阵浓郁的芳香撞他满怀。不仅酒香醉人，花香也撩人，从鼻子直冲向大脑，如一朵烟花般炸开，身体的每个角落都被抚慰得舒舒服服。</p><p>两人对望一眼，白铭靠近一些，却见坛中的酒水莫名其妙的咕噜咕噜冒泡。他暗道不妙，连忙扯起张弋卿跑出酒馆。刚跑出大街时还没事，等他们又跑了一段路，空荡的古城里渐渐响起一些女人、孩子、老人的哭声、呼唤和唾骂，哀鸿遍野。</p><p>不知道多少冤魂的泣诉在天地间盘旋，一股迷雾逐渐在这曾经的修罗场里扭动着身躯铺开。张弋卿和白铭不敢停留，一口气跑回他们住的那个客栈。</p><p>他们身后，飘着一个个身着华服的半透明鬼魂，有大有小高矮不一，头发披散。淋的步枪。黑幽幽的眼洞直视着刚好站在门口的两人。但他们好像受到由于死法不一，有的头大如股，有的浑身焦黑，有的脑浆迸裂，有的胸口插着一把血淋了某种力量的阻挡，停在了客栈门前。</p><p>前不久遇见的那队人已经退回客栈，张弋卿看了看，似乎是少了一个人，据同行的施嗣时说当时在雾气里他们走散了。</p><p>在门里失踪，凶多吉少。</p><p>客栈大堂里还活着的16个人都来围观鬼了，白铭和张弋卿如果都进去，就会启动门的机制——所有人进入休眠状态，没有人的境况是不危险的；他们当然也可以进一个留一个在外面，问题就是谁也不愿对方独自面对那些东西。</p><p>白铭悄悄推了他一把张弋卿，下巴一抬。张弋卿望向那个方向，只见一群鬼魂的最后站着那个少年。周围环境比昨晚敞亮，他脸上的两条从白眼珠子挂下来的血痕清晰可见，两手提着两个人头。张弋卿把眼镜往上推了推，透过镜片的边缘看，那两个人头，一个是昨晚在晚宴上死的第一个人的，另一个正是和施嗣时他们走散那位。</p><p>而少年左右两边又各站着两个人，他们同样穿着苗族的盛装，一个上半个躯体已经被蛀空，另一个身上倒是没有伤口。</p><p>同样是死亡，为何有如此不同的待遇？张弋卿想起昨天白铭说的组队条件，果然，站着的两个是长头发，脑袋在鬼怪手里被安排的明明白白的，是短发。</p><p>“昨天和你没死的那个人，都是长头发。”白铭低声道。</p><p>长发的两个，一个是自己崩溃逃跑惹怒鬼怪，一个是不小心多眼看了画被勾走魂魄，似乎都是主动触发死亡条件；而短发的两个，从目前来看，一个不明情况被拖上刑台，死的偏偏就是他，另一个按施嗣时的说法就是那时一慌乱谁都四处逃，谁都算走丢，但没能回来的巧不巧就是他。门里自然谁都有可能死，但不是在极端的情况下，好歹达到要死亡条件才行。</p><p>短发的死亡条件是什么，难道真如白铭所说是苗人对待他们的态度？根据眼前的景象，也许可以理解为这样。</p><p>然后，这也说明一个事实可能会成立，那就是短发一遇上那只鬼，就有被杀死的概率。</p><p>至于长头发的拉不拉仇恨值倒不清楚。</p><p>白铭和张弋卿交流到这里，一点也没有恍然大悟十分欣喜的感觉，就像在看这篇文的读者一样。因为白铭就是短发，这令张弋卿心里有些沉重。</p><p>白铭躲开张弋卿的目光，看向客栈内：“这些东西一直站在这里不退终不是个办法……你，带几个人把今天早上的那幅吸人魂的画拿过来。”他一指不知什么时候站在身后的梁玉琼。</p><p>梁玉琼明白他要干什么，立刻就点了包括施嗣时在内的几个人跟他上楼取画。。</p><p>梁玉琼一行人将棺材板大的画面朝下地抬了出来，画面对准门外聚众闹事一样的鬼魂。果不其然，画将一干轻飘飘的玩意儿像抽油烟机般收了。</p><p><br></p><p>（三）死因</p><p><br></p><p>事后施嗣时说起了他们那一拨人在鬼魂出现前的经历。他们在城里逛了一会，在密密麻麻的吊脚楼之间找到一处洋楼的建筑，看起来没有那些旧的吊脚楼寒酸破败，但还没进去就有阴风从里头冒出来，温度骤降十几度，叫人不寒而栗。</p><p>“大门就吊着好多烂了半边的人头骨，门匾被掰成两段扔在地上，写着‘湖南督军绥苗署’。”梁玉琼说起来的时候有些哆嗦。</p><p>他们硬着头皮进去，发现里面像是个地方军区一样的场所，面积不小，应该是屯了不少兵力和粮食。除了兵马粮草，好多床底下倒还有些超出一般人拥有量的苗族银器、布帛等昂贵的物件。谁都看得出来，驻扎在这里的所谓“督军”其实是一群吸血虫。</p><p>最后，后花园的一个半个棺材大的箱子引起他们的注意，箱子没有上任何锁，但被胶带横横竖竖一圈一圈地卷了起来。几个人废了老大的劲儿才拆开，掀起箱子盖。入目不是金银珠宝，而是一只只大大小小的耳朵。这时阴风吹得更狠了，几乎所有的门都在暴躁地开开合合，梁玉琼和好几个女生都看到门里有影子。</p><p>施嗣时以为箱子里有可能藏着出门的钥匙，提出将耳朵都倒出来。耳朵哗啦啦地在地面上堆成小山，他们并没有发现有什么钥匙，倒是引来一阵鬼哭狼嚎。于是他们拔腿就逃，于是就发生了接下来的事情。</p><p>“听说清朝开始朝廷对苗族施行镇压，割一双苗族人的耳朵赏十两白银，杀一个苗人得赏白银五十两。民国军阀的部队也许曾在这个少数民族的寨子里烧杀抢掠，最后整个村子被屠杀殆尽，”施嗣时指指身上的衣服，“我们这次的角色，就是这些士兵了。”</p><p>“是士兵，但不是这里的，这里的那些应该已经被死去的村民复仇了。Npc说过我们只是经过。”张弋卿提出。</p><p>“就算是经过，也一定有任务在身，不然为什么我们一开始，手就被铐在一起？至于任务是什么，我想我们之中肯定有人知道。”白铭低下头，手指一下一下地敲打着椅子的扶手，若有所思。</p><p>“两个人的手被铐在一起，是不是会像警匪片里的一样，是警察和犯人的关系？”这次说话的是吴曼带进来的一个叫李厉黎的新人，他门里的样貌十分英俊，脑子也灵光，是个让吴曼都客客气气相待的长发美男。</p><p>张弋卿和白铭对视一眼，如果两方是敌对关系的话，那他们又该怎么办？</p><p>梁玉琼打量了李厉黎几眼，似乎对长发帅哥来兴趣了。</p><p>“这就要问我们这一场的大佬了。”白铭眼中闪过一丝戏谑，战术后仰。</p><p>“还有大佬？”梁玉琼震惊到失声，“我们对门里的背景一无所知，而他却了如指掌？”</p><p>全场冷了下来。这下没整好，他们所有人的命都被人捏在手里。</p><p>其他人看向施嗣时和李厉黎的眼神耐人寻味了起来。</p><p>“吴曼，今天你们是一直呆在客栈里吗？”张弋卿见场上气氛诡异，便搬出那群一直没什么存在感的人。</p><p>吴曼双手抱胸，，“你没有证据怀疑我。”</p><p>“我只想问问你们发现了什么，别告诉我这间客栈清清白白。”</p><p>“小妍，你跟他讲讲。”</p><p>张弋卿在心里冷笑，这女人仗着自己牵着几条傻啦吧唧的狗当肉盾，还真把自己当主子了。</p><p>小妍对吴曼这种口气也很是不满，但还是如实说了他们的发现。</p><p>“我们先是在自己的床底下发现了一个空层，有几个空层里……藏着尸体。”小妍语气弱了弱，有些怯怯地看了众人一眼，“然后我们就搜了全部的房间……”</p><p><br></p><p>她这一番话吓得众人连忙回自己的房间。</p><p>整个集广客栈上上下下共二十张床，每一张床下面的夹层里，都躺着一个人，皮肤出现斑点但还未腐化发臭，似乎是没死多久。</p><p>这些尸体也穿着和他们一样的衣服，戴着一样的帽子，有长头发短头发。</p><p>“这是什么意思，我们上一批来的人吗？”梁玉琼皱眉。</p><p>“门里时不时会有当清道夫的鬼怪，尸体不太能长久地留着的……”张弋卿表示不解。</p><p>白铭明白张弋卿的意思，转身出了房间。</p><p>过了大概两分钟，白铭回来，脸上带着“原来如此”的表情。</p><p>“早上的那具尸体，还在那里，那些东西果然都进不来。”</p><p>“那这里岂不是很安全？”张弋卿问道。</p><p>“各位客官！晚宴已经准备好了，快快下楼随我前去吧。”</p><p>楼下忽然传来老人沙哑破碎的喊声，就像哭着丧的铜镲一般难听。这一顿晚宴又如突然伸到人面前的一记剖刀，刹那就把十分的血冷了八分。</p><p>“就算我们不出去，他们也会想办法把我们弄出去的。”梁玉琼脸色凝重。</p><p>白铭向她一点头，颇为同意。</p><p>“客官们出来乍到，人生地不熟的，还是不要自己跑出去吃别的，吃坏了肚子可怎么好？”</p><p>我们真是宁愿吃坏肚子拉上三天三夜也不想去中头彩。众人心想。</p><p>“老板，你们客栈就没有厨房吗，我们想吃点清淡的。”吴曼趴在二楼的栏杆上冲老人喊。</p><p>老人摇头：“没有。”</p><p>“反正我们宁愿饿着也不去，你们谁爱去谁去吧。”几个新人表态。</p><p>而一旁的李厉黎垂手不语。</p><p>梁玉琼望向白铭：“那我们去不去？”</p><p>去，当然可以在那棵海棠树上找到蛛丝马迹，但同时，像白铭和梁玉琼这样的短发一旦被少年选中，就要成为刀下鬼；不去，又没人能保证在客栈里会发生什么，会不会惹怒鬼怪。</p><p>“你们别去，我去。”张弋卿接口道。</p><p>白铭的脸色霎时间又变得阴沉可怕。这让看惯了他温和面目的梁玉琼惊了惊。</p><p>“没什么好矛盾的，也没有什么万一，去不去我们都把脖子架在刀子上，多赌一把少赌一把都是这样。门里半分智商半分运气，况且我昨天运气很不错，正合适。”张弋卿抢先一步截住白铭的话头，避免那种我担心你你不许去我偏要去的霸总情节上演。</p><p>话虽然这么说，但张弋卿私心里觉得，以白铭的身份和目前的推断来看，不去是相对安全一点的。</p><p>只是他们的这条线索，到目前为止有跟没有一样，今天他不看到海棠不打个卡，接下来他们像这种没把握的局面会更多。</p><p>张弋卿见白铭没说什么，就走出了房门。</p><p>“追都不追啊。”梁玉琼在一旁打趣。</p><p>“嗯，”白铭别过头不看张弋卿的背影，弯下腰在脚边的尸体身上摸索，“他脾气倔，我也没有理由拦他。”</p><p>梁玉琼在几具尸体附近踱了几步，转过头，目光锁定两个大而深的窗口。此时暮色四合，窗内窗外的世界是一副要明不明，要暗还未暗的迷蒙状态，就如同口鼻被死死捂住一样，无法呼吸，不死不活。</p><p>“我记得我来之前，我们的宜昌刚开始下雨，不知道我能不能看得到雨停。”梁玉琼眸色黯淡下来，从窗口探进来微弱的光线给她的脸打上冰冷又孤独的色差。</p><p>梁玉琼说完这些，朝门外走去，“吴曼他们都搜过了，还会给你留好东西吗。”</p><p>白铭心里笑了一声，面上却不为所动，认认真真地摸着尸体的每一个口袋。等梁玉琼走远，他忽然拽起其中一个长发男子，站在窗口露出的微光下。</p><p>“这是你们的亲人吗。”</p><p>话音落后，昏沉的房间里像是塞满棉花似的哽噎住了，静得白铭只能听见自己耳鸣的滋滋声。</p><p>两双眼睛的对峙终于由两行泪水打破——淌在比尸体脸色还灰白的墙壁上，滴落到地面上被反扣着的画框上。</p><p><br></p><p>一堆人在大堂吵吵嚷嚷半天，做了好大一番完全没必要的权衡以后，最后离开客栈只有张弋卿和老人。这样的结果当然是意料之中，情理之中。</p><p>跨出客栈门，面对满目繁华得诡异的盛景，所有活人在身后渐渐远去，张弋卿才开始心慌。进门前的恐惧再次翻涌，一个声音在角落小小声地指责他此举的冲动。</p><p>干什么不好偏要逞英雄，这下莫说看到张家界的雨停，就连再见白铭一面都难了……别想，别想这些！张弋卿不断提醒自己，可他越是想冷静下来，门外一切他在乎的事物就越是争先恐后地浮现在他脑海里。</p><p>这种负面情绪没有折磨他太久，身后突然出现的几个人吸引了他的注意力。</p><p>“不是不来吗。”张弋卿察觉到一丝蹊跷。</p><p>（四）杀生</p><p>天色已晚，张弋卿跟在老人身后，同行的还有两个男人。</p><p>他和那两个人不熟，因此一路上三人沉默不语。深重夜色里，一种诡异的氛围蔓延。</p><p>张弋卿面无表情地走路，心里长的眼睛早就斜到旁边去了——刚才其中一个男人撇了撇头，好像是向另一个人使眼色。</p><p>虚空中有一根绷紧了的弦，不知道它为何紧张，也不知它何时到达极限。</p><p>一步跨出，脚尖绊在石头上，张弋卿一踉跄。</p><p>那两个男人飞扑向他，将他摁在地上。张弋卿趁手没被抓住，左手右手分别给两人的大脸招呼几拳。两人急着灭口，就是挨了拳头也拼了命去掐脖子。两个人，四只手，胜过世间任何绞索，人没掐死脖子就先捏碎。</p><p>张弋卿已经喘不上气了。对方两人似乎发了狂，不吃痛，面部狰狞，眼睛瞪得几乎从眼眶里跳出来，任他如何捶打、挣扎，就是不撒手。</p><p>他在地上摸到一块石头——应该是绊倒他的那块，想也不想就朝其中一个男人的面中砸去，顿时听见骨头断裂的声音，那人满脸是血地倒了下去。同伙愣了下，张弋卿可愣不得，铆足劲砸向他的太阳穴。那人血管爆裂，鲜血飞溅，也倒下了。</p><p>张弋卿因缺氧眼前冒着星，他撑着一口气把两人的手解开。空气灌进来，鼻腔有如刀割，肺每起伏一下就剧痛十分。从一场恶斗里渐渐缓过神来，他这才意识到，刚才他险些是被那两个人杀死了。</p><p>可他们为什么要杀自己？难道他们不怕被鬼魂报复吗？</p><p>回想起两人一路上的默不作声，应该是有预谋而来。他们敢动手，想必是认定聚广客栈能庇佑杀人者不被鬼魂所害。而且，这两个男人能想到，那么其他人……</p><p>张弋卿打了个寒战，一下从地上爬起，想找到他们来时的路——这晚，客栈里定然要生变。</p><p>可这一望，他迷失了方向。哪见什么蜿蜒而来的小路？眼见妖雾重重，烟雾深处，仿佛是什么东西走过，搅得一片光影聚散。</p><p>阴风不知从何升起，寒气侵骨。他如孤舟一般在狡猾的深夜里无措。</p><p>而那个带他们来的老人早已不知踪影。没人能带他后退或者前行。</p><p>如果早些知道有人生了杀心，今晚他无论如何也不会出来。也不知道白铭那边怎么样，他能不能察觉到其中有人不对劲？白铭过门确实是有经验，可偶尔自大是他的弱点，万一他对其中什么人放下警惕……</p><p>面对要吃人的大雾，原地龟缩易被袭击，出去游荡亦会撞鬼。张弋卿咬咬牙，还是凭着直觉选定一个方向前进。他摸到了一棵树，就用尖石头做个标记。</p><p>再来一次恶鬼当道也没办法了，他早做好了身在死局的准备。进了门的人谁不是把脑袋拎在手上，在生死关头想开一点，更有助于破局。</p><p>张弋卿不知道走了多久，幸运的是他这一路上没遇到什么危险。反倒迷雾渐渐散去，他能看清一些身边的树木了。</p><p>雾虽未散尽，但远处的景象隐约可见，一排排吊脚楼依山而建，房屋错落有致，仿佛昔日千年古镇平地掀起，如同惊天巨浪一般拦在不速之客面前。然而，本该繁华的古镇此时唯有缄默，没有一簇灯火飞跃，也没有一声鸡鸣犬吠。</p><p>最靠前的房子引起张弋卿注意。它门口正对一棵花树。那花树枝丫上无数浅色花朵竞相开放，宛如沉甸甸的积雪，饶是在黑暗里也倔强地反射着光亮。</p><p>张弋卿一下子想起客栈里的那幅画来。等他注意到山壁上那块鬼斧神工却可要人命的岩块，他立马确认自己来到了昨晚来的平台上。而那个房子的位置，就是摆放饭桌的地方。</p><p>不敢相信他竟然盲走到了这里？</p><p>不知道哪里来的一阵风，暗香袭来，诡秘非常。</p><p>大平台上一片死寂，没有唱歌奏乐的少女，没有惶恐用餐的宾客，没有闪亮骇人的大刀，也没见那个面容可怖的男孩。在那幅画上它满园春色、生机勃勃，还有孩童在花树下玩闹，实际上竟是这般死气沉沉的面目。</p><p>张弋卿不敢大声呼唤来什么奇怪的东西，只是往前走。</p><p>篱笆围着荒草湮没的小小院落，海棠盛放。</p><p>还没等他挨着篱笆，就听见几声枪响。张弋卿环顾四周，唯一的掩护物是那棵枝干纤细、不足他大腿粗的海棠树，并且离他还有好几步。</p><p>来不及让他多想，枪声密集起来，地面一下子闪出许多火花。张弋卿只在拍戏的时候见过这阵仗，那时候枪子还是长眼的。</p><p>不长眼的枪子一直追着他，张弋卿正想绕过海棠树。他真是坐上唐山的火车，倒霉去了，花枝招展往哪招不好，非从地下长，没留神张弋卿就被绊倒了。</p><p>“咻”地一声一颗子弹擦着耳朵尖飞过，张弋卿心中一紧，还没爬起来，又是一枪结结实实打在他左手手臂上。</p><p>挨枪子的人哪有不疼得喊娘，张弋卿却不敢出声。血流不止，所幸没有伤及动脉，可用另一只手按压止血。他疼的头皮都要崩开，就要挣扎着起来。但这时他发现，枪声停了。</p><p>黑暗中有物体拖动的声音，他隔着花枝往外瞧，只见不知道哪冒出来的一些穿军阀军装的士兵正抓着几个人的头发往外屋外拖。</p><p>被拖行的人显然没有了意识，或者说，已经死了。</p><p>夜里看不清鲜血淋漓的模样，血液糊在地上是一道深色的痕迹，仿佛不过是长夜里没有色彩、可有可无的一笔。</p><p>张弋卿暗暗心惊。这凭空冒出来的这间农舍，这没头没尾的杀人现场，是什么意思？</p><p>他突然想起方才要杀他的两人，那两人是短发的装扮，穿着电影里军阀特有的军装……</p><p>再结合白铭的长短发分组猜测……</p><p>一股寒意从脊椎直上大脑，张弋卿强迫自己定下心神缕清思路。</p><p>是不是一开始，他们就分别扮演着村民和那什么“绥苗属”势力的角色，服饰与头发长短就是明显的区分。而区分的意义，就在于拼个你死我活，就像他现在所见，“绥苗属”杀光了村民，就可以全身而退，留他们在这道门里成为向下一届玩家报复的冤魂。</p><p>他们依然是待宰的羔羊，随时准备引颈受戮。</p><p>张弋卿倒吸口凉气，他尽量忽略自己必死无疑这个想法，哪怕看着海棠树前已经堆了三四具冰冷的尸体。</p><p>真的是这样吗？这样为什么那两个男人要杀他也解释得通了——有人猜到了真相，或者说，早有提示。</p><p>提示！张弋卿顿时眼前一亮。他和白铭收到的提示是四个字“海棠无香”，这似乎并不指向杀人。他冒险前来，不正是一探这海棠树吗？那也就是说，这扇门可能有两条提示，杀人并不是唯一的出路！</p><p>想起那张提示，张弋卿连忙闭上眼。既然说海棠无香，那想必香味就是一个突破口。他在那坛没开封过的酒里闻到了香气，方才来的路上也有那样的香气，甚至是现在……张弋卿深吸一口气，饶是自己血腥味重，也盖不住风送花香来。</p><p>海棠本无香，怎地又有香了？</p><p>张弋卿看到了希望，挪动了一下身子，想看看这海棠树有何古怪。</p><p>他一转头，一张惨白惨白的大脸铺满他整个视野。具体是什么东西他还没看清，就下意识地后撤。</p><p>夜仍旧如天地初开一般浑浊不堪，万物未定之时，混沌中萌生的一件件不成型的怪物，初具三分人样，却极其怪异恐怖，有如眼前这鬼物一般。</p><p>这鬼物不是别人，正是那崖壁上挑人来杀的男孩。</p><p>张弋卿不敢妄动，那男孩没扑上来，他也不先去招惹他。</p><p>男孩似乎没有看到他，而是机械地低下头，两只皮肉溃烂的手鹰爪似的，往下一抓，挖出一捧泥土。他把泥土扔在一旁，速度更快地刨土。</p><p>张弋卿屏住呼吸，他知道重头戏要来了。这男孩再瘆人，也得看他葫芦里卖的什么药。</p><p>男孩挖出了一个酒坛子。</p><p>他的爪子半悬着，就要把泥封拍开。</p><p><br></p><p><br></p><p>酒坛子这种日用品哪个时代都是批量生产，不像人一样一眼认出来是哪个就是哪个。张弋卿也不好说是不是他和白铭之前见过的那个，他怕这些个酒真邪门的很，像上次一样一拍就招来各路妖魔鬼怪。到时他面对的可就不止这个小男孩，还有他的父老乡亲了。</p><p>当及时，张弋卿连伤口的疼也忘了，上前一把抢过男孩手里的酒坛子。那些穿军装的不知何时不见了，只有尸体还堆积在海棠树下。张弋卿无暇考虑旧楼里安全与否，一口气朝那儿跑去。</p><p>门和钥匙，想必和这里的一切都有关联。纵然知道此地鬼怪环伺，张弋卿选择赌一把。门应该就在那房子里，钥匙如果不在里面，那估计就在这招邪的破酒坛子里。</p><p>男孩被彻底激怒。他尖利地叫了一声，像被命中要害的野兽，扑向张弋卿。</p><p>要是他猜错了，真正的突破口是在客栈那边的，那也无话可说了。等他变成血眼裂口的鬼魂，就想办法给白铭报信。就算自己变成鬼失了智，好歹也要提前在脸上写点“门不在此”之类的话。</p><p>万千思绪，其实不过是电光火石般飞掠心头。</p><p>论奔跑速度，张弋卿必是不及发了狂的少年。好在他抢了先机，略比男孩快几步，利爪总是差点挨上他的衣角。</p><p>院子里的荒草高到人的膝盖，人跑起来不必平地上快。眼看着男孩就要掀起他的头盖骨来，“砰”的一声枪响，划破了无边的沉寂。</p><p>张弋卿不敢停下，一直跑到房子一侧，一脚把东倒西歪的木门踹开，一闪身钻进去。</p><p>此时的张弋卿已经疲惫不已，他不知道自己在这荒野里待了多久。他靠在门边大口大口地喘气，两腿发软，几乎不能再支撑住躯体。</p><p>男孩没有追上来，枪声也没有再响起。</p><p>房子里一片漆黑，但由于四面墙上有窗，不至于伸手不见五指，依稀的轮廓还是可以分辨出来的。</p><p>张弋卿没有马上深入探查，他等了片刻，确认房子里没有其他动静，才艰难地爬起身。</p><p>这户人家是真的家徒四壁。东边灶，西边床，门前菜地作茅房。屋子里头哪怕是乌漆嘛黑的，一眼也能看得个大概。</p><p>看一眼似乎没什么长得足以当门的东西，第二眼也没有。张弋卿惨笑一声，右手食指在左手伤口上沾了点血液，在左脸颊写了个“门不”，右脸颊写了个“在此”。</p><p>写完他想了想，在脑门又写了个“刘”字，旁边画个爱心。他平时是个很正经的人，可在这最后关头，他想写点什么，想不出有什么好写的，反倒是肉麻了一把。</p><p>他想看看那男孩怎么样了，便探头看向门外。</p><p>一张大脸又一次铺满了他的视线，张弋卿又和人鼻尖对鼻尖地贴脸了。</p><p>“别怕！是我。”</p><p>没有那只鬼会这么热情，一上来就给人死死抱住。</p><p>白铭一声低唤，几乎令长夜忽昼。</p><p>在看见白铭的那一刻，张弋卿所有的感官都苏醒了，疲惫和剧痛让他几乎难以支撑住身形。但这还不是矫情的时候，他一把将白铭扯入屋内，警惕地往外看了一圈。</p><p>“那东西被我的枪吓跑了。”白铭拍拍张弋卿的肩膀，把他掰转过来，盯着他的脸。</p><p>谁知他刚好抓在张弋卿汩汩冒血的伤口上。白铭大惊，也顾不得他脸上的字，连忙撕下被树枝勾破的衣角给他包扎伤口。</p><p>张弋卿趁机抹去脸上的傻帽玩意儿，将自己来时的经历大致与刚才的猜测白铭说了一遍。</p><p>白铭表情越发严肃。等张弋卿说完，他轻轻抚摸着刚包扎好的伤口，低声问道：“哥，你觉得我会为了出去，而伤害你吗？”</p><p>张弋卿正色道：“我不会怀疑你。好歹我花过不少钱雇你们，你也不会砸自己招牌吧。”</p><p>“为了活命，人可什么都干得出来，”白铭嗤笑一声，握住张弋卿的手，“你走之后，吴曼悄悄来拉拢我，要我和他们一起，杀人。”</p><p>“那你……”</p><p>“哥你猜得没错，他们真的相信这是出门的方法。有人在厕所的垃圾桶里发现了提示，说只有对方全军覆没，山上的门就会为他们打开。他们甚至靠着这个在客栈里找到了武器，我借机骗了一把枪。但我绝不会同他们一伙，我不做半分害你的事。”他的眼睛在黑暗里反射出全世界唯一的光亮，光亮里只有一个人的身影。</p><p>白铭在门里待久了，良心有限，自然不会大声嚷嚷说“我们分阵营了，要跑的快跑”。他只是暗暗通知了施嗣时和在厕所门口随机碰上的女生严妍两个人。在李厉黎等三人相继被杀后，所有的“村民”前前后后撤出了“集广客栈”。</p><p>这个客栈压根不是什么正经客栈。白铭因为担心张弋卿，也神不知鬼不觉地溜出来。他无意间瞥了一眼门口的四字招牌，只见潮湿发霉的木板上，鲜红的“广”字扭曲变形，变成了一个“尸”字。</p><p>说白了，这里就是个杀人藏尸的地方。客栈每一张床下的尸体，怕不就是以前留下的。而每一间房间里的圆形窗户，是村民们的眼睛，他们死后依然要看着亲人被杀，永远回不到故土。</p><p>白铭出来以后在迷雾里穿行了不知多久，没有碰上那些逃出来的人，能回来这里也纯粹是开盲盒一样。即便他不跑，那些人迟早会怀疑到他，梁玉琼会第一个跳出来质疑他和叶俊的关系。到那时，他们杀一个对家是杀，杀一个内鬼也是杀。</p><p>“那个梁小姐，我感觉她不是简单的人物。”张弋卿说。</p><p>“目前看来，吴曼才像那个控场的。梁玉琼明面上一直什么意见也没有，除了你走之后，她阴阳怪气地跟我聊了几句。”</p><p>两人对梁玉琼的种种试探都感到诡异不已，但也没有证据说人家别有用心。</p><p>此时午夜已过，在山上看夜空还算明朗，启明星高悬，海棠花未眠，若不是身在门中，实在是个良夜。</p><p>白铭拿过那酒坛子放在地上，伸手揽了揽张弋卿，“趁现在休息会吧，明天我们去找门。客栈那边就算发现人跑了，晚上也不敢轻举妄动。他们认定你和那两个人都死了。”</p><p>“我死了？”张弋卿眯了眯眼，挪动身子和白铭两个人紧贴着，好更暖和些。他印象中的白铭不是悲喜形与色的人，至少对别人不是那样。张弋卿忍不住想，当所有人笃定地说自己早没命的时候，他是什么滋味。</p><p>“我是不信的。”白铭握着他的手轻轻摩挲，喃喃道。</p><p>张弋卿等着他条分缕析地说他不信的理由，以为这其中他有什么发现。可是两人相对无言了半晌，白铭漆黑的眸子盯着虚空，依旧什么也没说。</p><p>他看见张弋卿满脸血字的时候，是以为他张哥真的没了。但就凭那鬼东西曾经姓张名弋卿，就是让他来掏自己的心肝也无所谓。</p><p><br></p><p>这一晚两人都睡得不如何安稳，噩梦连连，反反复复不知醒来多少次。但好歹是休息了，勉强应付从昨天中午就没有再进食的饥饿感。</p><p>天还未亮时，他们准备开酒坛子。</p><p>两人猜测，酒坛子里就算有东西，顶多是钥匙，可是门的位置在哪，真的还不能确定。难道真的找到门的方法真的只有那一个？恐怖的疑问盘桓在心底，但谁也没有说出来。</p><p>就在举棋不定之时，几声枪声响起，山林间惊鸟纷飞。</p><p>紧接着有吵吵嚷嚷的人声。</p><p>白铭掏出枪警戒，和张弋卿交换眼神：两拨人都来了。</p><p>果然，远处跌跌撞撞地跑来几个人影，和张弋卿相同装束，应该是半路碰上了吴曼为首的那些人，才这般仓惶逃命。</p><p>施嗣时一见白铭和张弋卿，大喜过望，“刘哥！刘哥！快救救我们！”</p><p>“躲屋子里！”</p><p>“好好好！”</p><p>几人刚跑进房子，后面追兵已至。</p><p>开了杀戒的人已没法回头，疯狂地对着那破破烂烂的吊脚楼扫射。年久失修的房子哪禁得住这动静，噼里啪啦的子弹从东歪西倒的木板缝隙射进屋子里，他们只能狼狈地躲避着。</p><p>“叶哥！刘哥！我们现在要怎么办啊，那些人是真的要弄死我们哪！”</p><p>张弋卿大声问白铭：“那东西开吗？”</p><p>白铭的“开”字刚落下，酒坛子不幸中枪，坛体从枪孔处开裂，里面的液体不要钱似的流出来。张弋卿将手往里一探，摸到了一块冰凉凉的铜片。他顿时大喜过望，想也不想就把铁片抽了出来。</p><p>谁知钥匙还没在手心底焐热，空气先开始灼烧。一阵热风向他们掀来，紧接着，屋内所有人眼睁睁看着木质地板开始燃烧起来，顷刻化为火海！</p><p>而这破旧小楼靠近山上建筑群那一面墙轰然倒下，露出后面气势磅礴的空城。</p><p>火势难以阻挡，犹如无数条火龙倾巢而出，怒吼着攀上山坡上万户人家。</p><p>千年空城，一朝毁于人祸。如今画面重演，旧怨重提，就是报千百妇孺老弱不能安息之仇。因此任何人要走出这里，就得淌过火海，到达那扇得救的门。</p><p>那扇门就在小楼后面，看起来是个胡乱砌起来的柴房，却是地狱火海里，佛祖垂目降下的蜘蛛丝。</p><p>张弋卿在火烧起来时就拉上白铭，两人东躲西藏，拼命扑灭沾上衣服的火星。奈何火烧得太猛，眼看人都要踩在火苗上了。</p><p>“哎！哎嘿！”严妍惊喜地叫起来，“这火烧不伤我们！”</p><p>屋内所有人一下子都没反应过来。张弋卿看向脚下，自己一双鞋烧得面目全非，脚却半点没焦，香味也没有。火焰就在他双脚间跳跃，而他能感受到灼烫的感觉，但和真正被火烧比起来真的不要温和太多。</p><p>“拿着钥匙，去开门！”张弋卿把钥匙抛给严妍，又将白铭一拽“我背你，上来！”。</p><p>白铭也不磨蹭，被浓烟呛着咳了两声，乖乖被张弋卿背起来。</p><p>张弋卿为了背稳一些，拖着他的小腿把人拢了拢。</p><p>“小心，撑不住放我下来。”白铭在他耳边说。</p><p>火场真是热，张弋卿耳朵尖被热风刮到，烧得红红地，快赶上白铭烧伤的腿了。</p><p>屋外，早在着火的时候就停了火。</p><p>“怎么回事，他们是触发什么死亡条件了吗？”吴曼皱眉，“去看看。”</p><p>结果他们进到小屋里，就看到那些人完好地站在火海里，而他们被火焰逼得几乎不能前行。</p><p>“他们找到门了！”</p><p>“这火烧不死人吗？”</p><p>“烧不死，我们走！”吴曼喝令，却没有半点要动的意思。</p><p>还真的有人迈出了第一步。那人也是归心似箭，一下浑然忘了烈火焚身的痛苦，“噔噔噔”地冲出去老远。后面的见了，也纷纷效仿，勇敢地迈开了第一步。</p><p>只是有些第一步，是通往地狱的第一步。</p><p>杀了第一个人，就可以有下一个人；走了第一步，就不甘心不走第二步。</p><p>在第一个走的人惨叫着倒下后，他的所有效仿者纷纷变了脸色。但身处旋涡中心，前进或后退，都已是深渊。</p><p><br></p><p>白铭回头看了一眼，在张弋卿耳边说道：“快走！待会他们急了，怕不是要和我们同归于尽。”</p><p>他这话说的不假，火光跃动中，有人将黑洞洞的枪口对准即将生还得救的几人。</p><p>扳机即将扣下，“砰”地一声，头盖骨掀飞，枪口垂下。</p><p>梁玉琼收回枪，别扭地对身下的人说：“你就是专门找个为你挡冷枪的吧。”</p><p>施嗣时紧紧抿着唇，没有回答她。</p><p>方才混乱之中，他还是救起了梁玉琼。这个女孩不似任何人一般慌乱，眉眼间依旧是盈盈笑意，一派天真、不知生死为何物的模样。</p><p>昨晚梁玉琼在盥洗室想要杀他，他将她手中枪夺过来，用枪口对着她。直到他扣下扳机，发现枪里没有一颗子弹，她也是这副神情。</p><p>盥洗室后面有个狗洞，梁玉琼下巴不抬一下，他都发现不了。</p><p>施嗣时不知道梁玉琼玩的是哪一套。如今他顺手捞她一把，也算是不违背自己心意。只要她别倒转枪口，给他的脑袋瓜也开个瓢就好。</p><p>那头严妍已经将门打开。顺利通过火海的几人迫不及待地窜了进去。最后的是背着人的张弋卿和施嗣时。</p><p>施嗣时背着梁玉琼进了门。张弋卿眼看也快要迈进去了。</p><p>“你们别走！救救我们！”</p><p>“救命！救我们！”</p><p>“救救我们啊！”</p><p>身后伸来无数双血肉模糊的手，疯狂地向他们抓来。无数黑影在火光中绝望地挣扎着，满口呼救哀嚎。凄厉的哀号随着烈焰吞噬四野，转眼间俨然是无边炼狱。</p><p>“别看，走。”白铭在张弋卿耳边安抚道。</p><p>张弋卿点点头，转身迈进了门里。“别想走！”</p><p>一只白骨森森的手抓了个空，另一只抓下了白铭烧焦的衣角。</p><p>手里的破布顿时化作飞灰，连同他们重获新生的妄想，随风散去。</p><p>刺眼的白光将张弋卿和白铭两人淹没，再回头，身后的地狱火海已经荡然无存。</p><p>张弋卿背着白铭走在看不到尽头的通道里。尽管两人皆疲惫不堪，他们还是想这样一直走下去，走到天荒地老，走到雪尽头白。</p><p><br></p><p><br></p>
+              </div>
+            </div>
+          </section>
+
+          <footer>
+            <span class="editable">中长篇同人文 · 《以我之名》《沉默的羔羊》</span>
+          </footer>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    // Mobile nav toggle
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    if (navToggle && navLinks) {
+      navToggle.addEventListener('click', () => {
+        navLinks.classList.toggle('open');
+      });
+    }
+
+    // Sidebar TOC navigation
+    const tocItems = document.querySelectorAll('.toc-item');
+    const sectionMap = new Map();
+
+    tocItems.forEach(item => {
+      const target = document.getElementById(item.dataset.target);
+      if (target) sectionMap.set(item, target);
+
+      item.addEventListener('click', () => {
+        if (devMode) return;
+        const target = sectionMap.get(item);
+        if (!target) return;
+
+        tocItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+
+        const offset = 88; // sticky top-nav (72px) + small gap
+        const top = target.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top, behavior: 'smooth' });
+      });
+    });
+
+    // Highlight current section on scroll
+    function updateActiveToc() {
+      const scrollPos = window.scrollY + 120;
+      let current = null;
+
+      sectionMap.forEach((section, item) => {
+        if (section.offsetTop <= scrollPos) {
+          current = item;
+        }
+      });
+
+      if (current) {
+        tocItems.forEach(i => i.classList.remove('active'));
+        current.classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', updateActiveToc, { passive: true });
+    updateActiveToc();
+
+    // ===== Developer mode with password =====
+    const passwordOverlay = document.getElementById('passwordOverlay');
+    const passwordInput = document.getElementById('passwordInput');
+    const passwordConfirm = document.getElementById('passwordConfirm');
+    const passwordCancel = document.getElementById('passwordCancel');
+    let devMode = false;
+    const DEV_PASSWORD = 'hchcsss';
+
+    function setDevMode(active) {
+      devMode = active;
+      document.body.classList.toggle('dev-mode', devMode);
+      document.querySelectorAll('.editable').forEach(el => {
+        el.contentEditable = devMode;
+      });
+      document.querySelectorAll('.toc-item, .brand-title').forEach(el => {
+        el.contentEditable = devMode;
+      });
+    }
+
+    // placeholder links should not navigate
+    document.querySelectorAll('.link-placeholder').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+      });
+    });
+
+    // plain-text paste to keep uniform styling
+    document.querySelectorAll('.editable').forEach(el => {
+      el.addEventListener('paste', (e) => {
+        if (!devMode) return;
+        e.preventDefault();
+        const text = (e.clipboardData || window.clipboardData).getData('text/plain');
+        document.execCommand('insertText', false, text);
+      });
+    });
+
+    function openPassword() {
+      passwordOverlay.classList.add('show');
+      passwordInput.value = '';
+      setTimeout(() => passwordInput.focus(), 50);
+    }
+
+    function closePassword() {
+      passwordOverlay.classList.remove('show');
+      passwordInput.value = '';
+    }
+
+    function checkPassword() {
+      if (passwordInput.value === DEV_PASSWORD) {
+        setDevMode(!devMode);
+        closePassword();
+      } else {
+        alert('密码错误 / ACCESS DENIED');
+        passwordInput.value = '';
+        passwordInput.focus();
+      }
+    }
+
+    passwordConfirm.addEventListener('click', checkPassword);
+    passwordCancel.addEventListener('click', closePassword);
+
+    passwordInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        checkPassword();
+      } else if (e.key === 'Escape') {
+        closePassword();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if ((e.key === 'm' || e.key === 'M') && !e.repeat) {
+        if (e.target.isContentEditable) return;
+        if (e.target === passwordInput) return;
+        e.preventDefault();
+        if (devMode) {
+          setDevMode(false);
+        } else {
+          openPassword();
+        }
+      }
+    });
+
+    // Export / Import edited data
+    document.getElementById('exportBtn').addEventListener('click', () => {
+      const data = {
+        toc: Array.from(document.querySelectorAll('.toc-item')).map(item => ({
+          target: item.dataset.target,
+          text: item.textContent,
+          level: item.classList.contains('level-2') ? 2 : 1
+        })),
+        brand: document.querySelector('.brand-title').textContent,
+        content: Array.from(document.querySelectorAll('.editable')).map((el, i) => ({
+          index: i,
+          html: el.innerHTML
+        }))
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'portfolio-data.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    document.getElementById('importBtn').addEventListener('click', () => {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = '.json';
+      input.onchange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          try {
+            const data = JSON.parse(event.target.result);
+            if (data.toc) {
+              const existing = document.querySelectorAll('.toc-item');
+              data.toc.forEach((item, i) => {
+                if (existing[i]) {
+                  existing[i].dataset.target = item.target;
+                  existing[i].textContent = item.text;
+                  existing[i].className = 'toc-item' + (item.level === 2 ? ' level-2' : '');
+                }
+              });
+              sectionMap.clear();
+              document.querySelectorAll('.toc-item').forEach(item => {
+                const target = document.getElementById(item.dataset.target);
+                if (target) sectionMap.set(item, target);
+              });
+            }
+            if (data.brand) {
+              const brand = document.querySelector('.brand-title');
+              if (brand) brand.textContent = data.brand;
+            }
+            if (data.content) {
+              const editables = document.querySelectorAll('.editable');
+              data.content.forEach(item => {
+                if (editables[item.index]) {
+                  editables[item.index].innerHTML = item.html;
+                }
+              });
+            }
+            alert('数据已导入 / DATA IMPORTED');
+          } catch (err) {
+            alert('导入错误 / IMPORT ERROR: ' + err.message);
+          }
+        };
+        reader.readAsText(file);
+      };
+      input.click();
+    });
+  </script>
+</body>
+</html>

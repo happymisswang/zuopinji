@@ -1,0 +1,2064 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ANALOG_DREAMS // 《立春》网页解谜游戏</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ===== GLOBAL VARIABLES ===== */
+    :root {
+      --theme-chassis: #e8e4dc;
+      --theme-chassis-dark: #dcd6cb;
+      --theme-border: #b8b2a7;
+      --theme-accent: #e05600;
+      --theme-accent-glow: rgba(224, 86, 0, 0.45);
+      --theme-screen: #f5f2ec;
+      --theme-screen-glow: #d8d3c9;
+      --theme-text: #2a2723;
+      --theme-text-dim: #6b655b;
+      --theme-light: #f5f2ec;
+
+      --shadow-plastic:
+        inset 1px 1px 0px rgba(255,255,255,0.8),
+        inset -1px -1px 0px rgba(0,0,0,0.06),
+        2px 2px 5px rgba(0,0,0,0.1),
+        6px 6px 18px rgba(0,0,0,0.08);
+
+      --shadow-inset:
+        inset 0 2px 4px 0 rgba(0, 0, 0, 0.12),
+        inset 0 1px 2px 0 rgba(0, 0, 0, 0.08);
+
+      --shadow-button:
+        0 4px 0 #9e9488,
+        0 6px 8px rgba(0,0,0,0.15),
+        inset 0 1px 0 rgba(255,255,255,0.6);
+
+      --shadow-button-active:
+        0 1px 0 #9e9488,
+        0 2px 3px rgba(0,0,0,0.15),
+        inset 0 2px 4px rgba(0,0,0,0.1);
+
+      --font-label: 'Space Grotesk', sans-serif;
+      --font-screen: 'Share Tech Mono', monospace;
+    }
+
+    /* ===== RESET ===== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 15px;
+    }
+
+    body {
+      font-family: var(--font-label);
+      background: #FAFAFA;
+      color: var(--theme-text);
+      line-height: 1.65;
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      background-image:
+        radial-gradient(circle at 12% 18%, rgba(0,0,0,0.018) 0%, transparent 45%),
+        radial-gradient(circle at 88% 82%, rgba(0,0,0,0.015) 0%, transparent 40%),
+        linear-gradient(rgba(0,0,0,0.012) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.012) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+    }
+
+    /* ===== CHASSIS FRAME ===== */
+    .chassis {
+      position: relative;
+      width: 100%;
+      margin: 0;
+      min-height: calc(100vh - 72px);
+      background: transparent;
+    }
+
+    /* ===== APP LAYOUT ===== */
+    .app {
+      display: block;
+      position: relative;
+      z-index: 1;
+      min-height: calc(100vh - 72px);
+    }
+
+    /* ===== SIDEBAR / CONTROL MODULE ===== */
+    .sidebar {
+      position: fixed;
+      top: 72px;
+      left: 0;
+      width: 260px;
+      height: calc(100vh - 72px);
+      background: #faf8f5;
+      border-right: 1px solid rgba(0, 0, 0, 0.08);
+      display: flex;
+      flex-direction: column;
+      z-index: 100;
+      padding: 24px 28px 32px;
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: 26px;
+      letter-spacing: 0.12em;
+      color: var(--theme-text);
+      text-align: left;
+      margin-bottom: 6px;
+    }
+
+    .brand-sub {
+      font-size: 12px;
+      color: var(--theme-text-dim);
+      margin-bottom: 26px;
+      letter-spacing: 0.06em;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--theme-text);
+      text-decoration: none;
+      padding: 10px 0;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 999px;
+      margin-bottom: 28px;
+      background: #fff;
+      transition: all 0.2s ease;
+    }
+
+    .back-link:hover {
+      background: var(--theme-accent);
+      color: #fff;
+      border-color: var(--theme-accent);
+    }
+
+    .toc {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-right: 4px;
+    }
+
+    .toc::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .toc::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.12);
+      border-radius: 2px;
+    }
+
+    .toc-item {
+      position: relative;
+      display: block;
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 1.45;
+      color: var(--theme-text-dim);
+      text-decoration: none;
+      background: transparent;
+      border: 1px solid transparent;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+
+    .toc-item:hover {
+      background: rgba(0, 0, 0, 0.04);
+      color: var(--theme-text);
+    }
+
+    .toc-item.active {
+      background: rgba(184, 74, 57, 0.08);
+      color: var(--theme-accent);
+      font-weight: 600;
+    }
+
+    .toc-item.level-2 {
+      padding-left: 28px;
+      font-size: 13px;
+      color: var(--theme-text-dim);
+    }
+
+    .toc-item.level-2:hover {
+      color: var(--theme-text);
+    }
+
+    /* ===== MAIN SCREEN AREA ===== */
+    .main {
+      margin-left: 260px;
+      width: calc(100% - 260px);
+      min-width: 0;
+      padding: 40px 32px;
+    }
+
+    .screen-frame {
+      position: relative;
+      background: linear-gradient(145deg, #faf8f4, #f0ece4);
+      border: 8px solid #dcd6cb;
+      border-radius: 16px;
+      box-shadow:
+        0 0 0 2px #d8d3c9,
+        inset 0 0 40px rgba(255,255,255,0.35),
+        0 12px 30px rgba(0,0,0,0.08);
+      padding: 20px;
+      overflow: hidden;
+    }
+
+    .screen-frame::before {
+      content: "CRT DISPLAY // ANALOG_DREAMS";
+      position: absolute;
+      top: -11px;
+      left: 16px;
+      padding: 2px 8px;
+      background: #dcd6cb;
+      font-family: var(--font-label);
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      color: #6b655b;
+      border-radius: 4px;
+    }
+
+    /* Subtle paper grain overlay */
+    .screen-frame::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 10;
+      background-image:
+        radial-gradient(circle at 30% 30%, rgba(0,0,0,0.03) 0, transparent 2px),
+        radial-gradient(circle at 70% 60%, rgba(0,0,0,0.02) 0, transparent 1.5px);
+      background-size: 120px 120px, 80px 80px;
+      opacity: 0.4;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      padding: 80px 60px 70px;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      position: relative;
+    }
+
+    .hero-label {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 4px;
+      background: rgba(224, 86, 0, 0.12);
+      border: 1px solid rgba(224, 86, 0, 0.25);
+      color: var(--theme-accent);
+      font-family: var(--font-screen);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-family: var(--font-screen);
+      font-size: 48px;
+      line-height: 1.15;
+      margin-bottom: 8px;
+      letter-spacing: 0.08em;
+      color: var(--theme-text);
+      text-shadow: 0 0 20px rgba(224, 86, 0, 0.12);
+    }
+
+    .hero-link-hint {
+      font-size: 12px;
+      color: var(--theme-text-dim);
+      margin-bottom: 20px;
+    }
+
+    .hero-link-hint a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .hero-link-hint a:hover {
+      color: var(--theme-accent);
+    }
+
+    .hero p {
+      font-family: var(--font-label);
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--theme-text-dim);
+      max-width: 600px;
+      text-indent: 0;
+    }
+
+    /* ===== SECTIONS ===== */
+    .section {
+      padding: 64px 60px;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      position: relative;
+    }
+
+    .section:last-of-type {
+      border-bottom: none;
+    }
+
+    .section-header {
+      margin-bottom: 40px;
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+    }
+
+    .section-number {
+      font-family: var(--font-screen);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--theme-accent);
+      padding: 2px 8px;
+      border: 1px solid rgba(224, 86, 0, 0.3);
+      border-radius: 4px;
+    }
+
+    .section-title {
+      font-family: var(--font-label);
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.3;
+      letter-spacing: 0.03em;
+      color: var(--theme-text);
+    }
+
+    .section-body {
+      font-family: var(--font-label);
+      font-size: 14px;
+      line-height: 1.85;
+      color: var(--theme-text-dim);
+    }
+
+    .section-body p {
+      text-indent: 2em;
+      margin-bottom: 1em;
+    }
+
+    h3.section-title {
+      font-size: 20px;
+      color: var(--theme-text);
+      margin: 48px 0 28px;
+    }
+
+    /* ===== CASSETTE CARDS ===== */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .card {
+      position: relative;
+      background: linear-gradient(145deg, #d8d3c9, #c9c3b8);
+      border: 2px solid #b8b2a7;
+      border-radius: 8px;
+      padding: 28px;
+      box-shadow: var(--shadow-plastic);
+      transition: transform 0.2s ease;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      right: 12px;
+      height: 8px;
+      background: repeating-linear-gradient(
+        90deg,
+        rgba(0,0,0,0.08) 0px,
+        rgba(0,0,0,0.08) 3px,
+        transparent 3px,
+        transparent 8px
+      );
+      border-radius: 2px;
+      opacity: 0.6;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+    }
+
+    .card-title {
+      font-family: var(--font-label);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--theme-text);
+      margin-bottom: 12px;
+      margin-top: 12px;
+      letter-spacing: 0.04em;
+    }
+
+    .card-body {
+      font-family: var(--font-label);
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--theme-text-dim);
+    }
+
+    .card-body p {
+      text-indent: 2em;
+      margin-bottom: 0.6em;
+    }
+
+    /* ===== CHARACTER CARDS ===== */
+    .char-card {
+      position: relative;
+      background: linear-gradient(145deg, #e2ded5, #d4cfc6);
+      border: 2px solid #b8b2a7;
+      border-radius: 8px;
+      padding: 28px;
+      box-shadow: var(--shadow-plastic);
+      transition: transform 0.2s ease;
+    }
+
+    .char-card::before {
+      content: "";
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #c9c3b8, #f0ece4);
+      box-shadow: inset 1px 1px 2px rgba(255,255,255,0.8), 1px 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .char-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .char-name {
+      font-family: var(--font-label);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--theme-text);
+      margin-bottom: 4px;
+    }
+
+    .char-role {
+      font-family: var(--font-screen);
+      font-size: 10px;
+      color: var(--theme-accent);
+      letter-spacing: 0.06em;
+      margin-bottom: 14px;
+    }
+
+    .char-desc {
+      font-family: var(--font-label);
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--theme-text-dim);
+      text-indent: 2em;
+    }
+
+    /* ===== TIMELINE ===== */
+    .timeline {
+      position: relative;
+      padding-left: 28px;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 5px;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: linear-gradient(180deg, var(--theme-accent), rgba(224,86,0,0.15));
+      box-shadow: 0 0 8px rgba(224,86,0,0.2);
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-bottom: 40px;
+    }
+
+    .timeline-item:last-child {
+      padding-bottom: 0;
+    }
+
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: -28px;
+      top: 6px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid var(--theme-accent);
+      box-shadow: 0 0 8px rgba(224,86,0,0.35);
+    }
+
+    .timeline-title {
+      font-family: var(--font-label);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--theme-text);
+      margin-bottom: 8px;
+    }
+
+    .timeline-body {
+      font-family: var(--font-label);
+      font-size: 13px;
+      line-height: 1.75;
+      color: var(--theme-text-dim);
+      text-indent: 2em;
+    }
+
+    /* ===== MINDMAP ===== */
+    .mindmap {
+      margin: 40px 0;
+      padding: 28px;
+      background: rgba(0,0,0,0.04);
+      border-radius: 12px;
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .mindmap-root {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+
+    .mindmap-node {
+      display: inline-block;
+      padding: 12px 24px;
+      background: linear-gradient(145deg, #e8e4dc, #dcd6cb);
+      border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 8px;
+      font-family: var(--font-label);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--theme-text);
+      letter-spacing: 0.04em;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      position: relative;
+    }
+
+    .mindmap-node.small {
+      font-size: 12px;
+      padding: 10px 18px;
+    }
+
+    .mindmap-node.accent {
+      background: linear-gradient(145deg, rgba(224,86,0,0.1), rgba(224,86,0,0.04));
+      border-color: rgba(224,86,0,0.25);
+      color: var(--theme-accent);
+    }
+
+    .mindmap-branches {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      position: relative;
+    }
+
+    .mindmap-branches::before {
+      content: "";
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      height: 20px;
+      background: rgba(224,86,0,0.4);
+    }
+
+    .mindmap-branch {
+      flex: 1;
+      max-width: 280px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      position: relative;
+    }
+
+    .mindmap-branch::before {
+      content: "";
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      height: 20px;
+      background: rgba(224,86,0,0.4);
+    }
+
+    .mindmap-children {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .mindmap-child {
+      width: 100%;
+      padding: 14px 16px;
+      background: rgba(255,255,255,0.45);
+      border: 1px solid rgba(0,0,0,0.06);
+      border-radius: 6px;
+      font-family: var(--font-label);
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--theme-text-dim);
+      text-align: center;
+    }
+
+    .mindmap-merge {
+      display: flex;
+      justify-content: center;
+      margin-top: 40px;
+      position: relative;
+    }
+
+    .mindmap-merge::before {
+      content: "";
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      height: 20px;
+      background: rgba(224,86,0,0.4);
+    }
+
+    .mindmap-end {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 32px;
+    }
+
+    /* ===== EVIDENCE / LETTERS ===== */
+    .evidence-item {
+      margin-bottom: 40px;
+      position: relative;
+    }
+
+    .evidence-title {
+      font-family: var(--font-label);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--theme-text);
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .evidence-quote {
+      font-family: var(--font-label);
+      font-size: 13px;
+      line-height: 2;
+      color: var(--theme-text);
+      padding: 24px 28px;
+      background: rgba(255,255,255,0.55);
+      border-radius: 8px;
+      border-left: 3px solid var(--theme-accent);
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.04);
+    }
+
+    .evidence-quote p {
+      text-indent: 2em;
+      margin-bottom: 0.5em;
+    }
+
+    .evidence-quote p:last-child {
+      margin-bottom: 0;
+    }
+
+    .letter-placeholder {
+      padding: 36px;
+      background: rgba(0,0,0,0.04);
+      border: 1px dashed rgba(224,86,0,0.25);
+      border-radius: 8px;
+      text-align: center;
+      color: var(--theme-text-dim);
+      font-family: var(--font-screen);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+    }
+
+    .letter-content {
+      padding: 36px;
+      background: #fffef9;
+      border: 1px solid #d8d3c9;
+      border-radius: 8px;
+      color: var(--theme-text);
+      font-family: var(--font-body);
+      font-size: 13px;
+      line-height: 1.9;
+      letter-spacing: 0.04em;
+      text-align: left;
+      box-shadow: inset 0 0 24px rgba(0,0,0,0.03);
+    }
+
+    .letter-content p {
+      margin-bottom: 14px;
+      text-indent: 2em;
+    }
+
+    .letter-content p:last-child {
+      margin-bottom: 0;
+    }
+
+    .letter-part-title {
+      font-family: var(--font-label);
+      font-size: 15px;
+      color: rgba(224,86,0,0.95);
+      margin: 28px 0 16px;
+      letter-spacing: 0.12em;
+      text-indent: 0;
+    }
+
+    .letter-part-title:first-child {
+      margin-top: 0;
+    }
+
+    .letter-signoff,
+    .letter-date {
+      text-align: right;
+      text-indent: 0;
+      color: var(--theme-text-dim);
+      margin-top: 8px;
+    }
+
+    .letter-date {
+      margin-bottom: 0;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      padding: 48px 60px;
+      text-align: center;
+      font-family: var(--font-screen);
+      font-size: 11px;
+      color: var(--theme-text-dim);
+      letter-spacing: 0.06em;
+      border-top: 1px solid rgba(0,0,0,0.08);
+    }
+
+    /* ===== EDIT MODE ===== */
+    body.dev-mode .editable {
+      outline: 1px dashed rgba(224,86,0,0.5);
+      border-radius: 4px;
+      cursor: text;
+    }
+
+    body.dev-mode .editable:hover {
+      outline: 1px dashed var(--theme-accent);
+      background: rgba(224,86,0,0.08);
+    }
+
+    body.dev-mode .toc-item,
+    body.dev-mode .brand-title {
+      outline: 1px dashed rgba(224,86,0,0.5);
+      border-radius: 4px;
+      cursor: text;
+    }
+
+    body.dev-mode .toc-item:hover,
+    body.dev-mode .brand-title:hover {
+      outline: 1px dashed var(--theme-accent);
+      background: rgba(224,86,0,0.08);
+    }
+
+    /* ===== DEV TOOLS ===== */
+    .dev-tools {
+      margin-top: 16px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .dev-btn {
+      flex: 1;
+      padding: 8px 0;
+      border-radius: 6px;
+      border: none;
+      background: linear-gradient(180deg, #f0ece4, #d8d3c9);
+      color: var(--theme-text);
+      font-family: var(--font-label);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      box-shadow:
+        0 4px 0 #9e9488,
+        0 6px 8px rgba(0,0,0,0.15),
+        inset 0 1px 0 rgba(255,255,255,0.6);
+      transition: all 0.1s ease;
+    }
+
+    .dev-btn:hover {
+      filter: brightness(1.02);
+    }
+
+    .dev-btn:active {
+      transform: translateY(3px);
+      box-shadow:
+        0 1px 0 #9e9488,
+        0 2px 3px rgba(0,0,0,0.15),
+        inset 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .edit-hint {
+      display: none;
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      padding: 10px 16px;
+      border-radius: 6px;
+      background: rgba(224,86,0,0.12);
+      border: 1px solid rgba(224,86,0,0.3);
+      color: var(--theme-accent);
+      font-family: var(--font-screen);
+      font-size: 11px;
+      z-index: 200;
+    }
+
+    body.dev-mode .edit-hint {
+      display: block;
+    }
+
+    /* ===== LINK PLACEHOLDERS ===== */
+    .link-placeholder {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(224, 86, 0, 0.35);
+      cursor: pointer;
+      transition: border-color 0.15s ease, color 0.15s ease;
+    }
+
+    .link-placeholder:hover {
+      color: var(--theme-accent);
+      border-bottom-color: var(--theme-accent);
+    }
+
+    h2 .link-placeholder,
+    h3 .link-placeholder {
+      border-bottom-style: dashed;
+      border-bottom-width: 1px;
+    }
+
+    /* ===== PASSWORD OVERLAY ===== */
+    .password-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+      background: rgba(26, 24, 21, 0.75);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      align-items: center;
+      justify-content: center;
+    }
+
+    .password-overlay.show {
+      display: flex;
+    }
+
+    .password-box {
+      width: 340px;
+      padding: 32px;
+      background: linear-gradient(145deg, #e2ded5, #f0ece4);
+      border: 2px solid var(--theme-border);
+      border-radius: 12px;
+      box-shadow: var(--shadow-plastic), 0 24px 60px rgba(0,0,0,0.35);
+      text-align: center;
+    }
+
+    .password-box h3 {
+      font-family: var(--font-label);
+      font-size: 16px;
+      color: var(--theme-text);
+      margin-bottom: 6px;
+      letter-spacing: 0.04em;
+    }
+
+    .password-box p {
+      font-family: var(--font-screen);
+      font-size: 10px;
+      color: var(--theme-text-dim);
+      margin-bottom: 20px;
+      letter-spacing: 0.06em;
+    }
+
+    .password-box input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--theme-border);
+      border-radius: 6px;
+      background: #fffef9;
+      color: var(--theme-text);
+      font-family: var(--font-screen);
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+      outline: none;
+      box-shadow: var(--shadow-inset);
+    }
+
+    .password-box input:focus {
+      border-color: var(--theme-accent);
+      box-shadow: 0 0 0 3px rgba(224, 86, 0, 0.12), var(--shadow-inset);
+    }
+
+    .password-box .pw-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .password-box button {
+      flex: 1;
+      padding: 8px 0;
+      border: none;
+      border-radius: 6px;
+      font-family: var(--font-label);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      transition: all 0.1s ease;
+    }
+
+    .password-box .pw-confirm {
+      background: var(--theme-accent);
+      color: #fff;
+      box-shadow: 0 3px 0 #b54300, 0 4px 6px rgba(0,0,0,0.15);
+    }
+
+    .password-box .pw-confirm:active {
+      transform: translateY(3px);
+      box-shadow: 0 0 0 #b54300, 0 1px 3px rgba(0,0,0,0.15);
+    }
+
+    .password-box .pw-cancel {
+      background: linear-gradient(180deg, #f0ece4, #d8d3c9);
+      color: var(--theme-text);
+      box-shadow: var(--shadow-button);
+    }
+
+    .password-box .pw-cancel:active {
+      transform: translateY(3px);
+      box-shadow: var(--shadow-button-active);
+    }
+
+    /* ===== GALLERY CARDS ===== */
+    .gallery-card {
+      position: relative;
+      background: linear-gradient(145deg, #e2ded5, #d4cfc6);
+      border: 2px solid #b8b2a7;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: var(--shadow-plastic);
+      transition: transform 0.2s ease;
+    }
+
+    .gallery-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .gallery-img {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      display: block;
+      background: linear-gradient(145deg, #e8e4dc, #d4cfc6);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .gallery-caption {
+      padding: 18px;
+    }
+
+    .gallery-caption .card-title {
+      margin-top: 0;
+      margin-bottom: 6px;
+    }
+
+    .gallery-caption .card-body {
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    #demo .gallery-img {
+      cursor: zoom-in;
+    }
+
+    /* ===== IMAGE LIGHTBOX ===== */
+    .img-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(26, 24, 20, 0.88);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.25s ease, visibility 0.25s ease;
+    }
+
+    .img-lightbox.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .img-lightbox-backdrop {
+      position: absolute;
+      inset: 0;
+      cursor: zoom-out;
+    }
+
+    .img-lightbox-panel {
+      position: relative;
+      max-width: min(96vw, 1400px);
+      max-height: 92vh;
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(145deg, #e2ded5, #d4cfc6);
+      border: 2px solid #b8b2a7;
+      border-radius: 8px;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
+      overflow: hidden;
+    }
+
+    .img-lightbox-img-wrap {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #1a1814;
+      padding: 8px;
+    }
+
+    .img-lightbox-img {
+      max-width: 100%;
+      max-height: calc(92vh - 72px);
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    .img-lightbox-caption {
+      padding: 12px 20px;
+      font-size: 13px;
+      color: var(--theme-text);
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .img-lightbox-caption:empty {
+      display: none;
+    }
+
+    .img-lightbox-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 1;
+      width: 32px;
+      height: 32px;
+      border: 2px solid #b8b2a7;
+      border-radius: 6px;
+      background: linear-gradient(145deg, #f0ece4, #d8d3c9);
+      color: var(--theme-text);
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+      box-shadow: var(--shadow-plastic);
+    }
+
+    .img-lightbox-close:hover {
+      background: linear-gradient(145deg, #f5f2ec, #e2ded5);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1200px) {
+      .sidebar {
+        position: relative;
+        top: auto;
+        left: auto;
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        padding: 20px 24px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px;
+      }
+      .brand-title {
+        margin-bottom: 0;
+        font-size: 20px;
+      }
+      .brand-sub {
+        display: none;
+      }
+      .back-link {
+        margin-bottom: 0;
+        padding: 8px 16px;
+        order: 3;
+      }
+      .toc {
+        flex: 1 1 auto;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 6px;
+        overflow-x: visible;
+        overflow-y: visible;
+        order: 4;
+      }
+      .toc-item {
+        white-space: nowrap;
+        flex-shrink: 0;
+        padding: 8px 12px;
+        font-size: 13px;
+      }
+      .toc-item.level-2 {
+        padding-left: 12px;
+        font-size: 12px;
+      }
+      .main {
+        margin: 0 auto;
+        max-width: 1100px;
+        width: 100%;
+        padding: 32px 24px;
+      }
+      .hero, .section, footer {
+        padding-left: 32px;
+        padding-right: 32px;
+      }
+      .grid-3, .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .chassis {
+        margin: 16px;
+        min-height: calc(100vh - 32px);
+      }
+      .sidebar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .back-link {
+        order: 0;
+      }
+      .toc {
+        flex-direction: column;
+        overflow-y: auto;
+        max-height: 220px;
+      }
+      .toc-item {
+        white-space: normal;
+      }
+      .main {
+        margin: 0 auto;
+        max-width: 1100px;
+        width: 100%;
+        padding: 24px 16px;
+      }
+      .hero h1 {
+        font-size: 32px;
+      }
+      .mindmap-branches {
+        flex-direction: column;
+        align-items: center;
+      }
+      .mindmap-branch {
+        max-width: 100%;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .hero h1 {
+        font-size: 26px;
+      }
+      .section-title {
+        font-size: 22px;
+      }
+    }
+
+    /* ===== 简约顶部导航（与首页一致） ===== */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(250, 250, 250, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 32px;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-brand {
+      font-family: 'Yuangu', var(--font-label);
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: #333;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-brand i {
+      font-size: 16px;
+      color: #888;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 8px;
+    }
+
+    .nav-links a {
+      display: block;
+      padding: 10px 18px;
+      font-size: 14px;
+      color: #888;
+      border-radius: 20px;
+      transition: color 0.2s ease, background 0.2s ease;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: #333;
+      background: #E0F7FA;
+    }
+
+    .nav-toggle {
+      display: none;
+      width: 44px;
+      height: 44px;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #333;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .nav-container {
+        height: 64px;
+        padding: 0 20px;
+      }
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        background: rgba(250, 250, 250, 0.98);
+        padding: 16px 20px;
+        gap: 4px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      }
+      .nav-links.open {
+        display: flex;
+      }
+      .nav-links a {
+        padding: 14px 16px;
+        border-radius: 8px;
+      }
+      .nav-toggle {
+        display: flex;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="edit-hint">DEV MODE ACTIVE // CLICK TEXT TO EDIT</div>
+
+  <div class="password-overlay" id="passwordOverlay">
+    <div class="password-box">
+      <h3>开发者模式</h3>
+      <p>DEV MODE ACCESS // PRESS M TO TOGGLE</p>
+      <input type="password" id="passwordInput" placeholder="请输入密码" autocomplete="off" />
+      <div class="pw-actions">
+        <button class="pw-confirm" id="passwordConfirm">确认</button>
+        <button class="pw-cancel" id="passwordCancel">取消</button>
+      </div>
+    </div>
+  </div>
+
+  <nav class="top-nav">
+    <div class="nav-container">
+      <a class="nav-brand" href="zuopin.html">
+        <i class="fa-solid fa-feather-pointed"></i>
+        <span>创作集</span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="打开菜单">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="lichun.html" class="active">游戏剧本</a></li>
+        <li><a href="tongrenwen.html">中长篇同人文</a></li>
+        <li><a href="ciqu.html">歌曲作词</a></li>
+        <li><a href="guangbo.html">广播剧剧本</a></li>
+        <li><a href="qita.html">其他</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="chassis">
+    <div class="app">
+      <!-- 左侧目录导航 -->
+      <aside class="sidebar">
+        <div class="brand-title">《立春》</div>
+        <a class="back-link" href="zuopin.html"><i class="fa-solid fa-arrow-left"></i> 返回创作集</a>
+
+        <nav class="toc" id="toc">
+          <button class="toc-item active" data-target="hero">序</button>
+          <button class="toc-item active" data-target="demo">01实机演示</button>
+          <button class="toc-item" data-target="worldview">02 世界观简介</button>
+          <button class="toc-item" data-target="theme">03 故事核心主题</button>
+          <button class="toc-item" data-target="characters">04 主要人物设定</button>
+          <button class="toc-item" data-target="story">05 剧情大纲</button>
+          <button class="toc-item level-2" data-target="story-present">石泉村现在时线</button>
+          <button class="toc-item level-2" data-target="story-past">石泉村过去时线</button>
+          <button class="toc-item" data-target="gameplay">06 玩法与叙事结合</button>
+          <button class="toc-item level-2" data-target="gameplay-mindmap">玩法流程</button>
+          <button class="toc-item level-2" data-target="gameplay-interaction">互动形式</button>
+          <button class="toc-item level-2" data-target="gameplay-narrative">叙事特征</button>
+          <button class="toc-item level-2" data-target="gameplay-ending">结局设计</button>
+          <button class="toc-item" data-target="evidence">06 证物与信件</button>
+        </nav>
+
+        <div class="dev-tools">
+          <button class="dev-btn" id="exportBtn">EXP</button>
+          <button class="dev-btn" id="importBtn">IMP</button>
+        </div>
+      </aside>
+
+      <!-- Main CRT Screen -->
+      <main class="main">
+        <div class="screen-frame">
+
+          <!-- Hero -->
+          <section class="hero" id="hero">
+            <div class="hero-label">WEB-BASED PUZZLE GAME</div>
+            <h1 class="editable"><a href="https://happymisswang.github.io/lichun/feng.html" class="link-placeholder" target="_blank" rel="noopener noreferrer">《立春》</a></h1>
+            <p class="hero-link-hint"><a href="https://happymisswang.github.io/lichun/feng.html" target="_blank" rel="noopener noreferrer">点击即可跳转到游戏网页</a></p>
+            <p class="editable">
+              一款以职场化地府为舞台的互动解谜叙事游戏。玩家通过搜查亡魂遗物、聆听亡魂供词、填写死亡档案，最终驱动"轮回轨"为亡魂裁决六道去向。在因果循环的灭村惨案中，看见那些敢于反抗命运的女性如何撕开一道裂缝，迎来属于她们的春天。
+            </p>
+          </section>
+
+
+             <!-- Demo -->
+          <section class="section" id="demo">
+            <div class="section-header">
+              <div class="section-number">01</div>
+              <h2 class="section-title editable"><a href="#" class="link-placeholder">实机演示</a></h2>
+            </div>
+            <div class="section-body editable">
+              <p>以下为《立春》网页解谜游戏的实机界面</p>
+            </div>
+
+            <div class="grid-2" style="margin-top: 40px;">
+              <div class="gallery-card editable">
+                <img class="gallery-img" src="assets/a.png" alt="网页首页" />
+                <div class="gallery-caption">
+                  <div class="card-title"><a href="#" class="link-placeholder">网页首页</a></div>
+                  <div class="card-body">游戏入口与氛围铺垫。</div>
+                </div>
+              </div>
+              <div class="gallery-card editable">
+                <img class="gallery-img" src="assets/b.png" alt="戮判城登陆系统页面" />
+                <div class="gallery-caption">
+                  <div class="card-title"><a href="#" class="link-placeholder">戮判城登陆系统页面</a></div>
+                  <div class="card-body">职场化地府登录界面。</div>
+                </div>
+              </div>
+              <div class="gallery-card editable">
+                <img class="gallery-img" src="assets/c.png" alt="搜证页面" />
+                <div class="gallery-caption">
+                  <div class="card-title"><a href="#" class="link-placeholder">搜证页面</a></div>
+                  <div class="card-body">业镜幻境中的热点探索。</div>
+                </div>
+              </div>
+              <div class="gallery-card editable">
+                <img class="gallery-img" src="assets/d.png" alt="档案页面" />
+                <div class="gallery-caption">
+                  <div class="card-title"><a href="#" class="link-placeholder">档案页面</a></div>
+                  <div class="card-body">匹配证物与死者档案。</div>
+                </div>
+              </div>
+              <div class="gallery-card editable">
+                <img class="gallery-img" src="assets/e.png" alt="最终解谜页面" />
+                <div class="gallery-caption">
+                  <div class="card-title"><a href="#" class="link-placeholder">最终解谜页面</a></div>
+                  <div class="card-body">玩家需破解循环杀人顺序。</div>
+                </div>
+              </div>
+              <div class="gallery-card editable">
+                <img class="gallery-img" src="assets/f.png" alt="六道轮回选择页面" />
+                <div class="gallery-caption">
+                  <div class="card-title"><a href="#" class="link-placeholder">六道轮回选择页面</a></div>
+                  <div class="card-body">页面置入手势互动，玩家在电脑前做出结印手势，即可开启轮回。</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Worldview -->
+          <section class="section" id="worldview">
+            <div class="section-header">
+              <div class="section-number">02</div>
+              <h2 class="section-title editable"><a href="#" class="link-placeholder">世界观简介</a></h2>
+            </div>
+            <div class="section-body editable">
+              <p>故事发生在职场化的地府世界中。玩家所在的部门"戮判城"隶属于地府，专门审判犯杀戮之罪的亡魂。</p>
+              <p>工作规则如下：每位亡魂死亡时最重视的物品会化作"业镜"中的证物。判官需要进入业镜幻境搜查证物，将证物与亡魂档案匹配，完善死者的姓名、死因与因果链条。最终，亡魂被送往"轮回轨"，根据其行为与判官的裁决，投生六道之一：天道、阿修罗道、人道、畜生道、饿鬼道、地狱道。</p>
+              <p>整体氛围冷峻、悬疑，带有东方幽冥美学。地府不再是阴森恐怖的刻板场景，而是一个官僚化、系统化的"死后职场"，与人间罪恶形成镜像对照。</p>
+            </div>
+
+            <div class="grid-3" style="margin-top: 40px;">
+              <div class="card editable">
+                <div class="card-title">职场化地府</div>
+                <div class="card-body">判官有KPI、有上下级、有聊天软件"鬼才信"，将阴曹地府包装成现代职场，降低恐怖感，增强代入感与黑色幽默。</div>
+              </div>
+              <div class="card editable">
+                <div class="card-title">业镜幻境</div>
+                <div class="card-body">亡魂记忆凝结为可探索的场景图，玩家通过点击画面中的热点收集证物，每个证物承载一段亡魂独白。</div>
+              </div>
+              <div class="card editable">
+                <div class="card-title">轮回裁决</div>
+                <div class="card-body">最终玩家需将亡魂填入六道轮回的对应位置，不同选择导向不同结局，使"审判"本身成为叙事高潮。</div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Theme -->
+          <section class="section" id="theme">
+            <div class="section-header">
+              <div class="section-number">03</div>
+              <h2 class="section-title editable"><a href="#" class="link-placeholder">故事核心主题</a></h2>
+            </div>
+            <div class="section-body editable">
+              <p><strong>因果报应与反抗命运。</strong>灭村案中的每一个人都是因果链条上的一环，形成了一桩荒谬的循环杀人案。然而在因果循环里，勇于反抗与复仇的人终将会撕开一道裂缝，迎来她们的春天。</p>
+              <p><strong>女性力量与女性互助。</strong>主角王微富有正义感，为了伸张正义几近牺牲；王微好友张舜华继承其心愿，潜入石泉村找回丢失的证据；张舜华与受害者栗春相识，在绝望中给予彼此希望，最终共同撼动这座封闭的罪恶村庄。</p>
+            </div>
+          </section>
+
+          <!-- Characters -->
+          <section class="section" id="characters">
+            <div class="section-header">
+              <div class="section-number">04</div>
+              <h2 class="section-title editable"><a href="#" class="link-placeholder">主要人物设定</a></h2>
+            </div>
+            <div class="grid-2">
+              <div class="char-card editable">
+                <div class="char-name">王微</div>
+                <div class="char-role">玩家角色 · 实习判官</div>
+                <div class="char-desc">戮判城实习判官，城主助理。死前是调查石泉村拐卖案的记者，假扮被拐女性潜入村庄拍摄证据，被发现后逃到大路遭遇车祸。游戏中玩家逐步发现"自己"正是这位失踪记者。</div>
+              </div>
+              <div class="char-card editable">
+                <div class="char-name">张舜华</div>
+                <div class="char-role">退役军人 · 乡村教师</div>
+                <div class="char-desc">冷静、武力值高。王微死后以教师身份进入石泉村寻找证据，暗中将被拐受害者送出山外，是串联现在时与过去时的关键人物。</div>
+              </div>
+              <div class="char-card editable">
+                <div class="char-name">栗春</div>
+                <div class="char-role">被拐受害者 · 循环第一推动者</div>
+                <div class="char-desc">石泉村循环杀人的第一推动者。对生活始终抱有希望，最后一个撤离石泉村。离开前设计报复村长，却死于车祸。死后化鬼暗中帮助来楠与张舜华。</div>
+              </div>
+              <div class="char-card editable">
+                <div class="char-name">村长（方永强）</div>
+                <div class="char-role">反派 · 拐卖网络核心</div>
+                <div class="char-desc">与王神婆长期拐卖妇女儿童。因帮村民"娶媳妇"而在村中拥有最高话事权，声称自己只是"把城市资源运往更缺乏的乡村"。</div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Story -->
+          <section class="section" id="story">
+            <div class="section-header">
+              <div class="section-number">05</div>
+              <h2 class="section-title editable"><a href="#" class="link-placeholder">剧情大纲</a></h2>
+            </div>
+
+            <h3 class="section-title" id="story-present"><a href="#" class="link-placeholder">石泉村现在时线</a></h3>
+            <div class="timeline editable">
+              <div class="timeline-item">
+                <div class="timeline-title">第一幕：杀人循环开端</div>
+                <div class="timeline-body">1992年正月十六夜，张舜华安排最后一批被拐女性离开石泉村。栗春被安排在最后一辆车上，车上藏着8岁的方来顺。他发现车子离村后创伤应激发作，与司机抢方向盘，导致车祸，栗春被甩下山崖。</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-title">第二幕：杀人循环发展</div>
+                <div class="timeline-body">方广才因买来的媳妇死亡，愤怒之下用干馒头噎死方来顺。方来顺的母亲林欢儿记恨方广才，用蛇咬死他。随后林欢儿欲与丈夫方田富一起自杀，方田富给了她农药自己却未喝。后来方田富被穿上林欢儿衣服的女儿方来楠吓死。方来楠在村中游荡时被王神婆当作怨魂杀死。方来楠养的狗小黑将王神婆咬死，村长方永强用枪射杀小黑。</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-title">第三幕：杀人循环高潮</div>
+                <div class="timeline-body">村长发现潜入家中寻找证据的张舜华，趁机用枪威胁她留下来当儿媳妇。张舜华夺下枪，在复杂情绪下射杀村长。村民们将她抓起来，在村长葬礼上用火将她烧死。</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-title">第四幕：循环闭环</div>
+                <div class="timeline-body">千钧一发之际大雨浇灭火焰，张舜华活了下来。同时，村民们因喝了村长家有毒的井水中毒而死。井水中的毒来源于栗春离开前故意撞碎的带毒手镯——那是记者王微从家族继承的自保之物。至此，循环杀人完成闭环。</div>
+              </div>
+            </div>
+
+            <h3 class="section-title" style="margin-top: 64px;" id="story-past"><a href="#" class="link-placeholder">石泉村过去时线（隐藏线）</a></h3>
+            <div class="timeline editable">
+              <div class="timeline-item">
+                <div class="timeline-title">第一幕：开端</div>
+                <div class="timeline-body">1990年夏天，记者王微在追踪走失男童新闻时发现县城拐卖窝点。因报警无法受理，她决定假扮被拐女性进入石泉村收集证据，同时带上家传手镯（中空灌满剧毒）用于自保。</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-title">第二幕：发展</div>
+                <div class="timeline-body">王微被村长儿子"收留"，一个月内偷偷拍摄村长、王神婆等人与县城神秘人员的交易影像。</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-title">第三幕：高潮</div>
+                <div class="timeline-body">证据集齐后准备逃走，却被村民发现。经过恶斗，手镯遗失在井边，王微带伤脱逃，向经过车辆呼救却被撞至昏迷，证据被神秘人员抢走。</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-title">第四幕：结局</div>
+                <div class="timeline-body">王微成为植物人后魂魄离体。曾有毒杀石泉村的计划，因而她的魂魄被自动投入戮判城，但又因为完全死亡，城主旻狱无法获得她的信息。为了监视她的一举一动，让她留在戮判城打杂。王微出色的能力得到城主赏识，旻狱给了她成为实习判官的机会。</div>
+            </div>
+          </section>
+
+          <!-- Gameplay -->
+          <section class="section" id="gameplay">
+            <div class="section-header">
+              <div class="section-number">06</div>
+              <h2 class="section-title editable"><a href="#" class="link-placeholder">玩法与叙事结合设计</a></h2>
+            </div>
+            <div class="section-body editable">
+              <p>游戏的核心设计目标，是让"搜查证物"这一玩法本身成为叙事体验。玩家不是被动阅读剧情，而是在点击、匹配、推理的过程中，一点点拼凑出灭村案的真相。</p>
+            </div>
+
+            <h3 class="section-title" id="gameplay-mindmap"><a href="#" class="link-placeholder">玩法流程</a></h3>
+
+            <div class="mindmap editable">
+              <div class="mindmap-root">
+                <div class="mindmap-node">前情铺垫 · 地府登录</div>
+              </div>
+
+              <div class="mindmap-branches">
+                <div class="mindmap-branch">
+                  <div class="mindmap-node accent">业镜台 · 搜证</div>
+                  <div class="mindmap-children">
+                    <div class="mindmap-child">scence1 村庄外景<br>井边 / 蛇窟 / 狗屋 / 鸡窝</div>
+                    <div class="mindmap-child">scence2 村庄内景<br>神台 / 书桌 / 窗户 / 林欢儿房间</div>
+                    <div class="mindmap-child">收集证物<br>每件证物附带亡魂供词</div>
+                    <div class="mindmap-child">条件解锁<br>道具联动 / 密码 / Jumpscare</div>
+                  </div>
+                </div>
+
+                <div class="mindmap-branch">
+                  <div class="mindmap-node accent">档案台 · 归档</div>
+                  <div class="mindmap-children">
+                    <div class="mindmap-child">匹配证物与死者<br>补全姓名与死因</div>
+                    <div class="mindmap-child">每匹配5个证物<br>解锁一封张舜华信件</div>
+                    <div class="mindmap-child">累计正确证据<br>分级解锁电视信件</div>
+                    <div class="mindmap-child">获取循环杀人顺序</div>
+                  </div>
+                </div>
+
+                <div class="mindmap-branch">
+                  <div class="mindmap-node accent">轮回轨 · 破解真相</div>
+                  <div class="mindmap-children">
+                    <div class="mindmap-child">填入杀人顺序</div>
+                    <div class="mindmap-child">顺利启动六道轮回</div>
+                    <div class="mindmap-child">决定每个亡魂的去向</div>
+                
+                  </div>
+                </div>
+              </div>
+
+              <div class="mindmap-merge">
+                <div class="mindmap-node">不同的选择指向不同结局</div>
+              </div>
+
+              <div class="mindmap-end">
+                <div class="mindmap-node small">颠倒黑白</div>
+                <div class="mindmap-node small accent">真结局 · 春天</div>
+                <div class="mindmap-node small">混乱结局</div>
+              </div>
+            </div>
+
+            <h3 class="section-title" id="gameplay-interaction"><a href="#" class="link-placeholder">互动形式</a></h3>
+            <div class="section-body editable">
+              <p><strong>热点探索。</strong>场景图中设置隐形热点，玩家依靠视觉直觉点击可疑物体，进入子场景或收集证物。无高亮提示，强化主动观察的侦探代入感。</p>
+              <p><strong>道具联动。</strong>多个证物需要前置道具才能获取。例如：持有"诱蛇神药"才能在蛇窟获取"蛇胆"；持有"??"（鸡）才能进入神台夹层获取鸡毛；持有"???"（碗）才能在井边将其转化为"一碗水"。</p>
+              <p><strong>密码解锁。</strong>部分证物设有密码锁（如收据需要日期密码19910228，碎手镯深层叙事需要密码19900803），将叙事信息转化为解谜关键。</p>
+              <p><strong>Jumpscare 与场景变迁。</strong>探索林欢儿房间时触发惊吓事件，随后 scence2 的背景图发生改变，暗示鬼魂已被惊动。</p>
+              <p><strong>进度分级解锁。</strong>电视根据玩家在档案台匹配正确的证物数量，逐级解锁张舜华的信件1-5，将推理进度与叙事奖励挂钩。</p>
+            </div>
+
+            <h3 class="section-title" id="gameplay-narrative"><a href="#" class="link-placeholder">叙事特征</a></h3>
+            <div class="section-body editable">
+              <p><strong>证物即供词。</strong>每个道具都配有多段第一人称亡魂独白。例如"碎手镯"讲述栗春被拐、逃亡、车祸的全过程；"白糖"以方田富妻子的口吻讲述"她的那碗只有农药，我的这碗只有白糖"。玩家通过证物碎片拼凑真相。</p>
+              <p><strong>关键词高亮。</strong>供词中的人名、死因、关系词以暖棕色高亮显示，既引导阅读焦点，又强化"审阅证词"的仪式感。</p>
+              <p><strong>信件补完。</strong>张舜华的信件随证物进度解锁，补充石泉村最终结局，并在最后揭示玩家角色王微的真实身份，将轮回感与宿命感推向高潮。</p>
+              <p><strong>第二人称结局。</strong>结局采用第二人称视角，根据玩家对六道的选择归类为"颠倒黑白""真结局""混乱结局"三种，使"审判"行为本身成为叙事高潮。</p>
+            </div>
+
+            <h3 class="section-title" id="gameplay-ending"><a href="#" class="link-placeholder">结局设计</a></h3>
+            <div class="grid-3">
+              <div class="card editable">
+                <div class="card-title">利欲熏心 · 颠倒黑白</div>
+                <div class="card-body">全员投入畜生道。王微放弃人身，划清与人间的界限，选择争当地府公务员。</div>
+              </div>
+              <div class="card editable">
+                <div class="card-title">真结局 · 春天</div>
+                <div class="card-body">栗春、方来楠选人道或阿修罗道；小黑可选人道、阿修罗道或畜生道；其余人投入畜生道、饿鬼道或地狱道。王微选择穿梭于阴阳两界，继续伸张正义。</div>
+              </div>
+              <div class="card editable">
+                <div class="card-title">混乱结局 · 搅局</div>
+                <div class="card-body">玩家无逻辑乱选，触发莫名其妙的言情结局：发现城主想与主角建立婚契，于是主动搅和一切。</div>
+              </div>
+            </div>
+          </section>
+
+         
+
+          <!-- Evidence -->
+          <section class="section" id="evidence">
+            <div class="section-header">
+              <div class="section-number">07</div>
+              <h2 class="section-title editable"><a href="#" class="link-placeholder">证物与信件</a></h2>
+            </div>
+
+            <div class="evidence-item editable">
+              <div class="evidence-title">护身符</div>
+              <div class="evidence-quote">
+                <p>"我的亲生父母为我求的，我相信这么多年的运气，都是来源于它。"</p>
+                <p>"我来到这里，本来也是养大当别人老婆的命。但我偏偏能看见一些东西，被上一代神婆收为徒弟。久而久之，所有人都有求于我，我说什么他们信什么。"</p>
+                <p>"不知道哪一天起，我不再是被卖来卖去的东西。村长让我来对接村里的买卖事宜，谁家要老婆还是孩子，都报到我这里。每隔一段时间，我就可以坐村长的车出去看货。我比他们所有人都自由，还赚了一笔又一笔。"</p>
+                <p>"这里很好，众人愚昧，与世隔绝，破四旧的风都吹不进来。"</p>
+                <p>"在我们这里，只有鬼，没有神。只有臣服，没有敬畏。"</p>
+              </div>
+            </div>
+
+            <div class="evidence-item editable">
+              <div class="evidence-title">狗牙吊坠</div>
+              <div class="evidence-quote">
+                <p>"您是我见过，第二个听得懂狗说话的人，青天大老爷。"</p>
+                <p>"这颗牙其实是我自己的。很久之前，我被村里其他看门狗给揍了，他们说我是没有主人的狗。我最锋利的牙齿被他们打掉了。"</p>
+                <p>"她帮我把断掉的牙齿用绳子绑起来——那看起来像她用来绑头发的头绳。她说，她反正也用不上，就给我了。"</p>
+                <p>"她住的地方就在猪窝旁边，我经常听见她的父母叫她来男，但我不识字。她房间的大门常年关着，她只能靠墙边的狗洞看到阳光。她对外面的世界知之甚少，甚至比不过一条丧家之犬。"</p>
+                <p>"她能听懂我的话，反而人类的话不怎么擅长。我就把外面发生的事情告诉她，把有趣的东西带给她。直到我自己的孩子出生后，我才意识到，她是我养育的第一个孩子。"</p>
+              </div>
+            </div>
+
+            <div class="evidence-item editable">
+              <div class="evidence-title">《伊索寓言》</div>
+              <div class="evidence-quote">
+                <p>"我不喜欢读书，读书有什么用呢？反正我永远也不会走出去。这条姓方的村子才是我的家。我爹说，等我长大就给我买个媳妇，暖暖和和地过日子。"</p>
+                <p>"这本书是我娘小时候给我读的，她的声音很好听，比张老师还好听。娘坐在很大的窗子前，我坐在会摇的凳子上……五岁之前很多事我都不记得，就只记得这个。"</p>
+                <p>"只是五岁那年生过病以后，她再也不给我读了。什么窗子、会摇的凳子，我也没有在我家见过。"</p>
+                <p>"这本书里，我有个问题一直不明白，就去问我娘。我问她为什么蛇要咬自己的救命恩人，她说没听过、还说，农夫是该死，一定是惹了谁，才会放蛇咬死他。"</p>
+              </div>
+            </div>
+
+            <div class="evidence-item editable">
+              <div class="evidence-title">白糖</div>
+              <div class="evidence-quote">
+                <p>"没了儿子，我们都准备死。"</p>
+                <p>"我用开水兑了两碗农药，还加了点白糖。她喝下了我给她的那碗，说农药苦。我又给她吃了点白糖。她吃完还是说苦，我说你见到儿子嘴要甜点，大家都高高兴兴地在地下团聚。"</p>
+                <p>"我们约好的是她先死，然后我帮她换上新的袄子，再陪她一起死。那件袄子还是为了过年打的，用了不少棉花。要是来顺还在，还能留给他娶老婆。"</p>
+                <p>"我是骗她的。她的那碗只有农药，我的这碗只有白糖。既然把苦留给了她，我也不能浪费这最后一点甜。"</p>
+              </div>
+            </div>
+
+            <div class="evidence-item editable">
+              <div class="evidence-title">梳子</div>
+              <div class="evidence-quote">
+                <p>"没了来顺我太痛苦了，田富也和我一样。他难过得整天话也不说。"</p>
+                <p>"我生了来楠以后再也没有怀孕。没有了来顺，我们再也不会有其他孩子了。"</p>
+                <p>"那天田富给我端来混着白糖的农药，我眼也不眨地喝了。我说农药实在太苦了，他看着我，片刻又去弄了一碗白糖来，让我甜甜嘴，见到儿子多说点高兴的。"</p>
+                <p>"对了，田富走之前有没有帮我梳好头发、穿上新衣服？我活得稀里糊涂也就罢了，最后只想和田富体面地走。"</p>
+              </div>
+            </div>
+
+            <div class="evidence-item editable">
+              <div class="evidence-title">张舜华的信</div>
+              <div class="letter-content">
+                <h4 class="letter-part-title">张老师的信（1）</h4>
+                <p>车祸发生的那天晚上，没有人找到栗春的尸体，悬崖之下一片黑暗，只能听见湍急的水声。</p>
+                <p>他们说方田富的儿子也在车上，应该是贪玩钻进了送书的货车里。我赶到的时候他还活着，却被卡在变形的驾驶座上。那时到现场的人不多，只有我、方广才和一些不认识的村民。我在找栗春的时候，屠户方广才在营救方田富的儿子。可那个男孩儿最后没有被救出来，货车司机当场就死了，再没有人知道知道这场车祸的真相。</p>
+                <p>我根本不相信这是一场意外。但我应该找谁去得到答案？</p>
+                <p>是我害了栗春。我不知道改变哪个环节能让她活下来，可终究万般缘起都是我。</p>
+                <p>我该死。于是命运给了我去死的机会。</p>
+                <h4 class="letter-part-title">张老师的信（2）</h4>
+                <p>石泉村最近中了邪，接二连三地死人，连他的摇钱树王神婆也死了，再这么下去，石泉村不会有女人了，他们的香火就要断了。方永强拿着他的土猎枪威胁我，要么留在石泉村给他和他儿子生孩子，要么他就让我成为第九个死人。</p>
+                <p>我是拿过枪的人，我从来不意外有一天我会死于枪口之下，但唯独不能死于这双贪婪的眼睛之下。</p>
+                <p>他沟壑纵横的脸上布满自以为是的狰狞，他在石泉村称王太久，光记得自己是男人是村长，是靠拐卖妇女儿童让家家户户仰仗的圣人，忘了自己只是一个老人，忘了自己的武器能被人轻易夺走。</p>
+                <p>村民自制的猎枪比八五式机枪更容易卡壳，第一下扣动扳机的时候，火药在枪膛里爆炸了，如果没有用枪经验，很容易就此脱手。</p>
+                <p>我毫不犹豫地打了第二发子弹。我早就习惯了机枪的后座力，但我还是第一次用枪杀人。他的胸膛炸开，鲜血溅到我的脸上，混着硝烟的味道，这样的人，连血都奇臭无比。</p>
+                <p>所有的一切都暂停了，方永强倒在了地上，碎肉挂在胸前的白骨上，浑浊苍老的眼睛发直，像一条濒死的鱼。</p>
+                <p>他的儿子闻声赶来——方永强曾经希望我嫁给他儿子，刚才却又希望我跟他好。我不能理解他们的父子关系。反正他儿子悲痛地呼唤着他爹，将他爹的血擦在他爹的衣服上。</p>
+                <p>因为刚杀过人，我的手在发抖。此时我应该立刻离开现场的，可我不由自主地留下来，解气地观看方永强一点一点咽气的过程。他指着我，用临死前最后的愤怒诅咒我，他这么老了，我看着心里很不是滋味。所以我捡起枪，又给他脑袋补了一枪。</p>
+                <p>他儿子甚至没有听他的遗言，和我扭打在一起。</p>
+                <p>那个傻子不会打架，他本来打不过我，但他的大呼小叫把人都引来了。最后村民们把我绑起来，他们群情激奋，对着村长的尸体纷纷发誓，明天要在葬礼上，一人一把火将我烧死。</p>
+                <p>那一刻我只是在想，你比我厉害多了，这么多人你都能打过，而我还是寡不敌众。</p>
+                <h4 class="letter-part-title">张老师的信（3）</h4>
+                <p>但我知道，这不是我的全部结局。</p>
+                <p>也许是她在帮我，也许是你在帮我。</p>
+                <p>每个来葬礼的人，都从家里拿了一根柴火——也许是村长儿子舍不得自家出柴火，想出这么一个“众人拾柴火焰高”的法子。木柴砸在我身上，他们殴打导致的伤口重新绽开，让我痛不能言。</p>
+                <p>村长儿子扔下最后一根木头，这根木头正中我的额头，眼前顿时天旋地转，耳鸣声从耳膜穿透心脏。温热的液体从额头滑落下来，眼皮上湿漉漉的，竟然还有些温暖。</p>
+                <p>我的眼睛被血糊住，视野里只有一片血色。我听见他们群情激昂，一边嚷嚷着要杀了我，一边敲着碗宣泄情绪，这般欢腾热闹让我极其心烦意乱。</p>
+                <p>“没有人会来救你的！张舜华！”傻子愤怒地说，他的声音就像这些木头一样，笨重无知，滑稽可笑。</p>
+                <p>热浪从我的脚下铺开，我的脚面传来极其严酷的灼烧感。眼睛上的血一下被蒸干了，我拼尽全力睁开眼睛看这世界最后一眼，我抬头望向天空，那是唯一没有被焚烧的地方。</p>
+                <p>我问苍天，也想问你：我们要做的事情，是不是到这里就结束了？</p>
+                <h4 class="letter-part-title">张老师的信（4）</h4>
+                <p>我什么都没有看清楚，什么回答也没有得到。一滴冰凉的液体落在我的眼球上、嘴唇上，接着是无数密集的凉意将我的脸覆盖，顺着我的身体，将我整个人笼罩。</p>
+                <p>是雨水，尝起来却咸咸的，更像是泪水。</p>
+                <p>木柴本该烧得噼里啪啦响，但滂沱大雨里，只有满地的浓烟，和几簇将息未息的火苗。更强烈的声音，来自地上绵延不绝的哀嚎声。</p>
+                <p>束缚我的麻绳被烧断了，我踩着那堆半焦的柴火，一步一步地走出去。即便雨水彻底将高温冲刷走，每一步脚底的疼痛都锥心刺骨。好在眼前的一切，完全稀释了我的痛苦。</p>
+                <p>烟雾徐徐铺开，这葬礼的饭席早已不成样子。桌上的菜还剩不少，都被雨水糟蹋了，混着油脂像瀑布一样落到地上，饭碗摔得满地都是，村民们倒在地上，有的扶着墙，有的在桌底下爬，有的看见了我，奄奄一息之际仍指着我痛骂。他们正在被极度的疼痛吞噬，我却并不知道为什么会这样。</p>
+                <p>他们像那堆柴火一样，有那么几簇未熄。村长的傻儿子也许是最不容易被毒死的，他尚有力气往外跑。他笨拙的右腿跨过了他家门槛，左腿却没迈过去。</p>
+                <p>我花了点力气走到他身边。他头上也砸破了，也不知道他有没有被血糊住眼睛，是摔死的还是中毒死的。</p>
+                <p>什么样的毒，能毒死一村子的人？</p>
+                <p>我想是你回来了</p>
+                <p>是她在帮我。我跪在地上，我环顾四周，此时我反而更希望我死了，这样我就能看见她，我想跟她说，把恨和愤怒留给我，带着爱和希望活下去。</p>
+                <p>我呼唤着栗春的名字，回应我的只有无边无际的暴雨。就连村民们死前的惨叫声，也渐渐被雨声湮没。</p>
+                <p>雨声很大，我却感到出奇的安静，我感受不到活人的气息，也感受不到栗春的存在了。</p>
+                <p>雨越下越大，几乎把满地的尸体泡发了。石泉村的所有人都死了，你要我做的事，我不知道有没有完成，但似乎一切都结束了。我突然不知道自己该干什么，虚无和荒谬在刹那间袭来，我的身体像干枯的稻草一样在暴雨里飘摇，这一刻我也想死在这里，然后去找你。反正我杀了人，一定会在戮判城见到你，见到栗春。</p>
+                <p>但对你来说，复仇和审判，应该同样重要吧。</p>
+                <p>我答应栗春，要和她出去外面生活。所以昨天我才翻进村长家，找你当年被他们抢走的证据，那张SD卡，是你亲自拍下的，关于石泉村买卖人口的铁证。不仅有妇女，还有一个儿童——林欢儿和方田富所谓的“儿子”方来顺。</p>
+                <p>我们不能再失败了。</p>
+                <p>于是我踩着满地尸体，强撑着最后一点力气，将村长家翻了个遍，还是没有找到你一直在找的东西。最后我用他家的杀猪刀劈开了棺材，在村长的嘴里发现了那张sd卡。这个发现很滑稽吧，其实我当时没抱什么希望了，也不想触碰他的尸体，只是把他剁成几块了之后，他的下颌骨和舌头一起掉了下来。那张SD卡就卡在他的左边下牙的牙缝里。</p>
+                <p>我几乎没有力气离开石泉村了，即便走出了村子，还有极其漫长的山路，在这条山路上，你倒下了，栗春也失败了。</p>
+                <h4 class="letter-part-title">张老师的信（5）</h4>
+                <p>当年你从那些人手里逃出来，带着证据，几乎走到了县城，你向马路上驶来的、最可靠的车辆求救，可那辆车直直向你撞来，还带走了证据。</p>
+                <p>我以为这次我也要死了。但我好像看见了你，王老师。你受伤昏迷的这两年，我只能在梦里见到会说话的你，除此之外，只剩下医院里那个陷入沉睡的你。</p>
+                <p>你这么真实地站在我面前，还是第一次。你跟我说，别管那些该死的证据了，先睡一觉，别的交给你。</p>
+                <p>我醒来的时候，手里的证据已经找不到了，我想是你带走了它。因为等我再一次知道有关石泉村的消息时，是新闻上说，汛期提前，洪水将整条村落冲散，石泉村无一人生还。</p>
+                <p>你当年多么渴望正义的来临，现在却怕我上交了证据，可能面临杀人的指控。我知道你是想让我好好地活下去，我也知道他们必然下地狱，更知道你能让那些作恶的人付出代价，但我似乎余怒未消，我希望能有更多的人知道石泉村的恶行。</p>
+                <p>至于用什么样的方式，我还在想。</p>
+                <p>我醒来的第一件事，就是给栗春办了葬礼。来的人有那三个逃出来的姑娘，以及她的父母。面对她的父母时，是我第二次认真考虑离开这个世界。此后我已经身心俱疲，那一个月一蹶不振，把自己关在家里，谁也不见。</p>
+                <p>直到某天夜里突然想起，你还说过你在地府给自己烧了点阳币，要我在清明当天买一张尾号为4的彩票。你说那个病房风景太差了，隔壁房的老头还总是跟他儿子吵架。</p>
+                <p>抱歉，差点忘了这件事。这封信我是在你身边写的。我决定活下来了，帮你换了医院。</p>
+                <p>今天是立夏，病房外面的绣球差不多开了，树影时常落在你的脸上，只要你一睁眼，就是无尽的夏天，和蓬勃的生命。外面的蝉鸣声很吵，我想你应该也不讨厌。</p>
+                <p>我会一直等你醒来，王老师。</p>
+                <p>另外，这家医院夏天要加收空调费，如果王老师想吹空调的话，请再打些钱来吧。</p>
+                <p class="letter-signoff">张舜华</p>
+                <p class="letter-date">1990年5月6日</p>
+              </div>
+            </div>
+          </section>
+
+          <footer>
+            <span class="editable">《立春》网页解谜游戏 · 原创剧情与玩法设计</span>
+          </footer>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <div id="imgLightbox" class="img-lightbox" role="dialog" aria-modal="true" aria-hidden="true" aria-label="图片预览">
+    <div class="img-lightbox-backdrop" data-close></div>
+    <div class="img-lightbox-panel">
+      <button type="button" class="img-lightbox-close" aria-label="关闭" data-close>&times;</button>
+      <div class="img-lightbox-img-wrap">
+        <img class="img-lightbox-img" src="" alt="" />
+      </div>
+      <div class="img-lightbox-caption"></div>
+    </div>
+  </div>
+
+  <script>
+    // Mobile nav toggle
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    if (navToggle && navLinks) {
+      navToggle.addEventListener('click', () => {
+        navLinks.classList.toggle('open');
+      });
+    }
+
+    // Sidebar TOC navigation
+    const tocItems = document.querySelectorAll('.toc-item');
+    const sectionMap = new Map();
+
+    tocItems.forEach(item => {
+      const target = document.getElementById(item.dataset.target);
+      if (target) sectionMap.set(item, target);
+
+      item.addEventListener('click', () => {
+        if (devMode) return;
+        const target = sectionMap.get(item);
+        if (!target) return;
+
+        tocItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+
+        const offset = 88; // sticky top-nav (72px) + small gap
+        const top = target.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top, behavior: 'smooth' });
+      });
+    });
+
+    // Highlight current section on scroll
+    function updateActiveToc() {
+      const scrollPos = window.scrollY + 120;
+      let current = null;
+
+      sectionMap.forEach((section, item) => {
+        if (section.offsetTop <= scrollPos) {
+          current = item;
+        }
+      });
+
+      if (current) {
+        tocItems.forEach(i => i.classList.remove('active'));
+        current.classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', updateActiveToc, { passive: true });
+    updateActiveToc();
+
+    // ===== Developer mode with password =====
+    const passwordOverlay = document.getElementById('passwordOverlay');
+    const passwordInput = document.getElementById('passwordInput');
+    const passwordConfirm = document.getElementById('passwordConfirm');
+    const passwordCancel = document.getElementById('passwordCancel');
+    let devMode = false;
+    const DEV_PASSWORD = 'hchcsss';
+
+    function setDevMode(active) {
+      devMode = active;
+      document.body.classList.toggle('dev-mode', devMode);
+      document.querySelectorAll('.editable').forEach(el => {
+        el.contentEditable = devMode;
+      });
+      document.querySelectorAll('.toc-item, .brand-title').forEach(el => {
+        el.contentEditable = devMode;
+      });
+    }
+
+    // placeholder links should not navigate
+    document.querySelectorAll('.link-placeholder').forEach(link => {
+      link.addEventListener('click', (e) => {
+        const href = link.getAttribute('href');
+        if (!href || href === '#') {
+          e.preventDefault();
+        }
+      });
+    });
+
+    // plain-text paste to keep uniform styling
+    document.querySelectorAll('.editable').forEach(el => {
+      el.addEventListener('paste', (e) => {
+        if (!devMode) return;
+        e.preventDefault();
+        const text = (e.clipboardData || window.clipboardData).getData('text/plain');
+        document.execCommand('insertText', false, text);
+      });
+    });
+
+    function openPassword() {
+      passwordOverlay.classList.add('show');
+      passwordInput.value = '';
+      setTimeout(() => passwordInput.focus(), 50);
+    }
+
+    function closePassword() {
+      passwordOverlay.classList.remove('show');
+      passwordInput.value = '';
+    }
+
+    function checkPassword() {
+      if (passwordInput.value === DEV_PASSWORD) {
+        setDevMode(!devMode);
+        closePassword();
+      } else {
+        alert('密码错误 / ACCESS DENIED');
+        passwordInput.value = '';
+        passwordInput.focus();
+      }
+    }
+
+    passwordConfirm.addEventListener('click', checkPassword);
+    passwordCancel.addEventListener('click', closePassword);
+
+    passwordInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        checkPassword();
+      } else if (e.key === 'Escape') {
+        closePassword();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if ((e.key === 'm' || e.key === 'M') && !e.repeat) {
+        if (e.target.isContentEditable) return;
+        if (e.target === passwordInput) return;
+        e.preventDefault();
+        if (devMode) {
+          setDevMode(false);
+        } else {
+          openPassword();
+        }
+      }
+    });
+
+    // Export / Import edited data
+    document.getElementById('exportBtn').addEventListener('click', () => {
+      const data = {
+        toc: Array.from(document.querySelectorAll('.toc-item')).map(item => ({
+          target: item.dataset.target,
+          text: item.textContent,
+          level: item.classList.contains('level-2') ? 2 : 1
+        })),
+        brand: document.querySelector('.brand-title').textContent,
+        content: Array.from(document.querySelectorAll('.editable')).map((el, i) => ({
+          index: i,
+          html: el.innerHTML
+        }))
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'portfolio-data.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    document.getElementById('importBtn').addEventListener('click', () => {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = '.json';
+      input.onchange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          try {
+            const data = JSON.parse(event.target.result);
+            if (data.toc) {
+              const existing = document.querySelectorAll('.toc-item');
+              data.toc.forEach((item, i) => {
+                if (existing[i]) {
+                  existing[i].dataset.target = item.target;
+                  existing[i].textContent = item.text;
+                  existing[i].className = 'toc-item' + (item.level === 2 ? ' level-2' : '');
+                }
+              });
+              sectionMap.clear();
+              document.querySelectorAll('.toc-item').forEach(item => {
+                const target = document.getElementById(item.dataset.target);
+                if (target) sectionMap.set(item, target);
+              });
+            }
+            if (data.brand) {
+              const brand = document.querySelector('.brand-title');
+              if (brand) brand.textContent = data.brand;
+            }
+            if (data.content) {
+              const editables = document.querySelectorAll('.editable');
+              data.content.forEach(item => {
+                if (editables[item.index]) {
+                  editables[item.index].innerHTML = item.html;
+                }
+              });
+            }
+            alert('数据已导入 / DATA IMPORTED');
+          } catch (err) {
+            alert('导入错误 / IMPORT ERROR: ' + err.message);
+          }
+        };
+        reader.readAsText(file);
+      };
+      input.click();
+    });
+
+    // Demo gallery: click to view full image
+    const imgLightbox = document.getElementById('imgLightbox');
+    const imgLightboxImg = imgLightbox.querySelector('.img-lightbox-img');
+    const imgLightboxCaption = imgLightbox.querySelector('.img-lightbox-caption');
+    const demoSection = document.getElementById('demo');
+
+    function openImgLightbox(img) {
+      imgLightboxImg.src = img.currentSrc || img.src;
+      imgLightboxImg.alt = img.alt || '';
+      const title = img.closest('.gallery-card')?.querySelector('.card-title')?.textContent?.trim();
+      imgLightboxCaption.textContent = title || img.alt || '';
+      imgLightbox.classList.add('open');
+      imgLightbox.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeImgLightbox() {
+      imgLightbox.classList.remove('open');
+      imgLightbox.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      imgLightboxImg.removeAttribute('src');
+    }
+
+    if (demoSection) {
+      demoSection.querySelectorAll('.gallery-img').forEach((img) => {
+        img.addEventListener('click', () => openImgLightbox(img));
+      });
+    }
+
+    imgLightbox.querySelectorAll('[data-close]').forEach((el) => {
+      el.addEventListener('click', closeImgLightbox);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && imgLightbox.classList.contains('open')) {
+        e.preventDefault();
+        closeImgLightbox();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,1708 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ANALOG_DREAMS // 广播剧剧本</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ===== GLOBAL VARIABLES ===== */
+    :root {
+      --theme-chassis: #e8e4dc;
+      --theme-chassis-dark: #dcd6cb;
+      --theme-border: #b8b2a7;
+      --theme-accent: #e05600;
+      --theme-accent-glow: rgba(224, 86, 0, 0.45);
+      --theme-screen: #f5f2ec;
+      --theme-screen-glow: #d8d3c9;
+      --theme-text: #2a2723;
+      --theme-text-dim: #6b655b;
+      --theme-light: #f5f2ec;
+
+      --shadow-plastic:
+        inset 1px 1px 0px rgba(255,255,255,0.8),
+        inset -1px -1px 0px rgba(0,0,0,0.06),
+        2px 2px 5px rgba(0,0,0,0.1),
+        6px 6px 18px rgba(0,0,0,0.08);
+
+      --shadow-inset:
+        inset 0 2px 4px 0 rgba(0, 0, 0, 0.12),
+        inset 0 1px 2px 0 rgba(0, 0, 0, 0.08);
+
+      --shadow-button:
+        0 4px 0 #9e9488,
+        0 6px 8px rgba(0,0,0,0.15),
+        inset 0 1px 0 rgba(255,255,255,0.6);
+
+      --shadow-button-active:
+        0 1px 0 #9e9488,
+        0 2px 3px rgba(0,0,0,0.15),
+        inset 0 2px 4px rgba(0,0,0,0.1);
+
+      --font-label: 'Space Grotesk', sans-serif;
+      --font-screen: 'Share Tech Mono', monospace;
+    }
+
+    /* ===== RESET ===== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 15px;
+    }
+
+    body {
+      font-family: var(--font-label);
+      background: #FAFAFA;
+      color: var(--theme-text);
+      line-height: 1.65;
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      background-image:
+        radial-gradient(circle at 12% 18%, rgba(0,0,0,0.018) 0%, transparent 45%),
+        radial-gradient(circle at 88% 82%, rgba(0,0,0,0.015) 0%, transparent 40%),
+        linear-gradient(rgba(0,0,0,0.012) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.012) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+    }
+
+    /* ===== CHASSIS FRAME ===== */
+    .chassis {
+      position: relative;
+      width: 100%;
+      margin: 0;
+      min-height: calc(100vh - 72px);
+      background: transparent;
+    }
+
+    /* ===== APP LAYOUT ===== */
+    .app {
+      display: block;
+      position: relative;
+      z-index: 1;
+      min-height: calc(100vh - 72px);
+    }
+
+    /* ===== SIDEBAR / CONTROL MODULE ===== */
+    .sidebar {
+      position: fixed;
+      top: 72px;
+      left: 0;
+      width: 260px;
+      height: calc(100vh - 72px);
+      background: #faf8f5;
+      border-right: 1px solid rgba(0, 0, 0, 0.08);
+      display: flex;
+      flex-direction: column;
+      z-index: 100;
+      padding: 24px 28px 32px;
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: 26px;
+      letter-spacing: 0.12em;
+      color: var(--theme-text);
+      text-align: left;
+      margin-bottom: 6px;
+    }
+
+    .brand-sub {
+      font-size: 12px;
+      color: var(--theme-text-dim);
+      margin-bottom: 26px;
+      letter-spacing: 0.06em;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--theme-text);
+      text-decoration: none;
+      padding: 10px 0;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 999px;
+      margin-bottom: 28px;
+      background: #fff;
+      transition: all 0.2s ease;
+    }
+
+    .back-link:hover {
+      background: var(--theme-accent);
+      color: #fff;
+      border-color: var(--theme-accent);
+    }
+
+    .toc {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-right: 4px;
+    }
+
+    .toc::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .toc::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.12);
+      border-radius: 2px;
+    }
+
+    .toc-item {
+      position: relative;
+      display: block;
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 1.45;
+      color: var(--theme-text-dim);
+      text-decoration: none;
+      background: transparent;
+      border: 1px solid transparent;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+
+    .toc-item:hover {
+      background: rgba(0, 0, 0, 0.04);
+      color: var(--theme-text);
+    }
+
+    .toc-item.active {
+      background: rgba(184, 74, 57, 0.08);
+      color: var(--theme-accent);
+      font-weight: 600;
+    }
+
+    .toc-item.level-2 {
+      padding-left: 28px;
+      font-size: 13px;
+      color: var(--theme-text-dim);
+    }
+
+    .toc-item.level-2:hover {
+      color: var(--theme-text);
+    }
+
+    /* ===== MAIN SCREEN AREA ===== */
+    .main {
+      margin-left: 260px;
+      width: calc(100% - 260px);
+      min-width: 0;
+      padding: 40px 32px;
+    }
+
+    .screen-frame {
+      position: relative;
+      background: linear-gradient(145deg, #faf8f4, #f0ece4);
+      border: 8px solid #dcd6cb;
+      border-radius: 16px;
+      box-shadow:
+        0 0 0 2px #d8d3c9,
+        inset 0 0 40px rgba(255,255,255,0.35),
+        0 12px 30px rgba(0,0,0,0.08);
+      padding: 20px;
+      overflow: hidden;
+    }
+
+    .screen-frame::before {
+      content: "CRT DISPLAY // ANALOG_DREAMS";
+      position: absolute;
+      top: -11px;
+      left: 16px;
+      padding: 2px 8px;
+      background: #dcd6cb;
+      font-family: var(--font-label);
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      color: #6b655b;
+      border-radius: 4px;
+    }
+
+    /* Subtle paper grain overlay */
+    .screen-frame::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 10;
+      background-image:
+        radial-gradient(circle at 30% 30%, rgba(0,0,0,0.03) 0, transparent 2px),
+        radial-gradient(circle at 70% 60%, rgba(0,0,0,0.02) 0, transparent 1.5px);
+      background-size: 120px 120px, 80px 80px;
+      opacity: 0.4;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      padding: 80px 60px 70px;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      position: relative;
+    }
+
+    .hero-label {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 4px;
+      background: rgba(224, 86, 0, 0.12);
+      border: 1px solid rgba(224, 86, 0, 0.25);
+      color: var(--theme-accent);
+      font-family: var(--font-screen);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-family: var(--font-screen);
+      font-size: 48px;
+      line-height: 1.15;
+      margin-bottom: 24px;
+      letter-spacing: 0.08em;
+      color: var(--theme-text);
+      text-shadow: 0 0 20px rgba(224, 86, 0, 0.12);
+    }
+
+    .hero p {
+      font-family: var(--font-label);
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--theme-text-dim);
+      max-width: 600px;
+      text-indent: 0;
+    }
+
+    /* ===== SECTIONS ===== */
+    .section {
+      padding: 64px 60px;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      position: relative;
+    }
+
+    .section:last-of-type {
+      border-bottom: none;
+    }
+
+    .section-header {
+      margin-bottom: 40px;
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+    }
+
+    .section-number {
+      font-family: var(--font-screen);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--theme-accent);
+      padding: 2px 8px;
+      border: 1px solid rgba(224, 86, 0, 0.3);
+      border-radius: 4px;
+    }
+
+    .section-title {
+      font-family: var(--font-label);
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.3;
+      letter-spacing: 0.03em;
+      color: var(--theme-text);
+    }
+
+    .section-body {
+      font-family: var(--font-label);
+      font-size: 14px;
+      line-height: 1.85;
+      color: var(--theme-text-dim);
+    }
+
+    .section-body p {
+      text-indent: 2em;
+      margin-bottom: 1em;
+    }
+
+    h3.section-title {
+      font-size: 20px;
+      color: var(--theme-text);
+      margin: 48px 0 28px;
+    }
+
+    /* ===== CASSETTE CARDS ===== */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .card {
+      position: relative;
+      background: linear-gradient(145deg, #d8d3c9, #c9c3b8);
+      border: 2px solid #b8b2a7;
+      border-radius: 8px;
+      padding: 28px;
+      box-shadow: var(--shadow-plastic);
+      transition: transform 0.2s ease;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      right: 12px;
+      height: 8px;
+      background: repeating-linear-gradient(
+        90deg,
+        rgba(0,0,0,0.08) 0px,
+        rgba(0,0,0,0.08) 3px,
+        transparent 3px,
+        transparent 8px
+      );
+      border-radius: 2px;
+      opacity: 0.6;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+    }
+
+    .card-title {
+      font-family: var(--font-label);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--theme-text);
+      margin-bottom: 12px;
+      margin-top: 12px;
+      letter-spacing: 0.04em;
+    }
+
+    .card-body {
+      font-family: var(--font-label);
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--theme-text-dim);
+    }
+
+    .card-body p {
+      text-indent: 2em;
+      margin-bottom: 0.6em;
+    }
+
+    /* ===== CHARACTER CARDS ===== */
+    .char-card {
+      position: relative;
+      background: linear-gradient(145deg, #e2ded5, #d4cfc6);
+      border: 2px solid #b8b2a7;
+      border-radius: 8px;
+      padding: 28px;
+      box-shadow: var(--shadow-plastic);
+      transition: transform 0.2s ease;
+    }
+
+    .char-card::before {
+      content: "";
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #c9c3b8, #f0ece4);
+      box-shadow: inset 1px 1px 2px rgba(255,255,255,0.8), 1px 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .char-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .char-name {
+      font-family: var(--font-label);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--theme-text);
+      margin-bottom: 4px;
+    }
+
+    .char-role {
+      font-family: var(--font-screen);
+      font-size: 10px;
+      color: var(--theme-accent);
+      letter-spacing: 0.06em;
+      margin-bottom: 14px;
+    }
+
+    .char-desc {
+      font-family: var(--font-label);
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--theme-text-dim);
+      text-indent: 2em;
+    }
+
+    /* ===== TIMELINE ===== */
+    .timeline {
+      position: relative;
+      padding-left: 28px;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 5px;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: linear-gradient(180deg, var(--theme-accent), rgba(224,86,0,0.15));
+      box-shadow: 0 0 8px rgba(224,86,0,0.2);
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-bottom: 40px;
+    }
+
+    .timeline-item:last-child {
+      padding-bottom: 0;
+    }
+
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: -28px;
+      top: 6px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid var(--theme-accent);
+      box-shadow: 0 0 8px rgba(224,86,0,0.35);
+    }
+
+    .timeline-title {
+      font-family: var(--font-label);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--theme-text);
+      margin-bottom: 8px;
+    }
+
+    .timeline-body {
+      font-family: var(--font-label);
+      font-size: 13px;
+      line-height: 1.75;
+      color: var(--theme-text-dim);
+      text-indent: 2em;
+    }
+
+    /* ===== MINDMAP ===== */
+    .mindmap {
+      margin: 40px 0;
+      padding: 28px;
+      background: rgba(0,0,0,0.04);
+      border-radius: 12px;
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .mindmap-root {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+
+    .mindmap-node {
+      display: inline-block;
+      padding: 12px 24px;
+      background: linear-gradient(145deg, #e8e4dc, #dcd6cb);
+      border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 8px;
+      font-family: var(--font-label);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--theme-text);
+      letter-spacing: 0.04em;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      position: relative;
+    }
+
+    .mindmap-node.small {
+      font-size: 12px;
+      padding: 10px 18px;
+    }
+
+    .mindmap-node.accent {
+      background: linear-gradient(145deg, rgba(224,86,0,0.1), rgba(224,86,0,0.04));
+      border-color: rgba(224,86,0,0.25);
+      color: var(--theme-accent);
+    }
+
+    .mindmap-branches {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      position: relative;
+    }
+
+    .mindmap-branches::before {
+      content: "";
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      height: 20px;
+      background: rgba(224,86,0,0.4);
+    }
+
+    .mindmap-branch {
+      flex: 1;
+      max-width: 280px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      position: relative;
+    }
+
+    .mindmap-branch::before {
+      content: "";
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      height: 20px;
+      background: rgba(224,86,0,0.4);
+    }
+
+    .mindmap-children {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .mindmap-child {
+      width: 100%;
+      padding: 14px 16px;
+      background: rgba(255,255,255,0.45);
+      border: 1px solid rgba(0,0,0,0.06);
+      border-radius: 6px;
+      font-family: var(--font-label);
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--theme-text-dim);
+      text-align: center;
+    }
+
+    .mindmap-merge {
+      display: flex;
+      justify-content: center;
+      margin-top: 40px;
+      position: relative;
+    }
+
+    .mindmap-merge::before {
+      content: "";
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      height: 20px;
+      background: rgba(224,86,0,0.4);
+    }
+
+    .mindmap-end {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 32px;
+    }
+
+    /* ===== EVIDENCE / LETTERS ===== */
+    .evidence-item {
+      margin-bottom: 40px;
+      position: relative;
+    }
+
+    .evidence-title {
+      font-family: var(--font-label);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--theme-text);
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .evidence-quote {
+      font-family: var(--font-label);
+      font-size: 13px;
+      line-height: 2;
+      color: var(--theme-text);
+      padding: 24px 28px;
+      background: rgba(255,255,255,0.55);
+      border-radius: 8px;
+      border-left: 3px solid var(--theme-accent);
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.04);
+    }
+
+    .evidence-quote p {
+      text-indent: 2em;
+      margin-bottom: 0.5em;
+    }
+
+    .evidence-quote p:last-child {
+      margin-bottom: 0;
+    }
+
+    .letter-placeholder {
+      padding: 36px;
+      background: rgba(0,0,0,0.04);
+      border: 1px dashed rgba(224,86,0,0.25);
+      border-radius: 8px;
+      text-align: center;
+      color: var(--theme-text-dim);
+      font-family: var(--font-screen);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+    }
+
+    .letter-content {
+      padding: 36px;
+      background: #fffef9;
+      border: 1px solid #d8d3c9;
+      border-radius: 8px;
+      color: var(--theme-text);
+      font-family: var(--font-body);
+      font-size: 13px;
+      line-height: 1.9;
+      letter-spacing: 0.04em;
+      text-align: left;
+      box-shadow: inset 0 0 24px rgba(0,0,0,0.03);
+    }
+
+    .letter-content p {
+      margin-bottom: 14px;
+      text-indent: 2em;
+    }
+
+    .letter-content p:last-child {
+      margin-bottom: 0;
+    }
+
+    .letter-part-title {
+      font-family: var(--font-label);
+      font-size: 15px;
+      color: rgba(224,86,0,0.95);
+      margin: 28px 0 16px;
+      letter-spacing: 0.12em;
+      text-indent: 0;
+    }
+
+    .letter-part-title:first-child {
+      margin-top: 0;
+    }
+
+    .letter-signoff,
+    .letter-date {
+      text-align: right;
+      text-indent: 0;
+      color: var(--theme-text-dim);
+      margin-top: 8px;
+    }
+
+    .letter-date {
+      margin-bottom: 0;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      padding: 48px 60px;
+      text-align: center;
+      font-family: var(--font-screen);
+      font-size: 11px;
+      color: var(--theme-text-dim);
+      letter-spacing: 0.06em;
+      border-top: 1px solid rgba(0,0,0,0.08);
+    }
+
+    /* ===== EDIT MODE ===== */
+    body.dev-mode .editable {
+      outline: 1px dashed rgba(224,86,0,0.5);
+      border-radius: 4px;
+      cursor: text;
+    }
+
+    body.dev-mode .editable:hover {
+      outline: 1px dashed var(--theme-accent);
+      background: rgba(224,86,0,0.08);
+    }
+
+    body.dev-mode .toc-item,
+    body.dev-mode .brand-title {
+      outline: 1px dashed rgba(224,86,0,0.5);
+      border-radius: 4px;
+      cursor: text;
+    }
+
+    body.dev-mode .toc-item:hover,
+    body.dev-mode .brand-title:hover {
+      outline: 1px dashed var(--theme-accent);
+      background: rgba(224,86,0,0.08);
+    }
+
+    /* ===== DEV TOOLS ===== */
+    .dev-tools {
+      margin-top: 16px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .dev-btn {
+      flex: 1;
+      padding: 8px 0;
+      border-radius: 6px;
+      border: none;
+      background: linear-gradient(180deg, #f0ece4, #d8d3c9);
+      color: var(--theme-text);
+      font-family: var(--font-label);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      box-shadow:
+        0 4px 0 #9e9488,
+        0 6px 8px rgba(0,0,0,0.15),
+        inset 0 1px 0 rgba(255,255,255,0.6);
+      transition: all 0.1s ease;
+    }
+
+    .dev-btn:hover {
+      filter: brightness(1.02);
+    }
+
+    .dev-btn:active {
+      transform: translateY(3px);
+      box-shadow:
+        0 1px 0 #9e9488,
+        0 2px 3px rgba(0,0,0,0.15),
+        inset 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .edit-hint {
+      display: none;
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      padding: 10px 16px;
+      border-radius: 6px;
+      background: rgba(224,86,0,0.12);
+      border: 1px solid rgba(224,86,0,0.3);
+      color: var(--theme-accent);
+      font-family: var(--font-screen);
+      font-size: 11px;
+      z-index: 200;
+    }
+
+    body.dev-mode .edit-hint {
+      display: block;
+    }
+
+    /* ===== LINK PLACEHOLDERS ===== */
+    .link-placeholder {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(224, 86, 0, 0.35);
+      cursor: pointer;
+      transition: border-color 0.15s ease, color 0.15s ease;
+    }
+
+    .link-placeholder:hover {
+      color: var(--theme-accent);
+      border-bottom-color: var(--theme-accent);
+    }
+
+    h2 .link-placeholder,
+    h3 .link-placeholder {
+      border-bottom-style: dashed;
+      border-bottom-width: 1px;
+    }
+
+    /* ===== PASSWORD OVERLAY ===== */
+    .password-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+      background: rgba(26, 24, 21, 0.75);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      align-items: center;
+      justify-content: center;
+    }
+
+    .password-overlay.show {
+      display: flex;
+    }
+
+    .password-box {
+      width: 340px;
+      padding: 32px;
+      background: linear-gradient(145deg, #e2ded5, #f0ece4);
+      border: 2px solid var(--theme-border);
+      border-radius: 12px;
+      box-shadow: var(--shadow-plastic), 0 24px 60px rgba(0,0,0,0.35);
+      text-align: center;
+    }
+
+    .password-box h3 {
+      font-family: var(--font-label);
+      font-size: 16px;
+      color: var(--theme-text);
+      margin-bottom: 6px;
+      letter-spacing: 0.04em;
+    }
+
+    .password-box p {
+      font-family: var(--font-screen);
+      font-size: 10px;
+      color: var(--theme-text-dim);
+      margin-bottom: 20px;
+      letter-spacing: 0.06em;
+    }
+
+    .password-box input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--theme-border);
+      border-radius: 6px;
+      background: #fffef9;
+      color: var(--theme-text);
+      font-family: var(--font-screen);
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+      outline: none;
+      box-shadow: var(--shadow-inset);
+    }
+
+    .password-box input:focus {
+      border-color: var(--theme-accent);
+      box-shadow: 0 0 0 3px rgba(224, 86, 0, 0.12), var(--shadow-inset);
+    }
+
+    .password-box .pw-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .password-box button {
+      flex: 1;
+      padding: 8px 0;
+      border: none;
+      border-radius: 6px;
+      font-family: var(--font-label);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      transition: all 0.1s ease;
+    }
+
+    .password-box .pw-confirm {
+      background: var(--theme-accent);
+      color: #fff;
+      box-shadow: 0 3px 0 #b54300, 0 4px 6px rgba(0,0,0,0.15);
+    }
+
+    .password-box .pw-confirm:active {
+      transform: translateY(3px);
+      box-shadow: 0 0 0 #b54300, 0 1px 3px rgba(0,0,0,0.15);
+    }
+
+    .password-box .pw-cancel {
+      background: linear-gradient(180deg, #f0ece4, #d8d3c9);
+      color: var(--theme-text);
+      box-shadow: var(--shadow-button);
+    }
+
+    .password-box .pw-cancel:active {
+      transform: translateY(3px);
+      box-shadow: var(--shadow-button-active);
+    }
+
+    /* ===== GALLERY CARDS ===== */
+    .gallery-card {
+      position: relative;
+      background: linear-gradient(145deg, #e2ded5, #d4cfc6);
+      border: 2px solid #b8b2a7;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: var(--shadow-plastic);
+      transition: transform 0.2s ease;
+    }
+
+    .gallery-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .gallery-img {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      display: block;
+      background: linear-gradient(145deg, #e8e4dc, #d4cfc6);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .gallery-caption {
+      padding: 18px;
+    }
+
+    .gallery-caption .card-title {
+      margin-top: 0;
+      margin-bottom: 6px;
+    }
+
+    .gallery-caption .card-body {
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1200px) {
+      .sidebar {
+        position: relative;
+        top: auto;
+        left: auto;
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        padding: 20px 24px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px;
+      }
+      .brand-title {
+        margin-bottom: 0;
+        font-size: 20px;
+      }
+      .brand-sub {
+        display: none;
+      }
+      .back-link {
+        margin-bottom: 0;
+        padding: 8px 16px;
+        order: 3;
+      }
+      .toc {
+        flex: 1 1 auto;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 6px;
+        overflow-x: visible;
+        overflow-y: visible;
+        order: 4;
+      }
+      .toc-item {
+        white-space: nowrap;
+        flex-shrink: 0;
+        padding: 8px 12px;
+        font-size: 13px;
+      }
+      .toc-item.level-2 {
+        padding-left: 12px;
+        font-size: 12px;
+      }
+      .main {
+        margin: 0 auto;
+        max-width: 1100px;
+        width: 100%;
+        padding: 32px 24px;
+      }
+      .hero, .section, footer {
+        padding-left: 32px;
+        padding-right: 32px;
+      }
+      .grid-3, .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .chassis {
+        margin: 16px;
+        min-height: calc(100vh - 32px);
+      }
+      .sidebar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .back-link {
+        order: 0;
+      }
+      .toc {
+        flex-direction: column;
+        overflow-y: auto;
+        max-height: 220px;
+      }
+      .toc-item {
+        white-space: normal;
+      }
+      .main {
+        margin: 0 auto;
+        max-width: 1100px;
+        width: 100%;
+        padding: 24px 16px;
+      }
+      .hero h1 {
+        font-size: 32px;
+      }
+      .mindmap-branches {
+        flex-direction: column;
+        align-items: center;
+      }
+      .mindmap-branch {
+        max-width: 100%;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .hero h1 {
+        font-size: 26px;
+      }
+      .section-title {
+        font-size: 22px;
+      }
+    }
+
+    /* ===== 简约顶部导航（与首页一致） ===== */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(250, 250, 250, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 32px;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-brand {
+      font-family: 'Yuangu', var(--font-label);
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: #333;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-brand i {
+      font-size: 16px;
+      color: #888;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 8px;
+    }
+
+    .nav-links a {
+      display: block;
+      padding: 10px 18px;
+      font-size: 14px;
+      color: #888;
+      border-radius: 20px;
+      transition: color 0.2s ease, background 0.2s ease;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: #333;
+      background: #E0F7FA;
+    }
+
+    .nav-toggle {
+      display: none;
+      width: 44px;
+      height: 44px;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #333;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .nav-container {
+        height: 64px;
+        padding: 0 20px;
+      }
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        background: rgba(250, 250, 250, 0.98);
+        padding: 16px 20px;
+        gap: 4px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      }
+      .nav-links.open {
+        display: flex;
+      }
+      .nav-links a {
+        padding: 14px 16px;
+        border-radius: 8px;
+      }
+      .nav-toggle {
+        display: flex;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="edit-hint">DEV MODE ACTIVE // CLICK TEXT TO EDIT</div>
+
+  <div class="password-overlay" id="passwordOverlay">
+    <div class="password-box">
+      <h3>开发者模式</h3>
+      <p>DEV MODE ACCESS // PRESS M TO TOGGLE</p>
+      <input type="password" id="passwordInput" placeholder="请输入密码" autocomplete="off" />
+      <div class="pw-actions">
+        <button class="pw-confirm" id="passwordConfirm">确认</button>
+        <button class="pw-cancel" id="passwordCancel">取消</button>
+      </div>
+    </div>
+  </div>
+
+  <nav class="top-nav">
+    <div class="nav-container">
+      <a class="nav-brand" href="zuopin.html">
+        <i class="fa-solid fa-feather-pointed"></i>
+        <span>创作集</span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="打开菜单">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="lichun.html">游戏剧本</a></li>
+        <li><a href="tongrenwen.html">中长篇同人文</a></li>
+        <li><a href="ciqu.html">歌曲作词</a></li>
+        <li><a href="guangbo.html" class="active">广播剧剧本</a></li>
+        <li><a href="qita.html">其他</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="chassis">
+    <div class="app">
+      <!-- 左侧目录导航 -->
+      <aside class="sidebar">
+        <div class="brand-title">广播剧剧本</div>
+        <a class="back-link" href="zuopin.html"><i class="fa-solid fa-arrow-left"></i> 返回创作集</a>
+
+        <nav class="toc" id="toc">
+          <button class="toc-item active" data-target="hero">序</button>
+          <button class="toc-item" data-target="radio-damao">《重生之我是大肥猫》</button>
+        </nav>
+
+        <div class="dev-tools">
+          <button class="dev-btn" id="exportBtn">EXP</button>
+          <button class="dev-btn" id="importBtn">IMP</button>
+        </div>
+      </aside>
+
+      <!-- Main CRT Screen -->
+      <main class="main">
+        <div class="screen-frame">
+
+          <!-- Hero -->
+          <section class="hero" id="hero">
+            <div class="hero-label">RADIO DRAMA</div>
+            <h1 class="editable">广播剧剧本</h1>
+            <p class="editable">
+              收录广播剧剧本。
+            </p>
+          </section>
+
+                    <!-- Radio Drama -->
+          <section class="section" id="radio-damao">
+            <div class="section-header">
+              <div class="section-number">01</div>
+              <h2 class="section-title editable"><a href="#" class="link-placeholder">《重生之我是大肥猫》</a></h2>
+            </div>
+            <div class="section-body editable">
+              <p>广播剧剧本存档。</p>
+            </div>
+
+            <div class="evidence-item">
+              <div class="evidence-title">剧本正文</div>
+              <div class="letter-content editable">
+<p>万万没想到之关于普通女大学生一觉醒来变成大肥猫这件事</p>
+<p>--  -- 校园轻松广播剧</p>
+<p>编剧：隔壁村王大花</p>
+<p>介绍</p>
+<p>一个普通大学生一觉醒来变成猫，遇到另一位普通大学生并激发人家追求梦想，最后自己也打开心结，走向幸福人生的故事。</p>
+<p>出场人物</p>
+<p>易佳（笔名宜家奥特曼）：大三，性格开朗直率，名下经典文无数。但男朋友对她的技能点并不认同，发自内心地看不起这件事，两人有些三观不合、貌合神离那味儿了。</p>
+<p>赵筱薇：大一，比较孤僻但看起来还算正常人。很喜欢写东西，但是因为高中被人喷过就从此金盆洗手。</p>
+<p>男朋友：热门专业重点培养人才，始终怀有优越感。对很多事情见解颇深。我们都不知道他究竟爱不爱他的女朋友。</p>
+<p>易佳母亲</p>
+<p>警察叔叔</p>
+<p>以及各种龙套</p>
+<p>风格</p>
+<p>校园，轻松，搞笑，整活（参考了网剧万万没想到的风格），偶尔抒情</p>
+<p>{}为场景提示</p>
+<p>【】为后期提示</p>
+<p>（）为cv提示</p>
+<p>本剧共 6 幕</p>
+<p>（片头参考万万没想到片头 --  -- 啦啦歌+本节目由xxx赞助播出）</p>
+<p>第一幕：教室</p>
+<p>【独白鼓点起，句间停顿剪去制造效果】</p>
+<p>易（独白）：我叫易佳，女，身高一米七，未婚未育，没房没车。是一个平平无奇的大三学生，也是2021年晋河文学城完结金榜top10的作者宜家奥特曼。写文码字是我的爱好，按时日更是我的信仰。多少同人文、广播剧都是我宜家奥特曼的原著，多少狂热的少男少女等着我露脸一睹他们奥特曼大大的芳容。然而就在我和男朋友吵架的这一天，我在空无一人的教室里一觉醒来，变成了一只 --  --</p>
+<p>【鼓点停，一声猫叫】</p>
+<p>易（无奈）：......大肥猫。</p>
+<p>易（独白）：作为一只苟活二十年的麻瓜，我真是小刀拉屁股 --  -- 开了眼了。为了排除那个工科直男会魔法的可能，我仔细回想一下我们吵架的内容......</p>
+<p>【鼓点起，回溯】</p>
+<p>男（气急败坏）：你昨天不回我消息就是因为又埋头写你那些东西吧！易佳，你觉得你的小说还能火多久？你写的东西有什么高明之处？你有这时间跟我学学数学不好吗？</p>
+<p>易（阴阳怪气）：啊对对对，大少爷你懂得多，你在实验室和图书馆的时候不也总是不回我消息，跟气绝了一样吗！自己身上几根毛也数不清，在我面前装什么学术大拿！</p>
+<p>男：出去跟别人说我女朋友数学刚及格，还有被捞的成分，你知道我有多丢脸？我家大黄都比你会数数！我真恨不得把你变成它！</p>
+<p>【回溯结束】</p>
+<p>易（独白）：大黄是条黄狗，而我现在是条橘猫，应该不回是那货干的。【鼓点起】可我这要是变不回去了，易佳这个人不就相当于死了吗？知名网络作家宜家奥特曼离奇失踪，生死不明，这事能挂热搜好几天吧？那时，我的家人一定会痛不欲生，我的读者一定会悲痛欲绝，我的男朋友一定会......不行不行，我得找人帮我想想办法！【停】</p>
+<p>【易佳爬出衣服，跳下凳子】</p>
+<p>易（独白）：整个教学楼都静悄悄的，大家该不会都去吃晚饭了吧？咦，那个教室亮着光哎！</p>
+<p>【易走近教室，女生声音淡入】</p>
+<p>赵（在打电话，声音清冷）：五十万我给不起，你撕票吧。</p>
+<p>易（震惊）：她在说什么？！</p>
+<p>赵（语气平静无波）：这个儿子是我和前夫生的，我看不惯他很久了，你不用帮他求情。再见。</p>
+<p>【挂断电话】</p>
+<p>易（大喊）：喂喂喂，五十万给不起，总得报警吧，你不至于撕票啊！</p>
+<p>赵（平静）：没事，我前夫还有钱，绑匪也会给他打电话的。</p>
+<p>易：为什么你还会有前夫啊？</p>
+<p>赵：下一个接到这个倒霉电话的男人，就是我的前夫。我不知道他是谁，我只知道他拿着被骗的号码牌。</p>
+<p>【赵转身】</p>
+<p>赵：（震惊地倒吸一口气）是谁在说话？（环顾四周的气音，最后定在一个点上）难道是......</p>
+<p>易：没错是我。</p>
+<p>赵（震惊）：窗帘？！你怎么会说话了！</p>
+<p>易：（抓狂）：不是窗帘，是我！</p>
+<p>赵：小椅子？</p>
+<p>易：我是猫，一只猫！</p>
+<p>赵：</p>
+<p>【鼓点起，赵开始损猫】</p>
+<p>赵（仍旧震惊）：怎么会有这么肥的猫？野猫是偷吃了多少地沟油才长成这样......还是说，你是从食堂厨房里跑出来的一只猪？可是谁会为了保护小猪把它涂成橘黄色？你到底是哪里来的妖怪，人有人间的法律，妖有妖族的铁规，你我人妖殊途，到底想干什么？</p>
+<p>易：难道不是我问你想干什么吗？自己的生命怎么可以轻易糟蹋？</p>
+<p>赵（轻蔑）：那诈骗电话第三次打来了，我不得放放狠话？</p>
+<p>易：额......那，记得下载国家反诈app。</p>
+<p>【鼓点停，柔和bgm起】</p>
+<p>赵+易：国家反诈中心提醒：未知链接不点击，陌生来电不轻信，个人信息不透露，转账汇款多核实。</p>
+<p>第二幕</p>
+<p>【转场音效】</p>
+<p>【走在路上，脚步声，行人交谈，单车铃声】</p>
+<p>【鼓点起】</p>
+<p>赵（若有所思）：没想到这个世界上还有这么离奇的事情。学姐，你放心，我已经拜托我妈去问我们那边最出名的神棍了，很快就有消息。</p>
+<p>易：这件事不能让太多人知道，不然我明天就会被抓去研究了。</p>
+<p>赵：那当然，我不会让人发现你是人的。</p>
+<p>易（无语）：所以这就是你一直假装打电话的原因吗？</p>
+<p>赵：你最好老实点，我的肩膀能扛一只肥猫已经很委屈了，不要麻烦它老人家把你甩飞。肩上蹲着一只猫，又对着空气神神叨叨的，赶明儿我就是校园怪谈的主角了。</p>
+<p>易：别赶明儿，回去我就写本新聊斋，主角就咱俩。</p>
+<p>赵：建国以后不许成精了，奥特曼，还是打怪适合你。</p>
+<p>【鼓点停】</p>
+<p>【开门进宿舍】</p>
+<p>【赵放下手里打好的饭菜和钥匙】</p>
+<p>赵：你待在这先吃点东西吧，我去拿个外卖。</p>
+<p>易：哦，好。</p>
+<p>赵：我那几个舍友人不错，但保不住秘密，她们要是回来，你机灵点，别露馅了。</p>
+<p>易（吃东西含糊不清）：我知道了。</p>
+<p>【赵走出去，关门】</p>
+<p>易：哎，不能用筷子真麻烦，糊我满脸油。桌子上有纸巾，待我取来一用。</p>
+<p>【爬上桌子，走过去时不小心踩到电脑开机键】</p>
+<p>易：卧槽！她电脑开了，竟然不设密码？非礼勿视非礼勿视，我不是故意的......咦？这怎么是她晋河文学城的个人主页？咳咳，看别人电脑是不对的，我也就是不小心踩了一下鼠标，不小心瞟了一眼，看看赵筱薇学妹到底是不是我的粉丝，仅此而已。</p>
+<p>【点了一下鼠标】</p>
+<p>易（震惊）：啊!她竟然关注我这么久了！可是她刚才知道我就是宜家奥特曼以后，为什么没有一点兴奋？是我作为她的偶像让她失望了，还是，她，【加怀疑音效】早就知道这件事了？</p>
+<p>第三幕</p>
+<p>【A few moment later】</p>
+<p>【赵开门进宿舍】</p>
+<p>赵：你这么快吃完了？（看见易佳的反应很疑惑）怎么了，谁惹你炸毛了？</p>
+<p>易：你是我粉丝？</p>
+<p>赵：你偷看我电脑？</p>
+<p>易：你跟这件事有关系对不对!</p>
+<p>【平缓BGM】</p>
+<p>赵（愣了愣）：我没想过害你。</p>
+<p>易（质问）：到底怎么回事？</p>
+<p>赵：我前几天和朋友出去玩，碰到一棵许愿树，我们都写了自己的愿望挂上去。我的愿望是，（顿了顿）关于一个我崇拜的人的。</p>
+<p>易（有点不好意思）：你一直崇拜的人不会是我吧？是不是我帮你实现了愿望，我就能回去了？</p>
+<p>赵（闷闷地）：嗯，应该是这样吧。</p>
+<p>易（急切）：那你的愿望是什么？</p>
+<p>【赵战术后仰】</p>
+<p>【鼓点】</p>
+<p>赵：每天早上从五万平方米的床上醒来，坐在纯金马桶上通畅排便，拿1912年的老同兴茶泡脚，派私人飞机送我妈去隔壁村我姨家拜年，用和田玉大转盘来决定今天开哪辆价值千万的豪车出门和我拥有八块腹肌迷倒万千少男少女的霸道总裁男友约会......都不是我的愿望。【停】</p>
+<p>易（无语）：啊？</p>
+<p>赵：学姐，其实我从高中就开始写小说了。那时候我觉得自己天赋不错，什么都往网上发，渐渐有点人气。可我没想到骂我的人越来越多。【BGM起】其实他们挑出来的毛病多少有点道理，可有时候，话实在太难听。后来我就没继续写了。我再也不能从容地按下那个发送键。</p>
+<p>易：别打哑谜。</p>
+<p>赵：我实在是忘了自己当时心中所想的愿望是什么，但我一直以来，是想重拾当年的勇气。</p>
+<p>易（疑惑不解）：勇气？我要怎么帮你？</p>
+<p>赵（无奈）：我也不知道啊，谁知道那时候我就这么随便许个愿，就真的把您拉下水了。</p>
+<p>易：这样，你打开你的主页让我看看。</p>
+<p>【赵操作电脑】</p>
+<p>易：你这是第一章？写得挺好的......手拿来吧你。</p>
+<p>【抓住赵的手按下发送键】</p>
+<p>赵（来不及阻止）：你等......啊（叹气扶额）</p>
+<p>易：成了。</p>
+<p>赵：你确定里面某些片段不会被平台制裁？</p>
+<p>易：再说吧，我的任务应该完成了，嘿嘿。</p>
+<p>第四幕</p>
+<p>【转场】</p>
+<p>【鼓点】</p>
+<p>易（独白）：我叫易佳，一个倒霉的女大学生，今天是我变成肥猫的第三天。帮赵筱薇"鼓足勇气"发表了她的作品以后，我还是没有变回人。</p>
+<p>【夜晚，路上，风声树声脚步声】</p>
+<p>赵：学姐，我真的不是故意的。</p>
+<p>易（埋怨）：明明在我的威逼利诱下你把大量文章都发出去了，那神棍寄过来的墙灰还是香灰什么的我也喝了，连山上那棵没眼力见的树我们都和它聊了一下午，为什么我还没能变回去？</p>
+<p>赵（安慰）：或许是加载还要一点时间吧。别担心，事情不会闹大的。</p>
+<p>路人A：哇，警车怎么停在宿舍楼下？</p>
+<p>路人B：听说有个学姐失踪了，不知道大几的。</p>
+<p>路人C：又是女大学生失踪？这年头怎么回事啊？</p>
+<p>路人D：监控只拍到她最后是和男朋友在教室吵架来着。</p>
+<p>赵（继续安慰）：放心啦学姐，你的男朋友没离开过学校，也没有作案动机，不会被抓走的。</p>
+<p>{男朋友在警车旁辩解}</p>
+<p>男朋友（不明所以）：警察叔叔，吵完我就走了，我什么都没做啊！我也在找她啊！</p>
+<p>警察叔叔（严肃）：你是最后一个见到当事人的吧，给我老实点配合调查！</p>
+<p>赵（强行安慰）：或许等你家人知道，你已经变回来了。</p>
+<p>【有女人急匆匆赶来】</p>
+<p>易佳母亲（急切）：警官警官，佳佳怎么会凭空消失了？怎么会连查监控都没看见她人影？（哭腔）她她她她不会出事吧？</p>
+<p>警察（冷静）：女士，您先别着急，先跟我们回派出所进一步了解情况。</p>
+<p>易佳母亲（哽咽）：哎哎好好，你们可一定要帮帮我女儿啊。【淡出】</p>
+<p>【BGM变惆怅】</p>
+<p>【赵转身走开】</p>
+<p>赵（愧疚）：学姐你......你咬死我好了。</p>
+<p>易（气）：咬死你干嘛，警察叔叔不累啊？</p>
+<p>赵（咬咬牙，像是下定决心）：那......再等一天，明天晚上，我就去自首。</p>
+<p>【易沉默了一会，好像在想什么事情】</p>
+<p>易：犯罪嫌疑人赵筱薇。</p>
+<p>赵（在叫我？）：嗯？</p>
+<p>易（平静地45度仰望天空）：其实我要是一直这样，对你而言也未尝不是间好事。（笑）后生可畏，你未必不能取代宜家奥特曼，你确实很有犯罪动机。</p>
+<p>赵：我当然想学姐你变回人啊。</p>
+<p>易（小声喃喃）：可如果实在变不回去，我也只能留在你身边了。</p>
+<p>赵（真诚地想要辩解）：不是这样的，我......</p>
+<p>易（认真告诫）：要是我变回了人，不能时时刻刻逼你，你也要像这样勇敢地去追求自己喜欢的东西。</p>
+<p>赵：我知道了。</p>
+<p>易（舒服地仰头欣赏星空）：猫的视野真好，我从来没见过这么多的星星。好想把一只眼睛借给你，我们一起看这个漫天繁星的夜晚。</p>
+<p>赵（郑重认真）：谢谢你，学姐，这几天，你让我感到，我热爱的一切不是我一个人的狂欢。</p>
+<p>易（温声）：你怎么会是一个人呢，你从来都不是一个人。</p>
+<p>赵：我怎么觉得你好像在骂我呢......</p>
+<p>第五幕</p>
+<p>【转场音效】</p>
+<p>【鼓点音效】</p>
+<p>易（独白）：我叫易佳，一个在和男朋友吵架后不幸变成猫的女大学生。今天是我当肥猫的第四天，万万没想到，我最终还是变回人了。</p>
+<p>易（满意）：更新时间掐得还挺准。可以啊，小赵，【拍肩膀】你是越来越上道了。人气呢，肯定不会一下子上去，只要你牢记我交给你的那些个榜单玄学，勤加实践，一定就不会有问题的。</p>
+<p>赵：嘿嘿嘿。</p>
+<p>【消息提示音】</p>
+<p>易：哦？有人评论了。</p>
+<p>路人D：不懂就问，作者是没上过学吗？高中校园里忙得要死，哪有时间谈恋爱，而且像主角这样的美强惨现实中根本就没有好吗？现在的小孩子没经过现实毒打，满脑子就是童话故事，以为全世界都围着你一个人来爱，拜托，现实一点吧。</p>
+<p>赵：（无奈地叹了口气）他说的，也对。我以前也会反驳，但这些人一旦意识到自己在辩论，就会不依不饶和你大战三百回合。</p>
+<p>易（跃跃欲试）：起开，看我的。</p>
+<p>【赵让出键盘】</p>
+<p>【易敲键盘，发送】</p>
+<p>易（豪横）：爱看看，不看滚。</p>
+<p>【换bgm：平缓】</p>
+<p>易（对上赵的目光）：嗨，我这人就这样，也这么过来的。有些人看似聪明理智，实际上就是满心满肺的傲慢与偏见，再怎么跟他说，压根儿说不成一路人。只要你相信自己就好啦，大学生嘛，就要敢想敢做，满脑袋的好点子，可不能浪费咯。</p>
+<p>赵：是啊，不是一路人，理他干什么，做好自己比什么都重要。大师，我悟了。</p>
+<p>易：悟了？悟了就好。（松了一口气，好像自己也想起什么事来）你这么说，其实我也想明白了......</p>
+<p>【猫身亮起金光】</p>
+<p>【bgm：欢快】</p>
+<p>赵（惊呆）：学姐，你在发光耶......</p>
+<p>易（惊喜）：啊，我我我要变回人了？</p>
+<p>赵：我看见脚了......啊尾巴不见了！手也要出来了，啊，胸！头！有了有了！</p>
+<p>{易趴在地上很狼狈}</p>
+<p>易：你叫这么大声是怕别人不知道你在你们寝室里接生吗！</p>
+<p>赵（震惊）：啊学姐你没穿衣服!</p>
+<p>易（怒）：所以呢？我要抓住这个机会出去裸奔吗？</p>
+<p>赵（如梦初醒）：啊对对对，我给你拿衣服。</p>
+<p>【赵拿来衣服】</p>
+<p>赵：给。</p>
+<p>【易佳接过，穿上】</p>
+<p>易（松了一口气）：我可算回到人类世界了。哎，我先去一趟派出所，估计这几天我占用了不少公共资源。我妈肯定吓死了，我得好好安抚安抚她。至于我那男朋友估计没少吃苦头，先还他个清白，然后，再和他分手。</p>
+<p>赵：我和你一起去，一起想想怎么解释。</p>
+<p>易：宝贝，那你可就被搅进失踪案里来了哦。</p>
+<p>赵：没事，我不怕。</p>
+<p>易：好吧......对了，你当时到底许的什么愿，我刚上网帮你骂完人就变回来了。你不会是想要我帮你跟杠精对线吧？</p>
+<p>【两人走出宿舍】</p>
+<p>赵（含含糊糊）：也许是吧，宜家奥特曼在我心目中，毕竟也是个单挑黑粉三天三夜的人物。</p>
+<p>易（得意）：嘿嘿，那你可找对人了。下次要是再有这种情况，您甭客气，尽管跟姐说，哪能让你受这委屈？</p>
+<p>【两人渐渐走远】</p>
+<p>第六幕</p>
+<p>【山上，鸟语花香】</p>
+<p>【bgm舒缓】</p>
+<p>同学A：哎，筱薇，你也来写上你的愿望啊。</p>
+<p>同学B：来嘛来嘛。</p>
+<p>【接过带子，写东西，抛上树】</p>
+<p>赵（os）：愿那个我一直崇拜的人能幸福无忧，早日解开心结......虽然，我不知道她的心结是什么，但我昨天碰到她，她好像不怎么开心。当然，如果您老人家怕麻烦，或许，能不能赠我一个契机去帮助她？</p>
+<p>{正片完结}</p>
+<p>【ed可在第六幕合适时间起】</p>
+<p>Ps:后期提示仅供参考</p>
+              </div>
+            </div>
+          </section>
+
+          <footer>
+            <span class="editable">广播剧剧本 · 《重生之我是大肥猫》</span>
+          </footer>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    // Mobile nav toggle
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    if (navToggle && navLinks) {
+      navToggle.addEventListener('click', () => {
+        navLinks.classList.toggle('open');
+      });
+    }
+
+    // Sidebar TOC navigation
+    const tocItems = document.querySelectorAll('.toc-item');
+    const sectionMap = new Map();
+
+    tocItems.forEach(item => {
+      const target = document.getElementById(item.dataset.target);
+      if (target) sectionMap.set(item, target);
+
+      item.addEventListener('click', () => {
+        if (devMode) return;
+        const target = sectionMap.get(item);
+        if (!target) return;
+
+        tocItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+
+        const offset = 88; // sticky top-nav (72px) + small gap
+        const top = target.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top, behavior: 'smooth' });
+      });
+    });
+
+    // Highlight current section on scroll
+    function updateActiveToc() {
+      const scrollPos = window.scrollY + 120;
+      let current = null;
+
+      sectionMap.forEach((section, item) => {
+        if (section.offsetTop <= scrollPos) {
+          current = item;
+        }
+      });
+
+      if (current) {
+        tocItems.forEach(i => i.classList.remove('active'));
+        current.classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', updateActiveToc, { passive: true });
+    updateActiveToc();
+
+    // ===== Developer mode with password =====
+    const passwordOverlay = document.getElementById('passwordOverlay');
+    const passwordInput = document.getElementById('passwordInput');
+    const passwordConfirm = document.getElementById('passwordConfirm');
+    const passwordCancel = document.getElementById('passwordCancel');
+    let devMode = false;
+    const DEV_PASSWORD = 'hchcsss';
+
+    function setDevMode(active) {
+      devMode = active;
+      document.body.classList.toggle('dev-mode', devMode);
+      document.querySelectorAll('.editable').forEach(el => {
+        el.contentEditable = devMode;
+      });
+      document.querySelectorAll('.toc-item, .brand-title').forEach(el => {
+        el.contentEditable = devMode;
+      });
+    }
+
+    // placeholder links should not navigate
+    document.querySelectorAll('.link-placeholder').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+      });
+    });
+
+    // plain-text paste to keep uniform styling
+    document.querySelectorAll('.editable').forEach(el => {
+      el.addEventListener('paste', (e) => {
+        if (!devMode) return;
+        e.preventDefault();
+        const text = (e.clipboardData || window.clipboardData).getData('text/plain');
+        document.execCommand('insertText', false, text);
+      });
+    });
+
+    function openPassword() {
+      passwordOverlay.classList.add('show');
+      passwordInput.value = '';
+      setTimeout(() => passwordInput.focus(), 50);
+    }
+
+    function closePassword() {
+      passwordOverlay.classList.remove('show');
+      passwordInput.value = '';
+    }
+
+    function checkPassword() {
+      if (passwordInput.value === DEV_PASSWORD) {
+        setDevMode(!devMode);
+        closePassword();
+      } else {
+        alert('密码错误 / ACCESS DENIED');
+        passwordInput.value = '';
+        passwordInput.focus();
+      }
+    }
+
+    passwordConfirm.addEventListener('click', checkPassword);
+    passwordCancel.addEventListener('click', closePassword);
+
+    passwordInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        checkPassword();
+      } else if (e.key === 'Escape') {
+        closePassword();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if ((e.key === 'm' || e.key === 'M') && !e.repeat) {
+        if (e.target.isContentEditable) return;
+        if (e.target === passwordInput) return;
+        e.preventDefault();
+        if (devMode) {
+          setDevMode(false);
+        } else {
+          openPassword();
+        }
+      }
+    });
+
+    // Export / Import edited data
+    document.getElementById('exportBtn').addEventListener('click', () => {
+      const data = {
+        toc: Array.from(document.querySelectorAll('.toc-item')).map(item => ({
+          target: item.dataset.target,
+          text: item.textContent,
+          level: item.classList.contains('level-2') ? 2 : 1
+        })),
+        brand: document.querySelector('.brand-title').textContent,
+        content: Array.from(document.querySelectorAll('.editable')).map((el, i) => ({
+          index: i,
+          html: el.innerHTML
+        }))
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'portfolio-data.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    document.getElementById('importBtn').addEventListener('click', () => {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = '.json';
+      input.onchange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          try {
+            const data = JSON.parse(event.target.result);
+            if (data.toc) {
+              const existing = document.querySelectorAll('.toc-item');
+              data.toc.forEach((item, i) => {
+                if (existing[i]) {
+                  existing[i].dataset.target = item.target;
+                  existing[i].textContent = item.text;
+                  existing[i].className = 'toc-item' + (item.level === 2 ? ' level-2' : '');
+                }
+              });
+              sectionMap.clear();
+              document.querySelectorAll('.toc-item').forEach(item => {
+                const target = document.getElementById(item.dataset.target);
+                if (target) sectionMap.set(item, target);
+              });
+            }
+            if (data.brand) {
+              const brand = document.querySelector('.brand-title');
+              if (brand) brand.textContent = data.brand;
+            }
+            if (data.content) {
+              const editables = document.querySelectorAll('.editable');
+              data.content.forEach(item => {
+                if (editables[item.index]) {
+                  editables[item.index].innerHTML = item.html;
+                }
+              });
+            }
+            alert('数据已导入 / DATA IMPORTED');
+          } catch (err) {
+            alert('导入错误 / IMPORT ERROR: ' + err.message);
+          }
+        };
+        reader.readAsText(file);
+      };
+      input.click();
+    });
+  </script>
+</body>
+</html>

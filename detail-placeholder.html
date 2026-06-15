@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>项目详情 · 个人创作集</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @font-face {
+      font-family: 'Yuangu';
+      src: url('assets/fonts/YuanguSongti-Regular.otf') format('opentype'),
+           url('assets/fonts/YuanguSongti-Regular.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root {
+      --color-dark: #333333;
+      --color-paper: #FAFAFA;
+      --color-blue: #E0F7FA;
+      --color-gray: #888888;
+      --color-border: rgba(0, 0, 0, 0.08);
+      --font-main: 'Yuangu', 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      --max-width: 720px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-main);
+      color: var(--color-dark);
+      background-color: var(--color-paper);
+      background-image:
+        radial-gradient(circle at 12% 18%, rgba(0,0,0,0.018) 0%, transparent 45%),
+        linear-gradient(rgba(0,0,0,0.012) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.012) 1px, transparent 1px);
+      background-size: 100% 100%, 48px 48px, 48px 48px;
+      line-height: 1.8;
+      letter-spacing: 0.02em;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .top-bar {
+      position: sticky;
+      top: 0;
+      background: rgba(250, 250, 250, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .top-bar-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 18px 24px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--color-gray);
+      transition: color 0.2s ease;
+    }
+
+    .back-link:hover { color: var(--color-dark); }
+
+    main {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 80px 24px 120px;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+    }
+
+    .meta {
+      font-size: 13px;
+      color: var(--color-gray);
+      margin-bottom: 48px;
+    }
+
+    .placeholder-block {
+      padding: 48px;
+      border: 1px dashed var(--color-border);
+      border-radius: 10px;
+      text-align: center;
+      color: var(--color-gray);
+      background: rgba(255,255,255,0.6);
+    }
+
+    .placeholder-block i {
+      font-size: 32px;
+      margin-bottom: 16px;
+      color: var(--color-blue);
+    }
+
+    footer {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 40px 24px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--color-gray);
+      border-top: 1px solid var(--color-border);
+    }
+
+    @media (max-width: 768px) {
+      h1 { font-size: 24px; }
+      main { padding: 48px 20px 80px; }
+      .placeholder-block { padding: 32px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <div class="top-bar-inner">
+      <a class="back-link" href="zuopin.html"><i class="fa-solid fa-arrow-left"></i> 返回创作集</a>
+    </div>
+  </div>
+
+  <main>
+    <h1>项目详情</h1>
+    <p class="meta">占位页面 · 内容待补充</p>
+
+    <div class="placeholder-block">
+      <i class="fa-solid fa-pen-ruler"></i>
+      <p>该项目的长篇展示内容正在整理中。</p>
+      <p style="margin-top: 8px; font-size: 13px;">你可以参考《立春》详情页（lichun.html）的版式，替换为本项目内容。</p>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2026 个人创作集</p>
+  </footer>
+</body>
+</html>
