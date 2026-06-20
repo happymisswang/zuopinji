@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ANALOG_DREAMS // 其他</title>
+  <title>ANALOG_DREAMS // 文创/新媒体</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
@@ -994,6 +994,253 @@
       line-height: 1.6;
     }
 
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .article-card .showcase-area,
+    .gallery-card .gallery-img {
+      cursor: zoom-in;
+    }
+
+    .showcase-area {
+      position: relative;
+      margin-top: 18px;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      background: linear-gradient(145deg, #e8e4dc, #d4cfc6);
+      box-shadow: var(--shadow-inset);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .showcase-area:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-plastic);
+    }
+
+    .showcase-area:focus-visible {
+      outline: 2px solid var(--theme-accent);
+      outline-offset: 2px;
+    }
+
+    .showcase-preview {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+      background: linear-gradient(145deg, #e8e4dc, #d4cfc6);
+    }
+
+    .showcase-badge {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(26, 24, 21, 0.72);
+      color: #fff;
+      font-family: var(--font-screen);
+      font-size: 10px;
+      letter-spacing: 0.06em;
+    }
+
+    /* ===== GALLERY VIEWER ===== */
+    .gallery-viewer {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background: rgba(26, 24, 20, 0.9);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.25s ease, visibility 0.25s ease;
+    }
+
+    .gallery-viewer.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .gallery-viewer-backdrop {
+      position: absolute;
+      inset: 0;
+    }
+
+    .gallery-viewer-panel {
+      position: relative;
+      z-index: 1;
+      width: min(96vw, 1200px);
+      max-height: 94vh;
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(145deg, #e2ded5, #d4cfc6);
+      border: 2px solid #b8b2a7;
+      border-radius: 8px;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
+      overflow: hidden;
+    }
+
+    .gallery-viewer-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 14px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      background: rgba(255, 255, 255, 0.35);
+    }
+
+    .gallery-viewer-caption {
+      flex: 1;
+      min-width: 0;
+      font-size: 13px;
+      color: var(--theme-text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .gallery-viewer-caption:empty {
+      display: none;
+    }
+
+    .gallery-viewer-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .gallery-viewer-btn {
+      min-width: 32px;
+      height: 32px;
+      padding: 0 8px;
+      border: 2px solid #b8b2a7;
+      border-radius: 6px;
+      background: linear-gradient(145deg, #f0ece4, #d8d3c9);
+      color: var(--theme-text);
+      font-family: var(--font-screen);
+      font-size: 14px;
+      line-height: 1;
+      cursor: pointer;
+      box-shadow: var(--shadow-plastic);
+    }
+
+    .gallery-viewer-btn:hover {
+      background: linear-gradient(145deg, #f5f2ec, #e2ded5);
+    }
+
+    .gallery-viewer-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .gallery-viewer-zoom-level,
+    .gallery-viewer-counter {
+      min-width: 52px;
+      text-align: center;
+      font-family: var(--font-screen);
+      font-size: 11px;
+      color: var(--theme-text-dim);
+      letter-spacing: 0.04em;
+    }
+
+    .gallery-viewer-stage {
+      position: relative;
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      align-items: stretch;
+      background: #1a1814;
+    }
+
+    .gallery-viewer-scroll {
+      flex: 1;
+      min-height: 0;
+      overflow: auto;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 16px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .gallery-viewer-img {
+      width: auto;
+      height: auto;
+      max-width: none;
+      display: block;
+      transform-origin: top center;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .gallery-viewer-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 2;
+      width: 40px;
+      height: 40px;
+      border: 2px solid rgba(255, 255, 255, 0.35);
+      border-radius: 50%;
+      background: rgba(26, 24, 21, 0.55);
+      color: #fff;
+      font-size: 22px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .gallery-viewer-nav:hover {
+      background: rgba(224, 86, 0, 0.85);
+      border-color: rgba(224, 86, 0, 0.85);
+    }
+
+    .gallery-viewer-nav.prev {
+      left: 12px;
+    }
+
+    .gallery-viewer-nav.next {
+      right: 12px;
+    }
+
+    .gallery-viewer-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 3;
+      width: 32px;
+      height: 32px;
+      border: 2px solid #b8b2a7;
+      border-radius: 6px;
+      background: linear-gradient(145deg, #f0ece4, #d8d3c9);
+      color: var(--theme-text);
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+      box-shadow: var(--shadow-plastic);
+    }
+
+    .gallery-viewer-close:hover {
+      background: linear-gradient(145deg, #f5f2ec, #e2ded5);
+    }
+
+    .gallery-viewer-hint {
+      padding: 8px 14px 12px;
+      font-family: var(--font-screen);
+      font-size: 10px;
+      letter-spacing: 0.05em;
+      color: var(--theme-text-dim);
+      text-align: center;
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
     /* ===== RESPONSIVE ===== */
     @media (max-width: 1200px) {
       .sidebar {
@@ -1054,6 +1301,9 @@
       .grid-3, .grid-2 {
         grid-template-columns: 1fr;
       }
+      .grid-4 {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
 
     @media (max-width: 900px) {
@@ -1100,6 +1350,9 @@
       }
       .section-title {
         font-size: 22px;
+      }
+      .grid-4 {
+        grid-template-columns: 1fr;
       }
     }
 
@@ -1235,7 +1488,7 @@
         <li><a href="tongrenwen.html">中长篇同人文</a></li>
         <li><a href="ciqu.html">歌曲作词</a></li>
         <li><a href="guangbo.html">广播剧剧本</a></li>
-        <li><a href="qita.html" class="active">其他</a></li>
+        <li><a href="qita.html" class="active">文创/新媒体</a></li>
       </ul>
     </div>
   </nav>
@@ -1244,13 +1497,14 @@
     <div class="app">
       <!-- 左侧目录导航 -->
       <aside class="sidebar">
-        <div class="brand-title">其他</div>
+        <div class="brand-title">文创/新媒体</div>
         <a class="back-link" href="zuopin.html"><i class="fa-solid fa-arrow-left"></i> 返回创作集</a>
 
         <nav class="toc" id="toc">
           <button class="toc-item active" data-target="hero">序</button>
           <button class="toc-item" data-target="photography">摄影</button>
           <button class="toc-item" data-target="articles">公众号推文</button>
+          <button class="toc-item" data-target="design">文创、物料设计</button>
         </nav>
 
         <div class="dev-tools">
@@ -1266,9 +1520,9 @@
           <!-- Hero -->
           <section class="hero" id="hero">
             <div class="hero-label">OTHERS</div>
-            <h1 class="editable">其他</h1>
+            <h1 class="editable">文创/新媒体</h1>
             <p class="editable">
-              摄影、公众号推文等其他创作归档。开启开发者模式（按 M，密码 hchcsss）后，可直接编辑卡片标题与描述。
+              摄影、公众号推文、文创物料等其他创作归档。
             </p>
           </section>
 
@@ -1284,21 +1538,21 @@
 
             <div class="grid-3" style="margin-top: 40px;">
               <div class="gallery-card editable">
-                <img class="gallery-img" src="assets/photo1.png" alt="摄影作品 1" />
+                <img class="gallery-img" src="assets/p1.jpg" alt="摄影作品 1" />
                 <div class="gallery-caption">
                   <div class="card-title"><a href="#" class="link-placeholder">作品 1</a></div>
                   <div class="card-body">摄影占位图 1。</div>
                 </div>
               </div>
               <div class="gallery-card editable">
-                <img class="gallery-img" src="assets/photo2.png" alt="摄影作品 2" />
+                <img class="gallery-img" src="assets/p2.png" alt="摄影作品 2" />
                 <div class="gallery-caption">
                   <div class="card-title"><a href="#" class="link-placeholder">作品 2</a></div>
                   <div class="card-body">摄影占位图 2。</div>
                 </div>
               </div>
               <div class="gallery-card editable">
-                <img class="gallery-img" src="assets/photo3.png" alt="摄影作品 3" />
+                <img class="gallery-img" src="assets/p3.png" alt="摄影作品 3" />
                 <div class="gallery-caption">
                   <div class="card-title"><a href="#" class="link-placeholder">作品 3</a></div>
                   <div class="card-body">摄影占位图 3。</div>
@@ -1317,22 +1571,138 @@
             </div>
 
             <div class="grid-2" style="margin-top: 40px;">
-              <div class="card editable">
+              <div class="card editable article-card">
                 <div class="card-title"><a href="https://mp.weixin.qq.com/s/P8T393bs7RgWbDo1zqC51w" class="link-placeholder">南哲月历1：《秋日时钟图鉴：解锁一天的浪漫刻度》</a></div>
                 <div class="card-body">摄影、文案</div>
+                <div
+                  class="showcase-area gallery-trigger"
+                  data-images='["assets/calendar1-1.jpg","assets/calendar1-2.jpg"]'
+                  data-caption="南哲月历1：《秋日时钟图鉴：解锁一天的浪漫刻度》"
+                  role="button"
+                  tabindex="0"
+                  aria-label="查看南哲月历1图片，共2张"
+                >
+                  <img class="showcase-preview" src="assets/calendar1-1.jpg" alt="南哲月历1 展示图" />
+                  <span class="showcase-badge">2 张 · 点击查看</span>
+                </div>
               </div>
-              <div class="card editable">
+              <div class="card editable article-card">
                 <div class="card-title"><a href="https://mp.weixin.qq.com/s/GJdGS5dnr3TtD5l3Z1prvw" class="link-placeholder">南哲月历2：《向春天寄一首散文诗》</a></div>
                 <div class="card-body">策划、摄影、文案、美编</div>
+                <div
+                  class="showcase-area gallery-trigger"
+                  data-images='["assets/calendar2-1.jpg","assets/calendar2-2.jpg","assets/calendar2-3.jpg","assets/calendar2-4.jpg","assets/calendar2-5.jpg","assets/calendar2-6.jpg","assets/calendar2-7.jpg"]'
+                  data-caption="南哲月历2：《向春天寄一首散文诗》"
+                  role="button"
+                  tabindex="0"
+                  aria-label="查看南哲月历2图片，共7张"
+                >
+                  <img class="showcase-preview" src="assets/calendar2-1.jpg" alt="南哲月历2 展示图" />
+                  <span class="showcase-badge">7 张 · 点击查看</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="section" id="design">
+            <div class="section-header">
+              <div class="section-number">03</div>
+              <h2 class="section-title editable"><a href="#" class="link-placeholder">文创、物料设计</a></h2>
+            </div>
+            <div class="section-body editable">
+              <p>文创产品与物料设计作品存档区。</p>
+            </div>
+
+            <div class="grid-4" style="margin-top: 40px;" id="designGallery">
+              <div class="gallery-card editable">
+                <img class="gallery-img gallery-trigger" src="assets/design1.jpg" alt="文创物料 1" data-images='["assets/design1.jpg"]' data-caption="文创物料 1" />
+                <div class="gallery-caption">
+                  <div class="card-title"><a href="#" class="link-placeholder">明信片、香片</a></div>
+                  <div class="card-body">南哲戏剧节</div>
+                </div>
+              </div>
+              <div class="gallery-card editable">
+                <img class="gallery-img gallery-trigger" src="assets/design2.jpg" alt="文创物料 2" data-images='["assets/design2.jpg"]' data-caption="文创物料 2" />
+                <div class="gallery-caption">
+                  <div class="card-title"><a href="#" class="link-placeholder">像素风明信片设计</a></div>
+                  <div class="card-body">恋与深空-夏以昼</div>
+                </div>
+              </div>
+              <div class="gallery-card editable">
+                <img class="gallery-img gallery-trigger" src="assets/design3.jpg" alt="文创物料 3" data-images='["assets/design3.jpg"]' data-caption="文创物料 3" />
+                <div class="gallery-caption">
+                  <div class="card-title"><a href="#" class="link-placeholder">像素风小卡设计</a></div>
+                  <div class="card-body">恋与深空-夏以昼</div>
+                </div>
+              </div>
+              <div class="gallery-card editable">
+                <img class="gallery-img gallery-trigger" src="assets/design4.jpg" alt="文创物料 4" data-images='["assets/design4.jpg"]' data-caption="文创物料 4" />
+                <div class="gallery-caption">
+                  <div class="card-title"><a href="#" class="link-placeholder">蓝晒风明信片设计</a></div>
+                  <div class="card-body">《逆爱》周边设计</div>
+                </div>
+              </div>
+              <div class="gallery-card editable">
+                <img class="gallery-img gallery-trigger" src="assets/design5.jpg" alt="文创物料 5" data-images='["assets/design5.jpg"]' data-caption="文创物料 5" />
+                <div class="gallery-caption">
+                  <div class="card-title"><a href="#" class="link-placeholder">海报设计</a></div>
+                  <div class="card-body">南哲戏剧节海报设计</div>
+                </div>
+              </div>
+              <div class="gallery-card editable">
+                <img class="gallery-img gallery-trigger" src="assets/design6.png" alt="文创物料 6" data-images='["assets/design6.png"]' data-caption="文创物料 6" />
+                <div class="gallery-caption">
+                  <div class="card-title"><a href="#" class="link-placeholder">作品 6</a></div>
+                  <div class="card-body">文创物料占位图 6。</div>
+                </div>
+              </div>
+              <div class="gallery-card editable">
+                <img class="gallery-img gallery-trigger" src="assets/design7.png" alt="文创物料 7" data-images='["assets/design7.png"]' data-caption="文创物料 7" />
+                <div class="gallery-caption">
+                  <div class="card-title"><a href="#" class="link-placeholder">作品 7</a></div>
+                  <div class="card-body">文创物料占位图 7。</div>
+                </div>
+              </div>
+              <div class="gallery-card editable">
+                <img class="gallery-img gallery-trigger" src="assets/design8.png" alt="文创物料 8" data-images='["assets/design8.png"]' data-caption="文创物料 8" />
+                <div class="gallery-caption">
+                  <div class="card-title"><a href="#" class="link-placeholder">作品 8</a></div>
+                  <div class="card-body">文创物料占位图 8。</div>
+                </div>
               </div>
             </div>
           </section>
 
           <footer>
-            <span class="editable">其他 · 摄影 · 公众号推文</span>
+            <span class="editable">其他 · 摄影 · 公众号推文 · 文创物料</span>
           </footer>
         </div>
       </main>
+    </div>
+  </div>
+
+  <div id="galleryViewer" class="gallery-viewer" role="dialog" aria-modal="true" aria-hidden="true" aria-label="图片查看器">
+    <div class="gallery-viewer-backdrop" data-gallery-close></div>
+    <div class="gallery-viewer-panel">
+      <button type="button" class="gallery-viewer-close" aria-label="关闭" data-gallery-close>&times;</button>
+      <div class="gallery-viewer-toolbar">
+        <div class="gallery-viewer-caption"></div>
+        <div class="gallery-viewer-controls">
+          <span class="gallery-viewer-counter"></span>
+          <button type="button" class="gallery-viewer-btn" id="galleryZoomOut" aria-label="缩小">−</button>
+          <span class="gallery-viewer-zoom-level" id="galleryZoomLevel">100%</span>
+          <button type="button" class="gallery-viewer-btn" id="galleryZoomIn" aria-label="放大">+</button>
+          <button type="button" class="gallery-viewer-btn" id="galleryZoomReset" aria-label="重置缩放">1:1</button>
+        </div>
+      </div>
+      <div class="gallery-viewer-stage">
+        <button type="button" class="gallery-viewer-nav prev" id="galleryPrev" aria-label="上一张">‹</button>
+        <div class="gallery-viewer-scroll" id="galleryScroll">
+          <img class="gallery-viewer-img" id="galleryViewerImg" src="" alt="" />
+        </div>
+        <button type="button" class="gallery-viewer-nav next" id="galleryNext" aria-label="下一张">›</button>
+      </div>
+      <div class="gallery-viewer-hint">滚轮缩放 · 方向键切换 · Esc 关闭 · 长图可滚动浏览</div>
     </div>
   </div>
 
@@ -1411,7 +1781,10 @@
     // placeholder links should not navigate
     document.querySelectorAll('.link-placeholder').forEach(link => {
       link.addEventListener('click', (e) => {
-        e.preventDefault();
+        const href = link.getAttribute('href');
+        if (!href || href === '#') {
+          e.preventDefault();
+        }
       });
     });
 
@@ -1541,6 +1914,196 @@
         reader.readAsText(file);
       };
       input.click();
+    });
+
+    // ===== Multi-image gallery viewer with zoom =====
+    const galleryViewer = document.getElementById('galleryViewer');
+    const galleryViewerImg = document.getElementById('galleryViewerImg');
+    const galleryScroll = document.getElementById('galleryScroll');
+    const galleryCaption = galleryViewer.querySelector('.gallery-viewer-caption');
+    const galleryCounter = galleryViewer.querySelector('.gallery-viewer-counter');
+    const galleryZoomLevel = document.getElementById('galleryZoomLevel');
+    const galleryPrev = document.getElementById('galleryPrev');
+    const galleryNext = document.getElementById('galleryNext');
+    const galleryZoomIn = document.getElementById('galleryZoomIn');
+    const galleryZoomOut = document.getElementById('galleryZoomOut');
+    const galleryZoomReset = document.getElementById('galleryZoomReset');
+
+    let galleryImages = [];
+    let galleryIndex = 0;
+    let galleryZoom = 1;
+    let galleryBaseWidth = 0;
+    const GALLERY_MIN_ZOOM = 0.25;
+    const GALLERY_MAX_ZOOM = 4;
+    const GALLERY_ZOOM_STEP = 0.25;
+
+    function parseGalleryImages(raw) {
+      if (!raw) return [];
+      try {
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed.filter(Boolean) : [];
+      } catch (err) {
+        return [];
+      }
+    }
+
+    function collectDesignGalleryImages() {
+      return Array.from(document.querySelectorAll('#designGallery .gallery-trigger')).map((trigger) => {
+        const images = parseGalleryImages(trigger.dataset.images);
+        return images[0] || trigger.getAttribute('src') || '';
+      }).filter(Boolean);
+    }
+
+    function fitGalleryImage() {
+      if (!galleryViewerImg.naturalWidth) return;
+      const available = galleryScroll.clientWidth - 32;
+      galleryBaseWidth = Math.min(galleryViewerImg.naturalWidth, available);
+      galleryViewerImg.style.width = `${galleryBaseWidth * galleryZoom}px`;
+      galleryViewerImg.style.height = 'auto';
+    }
+
+    function updateGalleryZoomLabel() {
+      galleryZoomLevel.textContent = `${Math.round(galleryZoom * 100)}%`;
+    }
+
+    function applyGalleryZoom() {
+      if (!galleryBaseWidth) {
+        fitGalleryImage();
+      } else {
+        galleryViewerImg.style.width = `${galleryBaseWidth * galleryZoom}px`;
+      }
+      updateGalleryZoomLabel();
+    }
+
+    function setGalleryZoom(value) {
+      galleryZoom = Math.min(GALLERY_MAX_ZOOM, Math.max(GALLERY_MIN_ZOOM, value));
+      applyGalleryZoom();
+    }
+
+    function showGalleryImage() {
+      if (!galleryImages.length) return;
+      galleryViewerImg.src = galleryImages[galleryIndex];
+      galleryViewerImg.alt = `${galleryCaption.textContent || '图片'} ${galleryIndex + 1}`;
+      galleryCounter.textContent = `${galleryIndex + 1} / ${galleryImages.length}`;
+      galleryPrev.disabled = galleryIndex <= 0;
+      galleryNext.disabled = galleryIndex >= galleryImages.length - 1;
+      galleryPrev.style.display = galleryImages.length > 1 ? '' : 'none';
+      galleryNext.style.display = galleryImages.length > 1 ? '' : 'none';
+      galleryCounter.style.display = galleryImages.length > 1 ? '' : 'none';
+      galleryZoom = 1;
+      galleryBaseWidth = 0;
+      galleryScroll.scrollTop = 0;
+      galleryScroll.scrollLeft = 0;
+      updateGalleryZoomLabel();
+    }
+
+    function openGalleryViewer(images, startIndex, caption) {
+      galleryImages = images;
+      if (!galleryImages.length) return;
+      galleryIndex = Math.max(0, Math.min(startIndex, galleryImages.length - 1));
+      galleryCaption.textContent = caption || '';
+      showGalleryImage();
+      galleryViewer.classList.add('open');
+      galleryViewer.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeGalleryViewer() {
+      galleryViewer.classList.remove('open');
+      galleryViewer.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      galleryViewerImg.removeAttribute('src');
+      galleryImages = [];
+      galleryIndex = 0;
+      galleryZoom = 1;
+      galleryBaseWidth = 0;
+    }
+
+    function openGalleryFromTrigger(trigger) {
+      if (devMode) return;
+      let images = parseGalleryImages(trigger.dataset.images);
+      let startIndex = 0;
+      let caption = trigger.dataset.caption || '';
+
+      if (trigger.closest('#designGallery')) {
+        images = collectDesignGalleryImages();
+        const current = parseGalleryImages(trigger.dataset.images)[0] || trigger.getAttribute('src');
+        startIndex = Math.max(0, images.indexOf(current));
+        caption = trigger.dataset.caption || trigger.alt || caption;
+      }
+
+      openGalleryViewer(images, startIndex, caption);
+    }
+
+    document.querySelectorAll('.gallery-trigger').forEach((trigger) => {
+      trigger.addEventListener('click', (e) => {
+        e.preventDefault();
+        openGalleryFromTrigger(trigger);
+      });
+      trigger.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openGalleryFromTrigger(trigger);
+        }
+      });
+    });
+
+    galleryViewerImg.addEventListener('load', fitGalleryImage);
+    window.addEventListener('resize', () => {
+      if (!galleryViewer.classList.contains('open')) return;
+      galleryBaseWidth = 0;
+      fitGalleryImage();
+      applyGalleryZoom();
+    });
+
+    galleryPrev.addEventListener('click', () => {
+      if (galleryIndex <= 0) return;
+      galleryIndex -= 1;
+      showGalleryImage();
+    });
+
+    galleryNext.addEventListener('click', () => {
+      if (galleryIndex >= galleryImages.length - 1) return;
+      galleryIndex += 1;
+      showGalleryImage();
+    });
+
+    galleryZoomIn.addEventListener('click', () => setGalleryZoom(galleryZoom + GALLERY_ZOOM_STEP));
+    galleryZoomOut.addEventListener('click', () => setGalleryZoom(galleryZoom - GALLERY_ZOOM_STEP));
+    galleryZoomReset.addEventListener('click', () => setGalleryZoom(1));
+
+    galleryScroll.addEventListener('wheel', (e) => {
+      if (!galleryViewer.classList.contains('open')) return;
+      e.preventDefault();
+      const delta = e.deltaY < 0 ? GALLERY_ZOOM_STEP : -GALLERY_ZOOM_STEP;
+      setGalleryZoom(galleryZoom + delta);
+    }, { passive: false });
+
+    galleryViewer.querySelectorAll('[data-gallery-close]').forEach((el) => {
+      el.addEventListener('click', closeGalleryViewer);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!galleryViewer.classList.contains('open')) return;
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closeGalleryViewer();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        galleryPrev.click();
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        galleryNext.click();
+      } else if (e.key === '+' || e.key === '=') {
+        e.preventDefault();
+        galleryZoomIn.click();
+      } else if (e.key === '-') {
+        e.preventDefault();
+        galleryZoomOut.click();
+      } else if (e.key === '0') {
+        e.preventDefault();
+        galleryZoomReset.click();
+      }
     });
   </script>
 </body>
